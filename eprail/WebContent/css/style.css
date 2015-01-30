@@ -1,0 +1,90 @@
+@CHARSET "utf-8";
+div.center{
+	position: absolute; 
+	/*situar centro pantalla*/ 
+	top:50%; 
+	left:50%; 
+	/*anchura de la caja*/ 
+	width:400px; 
+	margin-left:-200px; 
+	border:2px solid #800000; 
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 20px;
+	box-shadow: 2px 2px 2px #888888;
+	padding:20px;
+}
+
+div#login {
+	/*altura de la caja*/ 
+	height:130px; 
+	margin-top:-100px; 
+}
+
+div#reg {
+	/*altura de la caja*/ 
+	height:200px; 
+	margin-top:-160px; 
+}
+
+div#recup {
+	/*altura de la caja*/ 
+	height:155px; 
+	margin-top:-120px; 
+}
+
+fieldset{
+	border:none;
+	margin-top:5px;
+}
+
+.title{
+	top:-15px; 
+	left:5%; 
+	position: absolute; 
+	background-color: #800000;
+	color: #FFF;
+	padding:5px;
+	font-size: 14px;
+}
+
+fieldset input[type="email"], fieldset input[type="password"],
+fieldset input[type="text"]{
+	width:200px;
+}
+
+/*#recup{
+	float:right;
+	margin-right:5px;
+}*/
+
+a#remem{
+	float:right;
+	margin-right:15px;
+	font-size:10px;
+}
+
+.but{
+	font-size:10px;
+	margin-left:10px;
+	float:left;
+	margin-top:5px;
+}
+
+#but{
+	width:70%;
+}
+
+#but1{
+	width:50%;
+}
+
+.log-i{
+   	float: left;
+    width: 150px;
+	margin-left:10px;
+}
+
+span.campo{
+	display: block;
+}
