@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  * Servlet implementation class ServletController
  */
 /*@DataSourceDefinition(
-		name = "java:app/EPrail/myDS",
+		name = "java:app/jdbc/eprail",
 		className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
 		portNumber = 3306,
 		serverName = "localhost",
@@ -80,7 +80,7 @@ public class ServletController extends HttpServlet {
 
 				if(!userBean.doLogin())//hacemos el login
 				{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
-					session.invalidate();
+					//session.invalidate();
 					nextPage = "/index.html";
 				}
 			}
