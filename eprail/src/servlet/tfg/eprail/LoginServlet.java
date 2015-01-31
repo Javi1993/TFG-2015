@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		/*
-		 * NO SIRVE XD HACER OTRO SERVLET
+		 * VER SI AQUI AHCER LO DE CARGR LOS ARCHIVOS DEL USUARIO TRAS LOGIN
 		 */
 	}
 

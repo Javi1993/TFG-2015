@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javabeans.tfg.eprail.User;
 
-import javax.annotation.sql.DataSourceDefinition;
+//import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +15,16 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ServletController
  */
-@DataSourceDefinition(
-		name = "java:app/jdbc/Eprail",
-		minPoolSize = 0,
-		initialPoolSize = 0,
+/*@DataSourceDefinition(
+		name = "java:app/EPrail/myDS",
 		className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
+		portNumber = 3306,
+		serverName = "localhost",
+		databaseName = "eprail",
 		user = "root",
 		password = "Javi.93",
-		databaseName = "eprail"
-		)
+		properties = {"pedantic=true"}
+		)*/
 @WebServlet(name="ServletController", urlPatterns={"/controller/*"})
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,6 +48,10 @@ public class ServletController extends HttpServlet {
 	 * @param response servlet response
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//nos protegemos ante caracteres especiales 
+		response.setContentType("text/html;charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+
 		// String que contiene la ruta de la pagina solicitada
 		String nextPage = request.getPathInfo();
 
@@ -56,7 +61,7 @@ public class ServletController extends HttpServlet {
 		System.out.println("--------------------- "+nextPage);
 		//Comprobamos si estaba en la session o la accion es registrar un nuevo usuario
 		if ((userBean == null || !userBean.getLoggedIn())) 
-		{//comprobamos si quiere loguearse, recuperar contraseña o registrarse
+		{//comprobamos si quiere loguearse, recuperar contraseï¿½a o registrarse
 			if(!nextPage.equals("/register")&&!nextPage.equals("/recover"))
 			{//login
 				if (userBean == null) 
