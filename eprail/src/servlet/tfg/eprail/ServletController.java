@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  * Servlet implementation class ServletController
  */
 @DataSourceDefinition(
-		name = "java:comp/jdbc/eprail",
+		name = "java:app/jdbc/eprail",
 		className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
 		url = "jdbc:mysql://localhost:3306/eprail",
 		portNumber = 3306,
@@ -63,7 +63,7 @@ public class ServletController extends HttpServlet {
 		//Comprobamos si estaba en la session o la accion es registrar un nuevo usuario
 		if ((userBean == null || !userBean.getLoggedIn())) 
 		{//comprobamos si quiere loguearse, recuperar contrase�a o registrarse
-			if(!nextPage.equals("/register")&&!nextPage.equals("/recover"))
+			if(!nextPage.equals("/register")&&!nextPage.equals("/recover")&&!nextPage.equals("/activate"))
 			{//login
 				if (userBean == null) 
 				{//creamos el bean
@@ -72,7 +72,8 @@ public class ServletController extends HttpServlet {
 				}
 
 				/*
-				 * EN EL DOLOGIN() SE HACE TODO!!
+				 * EN EL DOLOGIN() SE HACE TODO!! rellenar userbean en él con los atributos de la BBDD
+				 * sólo si es correcto el login
 				 */
 
 				//le pasamos los parametros de la request
@@ -81,7 +82,6 @@ public class ServletController extends HttpServlet {
 
 				if(!userBean.doLogin())//hacemos el login
 				{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
-					//session.invalidate();
 					nextPage = "/index.html";
 				}
 			}

@@ -4,7 +4,7 @@
     <session-timeout>30</session-timeout>
   </session-config>
   <error-page>
-  	<location>/errors/error.html</location>
+    <location>/errors/error.html</location>
   </error-page>
   <display-name>eprail</display-name>
   <welcome-file-list>
