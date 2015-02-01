@@ -40,6 +40,7 @@ public class ActivateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String nextPage = "/jsp/activate.jsp";
 
 		try {
 			Connection conexion = miDS.getConnection();
@@ -49,17 +50,26 @@ public class ActivateServlet extends HttpServlet {
 
 			ResultSet rs = myST.executeQuery("SELECT * FROM users WHERE UID = "+request.getParameter("op"));
 
-			while(rs.next())
+			rs.last();
+			if(rs.getRow()!=0)
 			{
-				if(!rs.getBoolean("IsValidate"))
-				{//la cuenta no está activa
-					Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-					mySTaux.executeUpdate("UPDATE users SET IsValidate = 1, DateRegistration = '"+currentTimestamp+"' WHERE UID = "+request.getParameter("op"));
-					request.setAttribute("active", true);
+				rs.beforeFirst();
+				while(rs.next())
+				{
+					if(!rs.getBoolean("IsValidate"))
+					{//la cuenta no está activa
+						Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+						mySTaux.executeUpdate("UPDATE users SET IsValidate = 1, DateRegistration = '"+currentTimestamp+"' WHERE UID = "+request.getParameter("op"));
+						request.setAttribute("active", true);
+					}
+					else{//la cuenta ya está activada
+						request.setAttribute("fecha", rs.getTimestamp("DateRegistration"));
+						request.setAttribute("active", false);
+					}
 				}
-				else{//la cuenta ya está activada
-					request.setAttribute("active", false);
-				}
+			}else
+			{//no se encuentra ningun usuario con esa UID
+				nextPage = "/index.html";
 			}
 
 			rs.close();
@@ -68,7 +78,7 @@ public class ActivateServlet extends HttpServlet {
 			conexion.close();
 
 			//redirigimos
-			request.getRequestDispatcher("/jsp/activate.jsp").forward(request, response);
+			request.getRequestDispatcher(nextPage).forward(request, response);
 
 		} catch (SQLWarning sqlWarning) {
 			while (sqlWarning != null) {
