@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javabeans.tfg.eprail.User;
 
-//import javax.annotation.sql.DataSourceDefinition;
+import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,16 +15,17 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ServletController
  */
-/*@DataSourceDefinition(
-		name = "java:app/jdbc/eprail",
+@DataSourceDefinition(
+		name = "java:comp/jdbc/eprail",
 		className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
+		url = "jdbc:mysql://localhost:3306/eprail",
 		portNumber = 3306,
 		serverName = "localhost",
 		databaseName = "eprail",
 		user = "root",
 		password = "Javi.93",
 		properties = {"pedantic=true"}
-		)*/
+		)
 @WebServlet(name="ServletController", urlPatterns={"/controller/*"})
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
