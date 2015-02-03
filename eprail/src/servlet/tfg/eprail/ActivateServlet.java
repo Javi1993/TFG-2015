@@ -24,9 +24,9 @@ import javax.sql.DataSource;
 public class ActivateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	@Resource(lookup = "java:app/jdbc/eprail")
-	private DataSource miDS;
-
+	@Resource(lookup="java:app/jdbc/eprail")
+    private DataSource myDS;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -43,7 +43,7 @@ public class ActivateServlet extends HttpServlet {
 		String nextPage = "/jsp/activate.jsp";
 
 		try {
-			Connection conexion = miDS.getConnection();
+			Connection conexion = myDS.getConnection();
 
 			Statement myST = conexion.createStatement();
 			Statement mySTaux = conexion.createStatement();

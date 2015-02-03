@@ -7,9 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-//import java.sql.Statement;
 import java.util.Properties;
-
 import javax.annotation.Resource;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -28,12 +26,10 @@ import com.mysql.jdbc.PreparedStatement;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	public static final String URL_PARAM = "jdbc:mysql://localhost:3306/eprail";
-	public static final String USER_PARAM = "root";
-	public static final String PASSWORD_PARAM = "Javi.93";
-
-	@Resource(lookup = "java:app/jdbc/eprail")
-	private DataSource miDS;
+	
+	@Resource(lookup="java:app/jdbc/eprail")
+    private DataSource myDS;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -56,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		try {
-			Connection conexion = miDS.getConnection();
+			Connection conexion = myDS.getConnection();
 
 			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO users (FirstName, FamilyName, email, password) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			myPS.setString(1, request.getParameter("nombre"));
@@ -174,5 +170,4 @@ public class RegisterServlet extends HttpServlet {
 			return null;
 		}
 	}
-
 }

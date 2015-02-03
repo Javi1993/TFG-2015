@@ -1,9 +1,17 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.Statement;
 
 import javabeans.tfg.eprail.User;
 
+import javax.annotation.Resource;
 import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 /**
  * Servlet implementation class ServletController
@@ -30,11 +39,8 @@ import javax.servlet.http.HttpSession;
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	//CAMBIAR
-	public static final String EMAIL_PARAM = "email";
-	public static final String PASSWORD_PARAM = "pass";
-	public static final String USERBEAN_ATTR = "userbean";
-	// public static final String CONTROLLER_PREFIX = "/controller";
+	@Resource(lookup="java:app/jdbc/eprail")
+	private DataSource myDS;
 
 	/**
 	 * Default constructor. 
@@ -49,45 +55,75 @@ public class ServletController extends HttpServlet {
 	 * @param response servlet response
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//nos protegemos ante caracteres especiales 
-		response.setContentType("text/html;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
 
-		// String que contiene la ruta de la pagina solicitada
-		String nextPage = request.getPathInfo();
+		try {
+			//nos protegemos ante caracteres especiales 
+			response.setContentType("text/html;charset=UTF-8");
+			request.setCharacterEncoding("UTF-8");
 
-		// Buscamos el userBean en la session
-		HttpSession session = request.getSession(true);
-		User userBean = (User) session.getAttribute(USERBEAN_ATTR);
-		System.out.println("--------------------- "+nextPage);
-		//Comprobamos si estaba en la session o la accion es registrar un nuevo usuario
-		if ((userBean == null || !userBean.getLoggedIn())) 
-		{//comprobamos si quiere loguearse, recuperar contrase�a o registrarse
-			if(!nextPage.equals("/register")&&!nextPage.equals("/recover")&&!nextPage.equals("/activate"))
-			{//login
-				if (userBean == null) 
-				{//creamos el bean
-					userBean = new User();
-					session.setAttribute(USERBEAN_ATTR, userBean);
-				}
+			// String que contiene la ruta de la pagina solicitada
+			String nextPage = request.getPathInfo();
 
-				/*
-				 * EN EL DOLOGIN() SE HACE TODO!! rellenar userbean en él con los atributos de la BBDD
-				 * sólo si es correcto el login
-				 */
+			// Buscamos el userBean en la session
+			HttpSession session = request.getSession(true);
+			User userBean = (User) session.getAttribute("userbean");
 
-				//le pasamos los parametros de la request
-				userBean.setEmail(request.getParameter(EMAIL_PARAM));
-				userBean.setPassword(request.getParameter(PASSWORD_PARAM));
+			System.out.println("--------------------- "+nextPage);
 
-				if(!userBean.doLogin())//hacemos el login
-				{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
-					nextPage = "/index.html";
+			//Comprobamos si estaba en la session
+			if ((userBean == null || !userBean.getLoggedIn())) 
+			{//comprobamos si quiere loguearse, recuperar contrase�a o registrarse
+				if(!nextPage.equals("/register")&&!nextPage.equals("/recover")&&!nextPage.equals("/activate"))
+				{//login
+					if (userBean == null) 
+					{//creamos el bean
+						userBean = new User();
+						session.setAttribute("userBean", userBean);
+					}
+
+					/*
+					 * EN EL DOLOGIN() SE HACE TODO!! rellenar userbean en él con los atributos de la BBDD
+					 * sólo si es correcto el login
+					 */
+
+					//le pasamos los parametros de la request
+					userBean.setEmail(request.getParameter("email"));
+					userBean.setPassword(request.getParameter("pass"));
+
+					Connection conexion = myDS.getConnection();
+
+					Statement st = conexion.createStatement();
+
+					ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+"' AND password ='"+cryptMD5(userBean.getPassword())+"' AND IsValidate = 1");
+					rs.last();
+
+					if(rs.getRow()==0 || !userBean.doLogin(rs))//hacemos el login (ver en esta funcion si esta activa la cuenta)
+					{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
+						nextPage = "/index.html";
+					}
+
+					rs.close();
+					st.close();
+					conexion.close();
 				}
 			}
+			//Redirigimos a la pagina que va a tramitar su peticion
+			request.getRequestDispatcher(nextPage).forward(request, response);
+		} catch (SQLWarning sqlWarning) {
+			while (sqlWarning != null) {
+				System.out.println("Error: " + sqlWarning.getErrorCode());
+				System.out.println("Descripción: " + sqlWarning.getMessage());
+				System.out.println("SQLstate: " + sqlWarning.getSQLState());
+				sqlWarning = sqlWarning.getNextWarning();
+			}
+		} catch (SQLException sqlException) {
+			while (sqlException != null) {
+				System.out.println("Error: " + sqlException.getErrorCode());
+				System.out.println("Descripción: " + sqlException.getMessage());
+				System.out.println("SQLstate: " + sqlException.getSQLState());
+				sqlException = sqlException.getNextException();
+			}
 		}
-		//Redirigimos a la pagina que va a tramitar su peticion
-		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    
 
 
@@ -105,6 +141,35 @@ public class ServletController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		processRequest(request, response);
+	}
+
+	/** 
+	 * Encripta un String con el algoritmo MD5. 
+	 * @return String - cadena a encriptar
+	 * @throws Exception 
+	 */ 
+	protected String cryptMD5(String textoPlano)
+	{
+		try
+		{
+			final char[] HEXADECIMALES = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
+
+			textoPlano = "0208"+textoPlano;//metemos unos nuemros antes de la contrase�a en claro
+
+			MessageDigest msgdgt = MessageDigest.getInstance("MD5");
+			byte[] bytes = msgdgt.digest(textoPlano.getBytes());
+			StringBuilder strCryptMD5 = new StringBuilder(2 * bytes.length);
+			for (int i = 0; i < bytes.length; i++)
+			{//ciframos
+				int low = (int)(bytes[i] & 0x0f);
+				int high = (int)((bytes[i] & 0xf0) >> 4);
+				strCryptMD5.append(HEXADECIMALES[high]);
+				strCryptMD5.append(HEXADECIMALES[low]);
+			}
+			return strCryptMD5.toString();
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
 	}
 
 }

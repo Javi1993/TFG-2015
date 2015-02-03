@@ -1,5 +1,7 @@
 package javabeans.tfg.eprail;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class User {
@@ -14,9 +16,9 @@ public class User {
 	private String password;
 
 	public User(){
-		
+
 	}
-	
+
 	public User(int uid, String firstName, String familyName, String email, byte isValidate, Timestamp dateRegistration, String password){
 
 		this.setUid(uid);
@@ -140,20 +142,36 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-    public boolean doLogin() {
-    	//MODIFICAR CON SONSULTA A LA BBDD DE USUARIOS COMPROBANDO Q LA PASS CIFRADA EN MD5 COINCIDE CON LA DEL EMAIL PASADO
-        if (password == null || password.length() < 6) {
-            setLoggedIn(false);
-        } else {
-            setLoggedIn(true);
-        }
-        
-        return getLoggedIn();
-    }
+	public boolean doLogin(ResultSet rs) {
 
+		try {
+			rs.beforeFirst();
+
+			while(rs.next())
+			{
+				uid = rs.getInt(1);
+				firstName = rs.getString(2);
+				familyName = rs.getString(3);
+				isValidate = rs.getByte(5);
+				dateRegistration = rs.getTimestamp(6);
+			}
+
+			setLoggedIn(true);
+		} catch (SQLException sqlException) {
+			while (sqlException != null) {
+				System.out.println("Error: " + sqlException.getErrorCode());
+				System.out.println("Descripción: " + sqlException.getMessage());
+				System.out.println("SQLstate: " + sqlException.getSQLState());
+				sqlException = sqlException.getNextException();
+			}
+			setLoggedIn(false);
+		}
+
+		return getLoggedIn();
+	}
 }
