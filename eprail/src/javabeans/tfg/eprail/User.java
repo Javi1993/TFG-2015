@@ -148,10 +148,8 @@ public class User {
 	 * @return
 	 */
 	public boolean doLogin(ResultSet rs) {
-
 		try {
 			rs.beforeFirst();
-
 			while(rs.next())
 			{
 				uid = rs.getInt(1);
@@ -171,7 +169,6 @@ public class User {
 			}
 			setLoggedIn(false);
 		}
-
 		return getLoggedIn();
 	}
 }

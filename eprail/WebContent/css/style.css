@@ -45,6 +45,42 @@ div.center{
 	margin-top:-130px; 
 	}
 
+div.center2{
+	position: absolute; 
+	/*situar centro pantalla*/ 
+	top:50%; 
+	left:50%; 
+	/*anchura de la caja*/ 
+	width:1000px; 
+	margin-left:-500px; 
+	border:2px solid #800000; 
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 20px;
+	box-shadow: 2px 2px 2px #888888;
+	padding:20px;
+}
+
+	div#proyectos {
+	/*altura de la caja*/ 
+	height:500px; 
+	margin-top:-250px; 
+	}
+
+div#top{
+	text-align:right;
+	position:fixed;
+	right:0px;
+	top:0px;
+	width:400px;
+	height:50px;
+	z-index:3;
+}
+
+.top{
+	margin-right: 25px;
+}
+
 fieldset{
 	border:none;
 	margin-top:5px;
@@ -60,9 +96,32 @@ fieldset{
 	font-size: 14px;
 }
 
+#title2{
+	top:-21px; 
+	left:14%; 
+	position: absolute; 
+	color: #FFF;
+	padding:5px;
+	font-size: 14px;
+}
+
+#title3{
+	top:-21px; 
+	left:45%; 
+	position: absolute; 
+	color: #FFF;
+	padding:5px;
+	font-size: 14px;
+}
+
 fieldset input[type="email"], fieldset input[type="password"],
 fieldset input[type="text"]{
 	width:200px;
+}
+
+#edit{
+	float:right;
+	margin-right:10px;
 }
 
 a#remem{

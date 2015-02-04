@@ -8,9 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-
 import javabeans.tfg.eprail.User;
-
 import javax.annotation.Resource;
 import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
@@ -18,7 +16,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -65,10 +62,7 @@ public class ServletController extends HttpServlet {
 			String nextPage = request.getPathInfo();
 
 			// Buscamos el userBean en la session
-			HttpSession session = request.getSession(true);
-			User userBean = (User) session.getAttribute("userbean");
-
-			System.out.println("--------------------- "+nextPage);
+			User userBean = (User) request.getSession(true).getAttribute("userBean");
 
 			//Comprobamos si estaba en la session
 			if ((userBean == null || !userBean.getLoggedIn())) 
@@ -78,13 +72,8 @@ public class ServletController extends HttpServlet {
 					if (userBean == null) 
 					{//creamos el bean
 						userBean = new User();
-						session.setAttribute("userBean", userBean);
+						request.getSession(true).setAttribute("userBean", userBean);
 					}
-
-					/*
-					 * EN EL DOLOGIN() SE HACE TODO!! rellenar userbean en él con los atributos de la BBDD
-					 * sólo si es correcto el login
-					 */
 
 					//le pasamos los parametros de la request
 					userBean.setEmail(request.getParameter("email"));
@@ -94,7 +83,8 @@ public class ServletController extends HttpServlet {
 
 					Statement st = conexion.createStatement();
 
-					ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+"' AND password ='"+cryptMD5(userBean.getPassword())+"' AND IsValidate = 1");
+					ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+
+							"' AND password ='"+cryptMD5(userBean.getPassword())+"' AND IsValidate = 1");
 					rs.last();
 
 					if(rs.getRow()==0 || !userBean.doLogin(rs))//hacemos el login (ver en esta funcion si esta activa la cuenta)
@@ -107,6 +97,7 @@ public class ServletController extends HttpServlet {
 					conexion.close();
 				}
 			}
+
 			//Redirigimos a la pagina que va a tramitar su peticion
 			request.getRequestDispatcher(nextPage).forward(request, response);
 		} catch (SQLWarning sqlWarning) {

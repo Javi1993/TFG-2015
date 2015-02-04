@@ -1,0 +1,54 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<%-- Cogemos el JavaBean del usuario de la session --%>
+	<jsp:useBean id="userBean" class="javabeans.tfg.eprail.User"
+		scope="session" />
+	<div id="top">
+		<img class="top" src="/eprail/img/off.png" alt="off" width="20"
+			height="20" /><span class="top"><jsp:getProperty
+				name="userBean" property="firstName" /></span><span class="top"><jsp:getProperty
+				name="userBean" property="familyName" /></span> <span class="top"><a
+			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
+			href="/eprail/jsp/account.jsp">Cuenta</a></span>
+	</div>
+	<div class="center" id="reg">
+		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a href="/eprail/jsp/inicio.jsp" alt="volver"><img
+			id="title3" src="/eprail/img/back.png" alt="back" width="30"
+			height="30"></a>
+		<form action="/eprail/controller/account" method="post" name="edit">
+			<fieldset>
+				<span class="campo"> <label class="log-i">E&#45;mail</label><input
+					type="email" name="email"
+					value="<jsp:getProperty
+				name="userBean" property="email" />"
+					disabled="disabled" />
+				</span> <br> <span class="campo"> <label class="log-i">Nombre</label><input
+					type="text" name="name"
+					value="<jsp:getProperty
+				name="userBean" property="firstName" />"
+					required />
+				</span> <br> <span class="campo"> <label class="log-i">Apellidos</label><input
+					type="text" name="apellidos"
+					value="<jsp:getProperty
+				name="userBean" property="familyName" />"
+					required />
+				</span> <br> <span class="campo"> <label class="log-i">Contrase&ntilde;a</label><input
+					type="password" name="name"
+					value="<jsp:getProperty
+				name="userBean" property="password" />"
+					required />
+				</span> <br> <span class="campo"><input id="edit" type="submit"
+					value="Guardar" /></span>
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>
