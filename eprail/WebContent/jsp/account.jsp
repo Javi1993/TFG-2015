@@ -1,10 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/eprail/script/form.js"></script>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -19,11 +21,11 @@
 			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
 			href="/eprail/jsp/account.jsp">Cuenta</a></span>
 	</div>
-	<div class="center" id="reg">
+	<div class="center" id="edit">
 		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a href="/eprail/jsp/inicio.jsp" alt="volver"><img
 			id="title3" src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
-		<form action="/eprail/controller/account" method="post" name="edit">
+		<form action="/eprail/controller/account" method="post" name="edit" id="edit-f">
 			<fieldset>
 				<span class="campo"> <label class="log-i">E&#45;mail</label><input
 					type="email" name="email"
@@ -41,12 +43,15 @@
 				name="userBean" property="familyName" />"
 					required />
 				</span> <br> <span class="campo"> <label class="log-i">Contrase&ntilde;a</label><input
-					type="password" name="name"
-					value="<jsp:getProperty
-				name="userBean" property="password" />"
-					required />
-				</span> <br> <span class="campo"><input id="edit" type="submit"
+					id="pass" type="password" name="pass"/>
+				</span> 
+				<br><span id="confirm" class="campo" style="display:none;"><label class="log-i">Repetir contrase&ntilde;a</label><input
+					 id="newpass" class="reg-i" name="newpass" type="password"/>
+				<br>
+				</span> 
+				<br> <span class="campo"><input id="edit-s" type="submit"
 					value="Guardar" /></span>
+					PONER TOPE A LOS INPUT (longitud, pattern etc)
 			</fieldset>
 		</form>
 	</div>

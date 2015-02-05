@@ -4,17 +4,18 @@
 <meta charset="utf-8">
 <title>Registro</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/eprail/script/form.js"></script>
 </head>
-
 <body>
     <div class="center"  id="reg">
     <div class="title">Formulario de registro</div>
         <form action="/eprail/controller/register" method="post" name="recuperar">
         	<fieldset>
-            <span class="campo"><label class="log-i">E-mail</label><input type="email" name="email" required/></span><br>
-            <span class="campo"><label class="log-i">Nombre</label><input type="text" name="nombre" required/></span><br>
-            <span class="campo"><label class="log-i">Apellidos</label><input type="text" name="apellidos" required/></span><br>
-            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input type="password" name="pass" required/></span><br>
+            <span class="campo"><label class="log-i">E-mail</label><input class="reg-i" type="email" name="email" required/></span><br>
+            <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" required/></span><br>
+            <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" required/></span><br>
+            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" required/></span><br>
             <span class="campo"><a class="but" id="but" href="/eprail/">Volver</a><input type="submit" value="Registrar" /></span>
             </fieldset>
         </form>

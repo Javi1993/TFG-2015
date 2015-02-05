@@ -8,7 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
+
 import javabeans.tfg.eprail.User;
+
 import javax.annotation.Resource;
 import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -60,9 +63,12 @@ public class ServletController extends HttpServlet {
 
 			// String que contiene la ruta de la pagina solicitada
 			String nextPage = request.getPathInfo();
-
+			
+			System.out.println("------------------- "+nextPage);//debug
+			
 			// Buscamos el userBean en la session
-			User userBean = (User) request.getSession(true).getAttribute("userBean");
+			HttpSession session = request.getSession(true);
+			User userBean = (User) session.getAttribute("userBean");
 
 			//Comprobamos si estaba en la session
 			if ((userBean == null || !userBean.getLoggedIn())) 
@@ -72,7 +78,7 @@ public class ServletController extends HttpServlet {
 					if (userBean == null) 
 					{//creamos el bean
 						userBean = new User();
-						request.getSession(true).setAttribute("userBean", userBean);
+						session.setAttribute("userBean", userBean);
 					}
 
 					//le pasamos los parametros de la request

@@ -27,6 +27,12 @@ div.center{
 		margin-top:-160px; 
 	}
 	
+	div#edit {
+		/*altura de la caja*/ 
+		height:230px; 
+		margin-top:-175px; 
+	}
+	
 	div#recup {
 		/*altura de la caja*/ 
 		height:155px; 
