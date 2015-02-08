@@ -1,16 +1,11 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.util.Properties;
 import javax.annotation.Resource;
-import javax.mail.*;
-import javax.mail.internet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,16 +15,18 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import funciones.tfg.eprail.Funciones;
+
 /**
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Resource(lookup="java:app/jdbc/eprail")
-    private DataSource myDS;
-	
+	private DataSource myDS;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -50,15 +47,18 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
 		try {
+			//nos protegemos ante caracteres especiales 
+			response.setContentType("text/html;charset=UTF-8");
+			request.setCharacterEncoding("UTF-8");
+
 			Connection conexion = myDS.getConnection();
 
 			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO users (FirstName, FamilyName, email, password) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			myPS.setString(1, request.getParameter("nombre"));
 			myPS.setString(2, request.getParameter("apellidos"));
 			myPS.setString(3, request.getParameter("email"));
-			myPS.setString(4, cryptMD5(request.getParameter("pass")));
+			myPS.setString(4, Funciones.cryptMD5("0351"+request.getParameter("pass")));
 			myPS.executeUpdate();
 
 			ResultSet rs = myPS.getGeneratedKeys();
@@ -72,7 +72,12 @@ public class RegisterServlet extends HttpServlet {
 			conexion.close();
 
 			//mandamos el email de activacion
-			sendEmail(request, response);
+			Funciones.sendEmail("Eprail: Confirmación de registro","<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+					+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "
+					+request.getParameter("nombre")+"</h2><br>"
+					+ "<p>Gracias por registrarte en nuestra aplicación de simulaciones. Para activar tú cuenta visita el siguiente enlace: </p><br>"
+					+ "<a href='http://localhost:8080/eprail/activate?op="+request.getAttribute("uid")+"' target='_blank'>Activar mi cuenta</a>"+
+					"<br><br><p>Un saludo</p></div></body></html>",request.getParameter("email"));
 
 			//redirigimos
 			request.getRequestDispatcher("/jsp/registro.jsp").forward(request, response);
@@ -92,82 +97,5 @@ public class RegisterServlet extends HttpServlet {
 				sqlException = sqlException.getNextException();
 			}
 		} 
-	}
-
-	/**
-	 * Envia el email post-registro con las intrucciones de activación de la cuenta
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	protected void sendEmail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		final String username = "100290698@alumnos.uc3m.es";
-		final String password = "Javi.93";
-
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
-
-		try {
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("100290698@alumnos.uc3m.es"));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(request.getParameter("email")));
-			message.setSubject("Eprail: Confirmación de registro");
-			message.setContent("<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
-					+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "
-					+request.getParameter("nombre")+"</h2><br>"
-					+ "<p>Gracias por registrarte en nuestra aplicación de simulaciones. Para activar tú cuenta visita el siguiente enlace: </p><br>"
-					+ "<a href='http://localhost:8080/eprail/controller/activate?op="+request.getAttribute("uid")+"' target='_blank'>Activar mi cuenta</a>"+
-					"<br><br><p>Un saludo</p></div></body></html>","text/html");
-
-			Transport.send(message);
-
-			//System.out.println("Sent message successfully....");
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/** 
-	 * Encripta un String con el algoritmo MD5. 
-	 * @return String - cadena a encriptar
-	 * @throws Exception 
-	 */ 
-	protected String cryptMD5(String textoPlano)
-	{
-		try
-		{
-			final char[] HEXADECIMALES = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
-
-			textoPlano = "0208"+textoPlano;//metemos unos nuemros antes de la contrase�a en claro
-
-			MessageDigest msgdgt = MessageDigest.getInstance("MD5");
-			byte[] bytes = msgdgt.digest(textoPlano.getBytes());
-			StringBuilder strCryptMD5 = new StringBuilder(2 * bytes.length);
-			for (int i = 0; i < bytes.length; i++)
-			{//ciframos
-				int low = (int)(bytes[i] & 0x0f);
-				int high = (int)((bytes[i] & 0xf0) >> 4);
-				strCryptMD5.append(HEXADECIMALES[high]);
-				strCryptMD5.append(HEXADECIMALES[low]);
-			}
-			return strCryptMD5.toString();
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		}
 	}
 }

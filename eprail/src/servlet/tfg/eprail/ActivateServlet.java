@@ -69,7 +69,7 @@ public class ActivateServlet extends HttpServlet {
 				}
 			}else
 			{//no se encuentra ningun usuario con esa UID
-				nextPage = "/index.html";
+				nextPage = "/errors/404.html";
 			}
 
 			rs.close();

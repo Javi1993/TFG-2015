@@ -8,23 +8,21 @@
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div class="center" id="activ">
+	<div class="center" id="recup">
+	<div class="title">Recuperaci&oacute;n de contrase&ntilde;a</div>
 		<%
-			if ((Boolean) request.getAttribute("active")) {
+			if ((Boolean) request.getAttribute("user")) {
 		%>
-		<div class="title">Cuenta activada</div>
-		<p>Tu cuenta ha sido activa con &eacute;xito.</p>
-		<p>Dir&iacute;gete a incio para loguearte y empezar a usar la
-			aplicaci&oacute;n.</p>
+		
+		<p>Se ha enviado un correo a <%=request.getParameter("email")%>.</p>
+		<p>Sigue las intruncciones indicadas en él para restablecer tu contrase&ntilde;a.</p>
 		<%
 			} else {
 		%>
-		<div class="title">Cuenta ya activada</div>
 		<p>
-			Esta cuenta ya fue activada en
-			<%=request.getAttribute("fecha")%>.
+			El email <%=request.getParameter("email")%> no se encuentra en nuestra base de datos.
 		</p>
-		<p>Dir&iacute;gete a incio para loguearte.</p>
+		<p>Comprueba que los datos introducidos son correctos.</p>
 		<%
 			}
 		%>

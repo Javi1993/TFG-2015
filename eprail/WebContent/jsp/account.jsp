@@ -27,31 +27,28 @@
 			height="30"></a>
 		<form action="/eprail/controller/account" method="post" name="edit" id="edit-f">
 			<fieldset>
-				<span class="campo"> <label class="log-i">E&#45;mail</label><input
-					type="email" name="email"
-					value="<jsp:getProperty
-				name="userBean" property="email" />"
-					disabled="disabled" />
-				</span> <br> <span class="campo"> <label class="log-i">Nombre</label><input
-					type="text" name="name"
-					value="<jsp:getProperty
-				name="userBean" property="firstName" />"
-					required />
-				</span> <br> <span class="campo"> <label class="log-i">Apellidos</label><input
-					type="text" name="apellidos"
-					value="<jsp:getProperty
-				name="userBean" property="familyName" />"
-					required />
-				</span> <br> <span class="campo"> <label class="log-i">Contrase&ntilde;a</label><input
-					id="pass" type="password" name="pass"/>
-				</span> 
-				<br><span id="confirm" class="campo" style="display:none;"><label class="log-i">Repetir contrase&ntilde;a</label><input
-					 id="newpass" class="reg-i" name="newpass" type="password"/>
-				<br>
-				</span> 
+				<span class="campo"> 
+					<label class="log-i">E&#45;mail</label>
+						<input type="email" name="email" maxlength="60" value="<jsp:getProperty name="userBean" property="email" />" disabled="disabled" />
+				</span><br>
+				<span class="campo">
+					<label class="log-i">Nombre</label>
+						<input type="text" name="name" maxlength="60" value="<jsp:getProperty name="userBean" property="firstName" />" required="required" />
+				</span><br>
+				<span class="campo">
+					<label class="log-i">Apellidos</label>
+						<input type="text" name="apellidos" maxlength="80" value="<jsp:getProperty name="userBean" property="familyName" />" required="required" />
+				</span><br>
+				<span class="campo">
+					<label class="log-i">Contrase&ntilde;a</label>
+						<input id="pass" type="password" name="pass"/>
+				</span> <br>
+				<span id="confirm" class="campo" style="display:none;">
+					<label class="log-i">Repetir contrase&ntilde;a</label>
+					<input id="newpass" class="reg-i" name="newpass" type="password"/>
+				<br></span> 
 				<br> <span class="campo"><input id="edit-s" type="submit"
 					value="Guardar" /></span>
-					PONER TOPE A LOS INPUT (longitud, pattern etc)
 			</fieldset>
 		</form>
 	</div>

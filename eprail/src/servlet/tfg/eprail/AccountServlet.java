@@ -1,8 +1,6 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
@@ -14,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-
 import com.mysql.jdbc.PreparedStatement;
+import funciones.tfg.eprail.Funciones;
 
 /**
  * Servlet implementation class AccountServlet
@@ -60,11 +58,11 @@ public class AccountServlet extends HttpServlet {
 			}
 
 			Connection conexion = myDS.getConnection();
-			
+
 			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("UPDATE users SET FirstName = ?, FamilyName = ?, password = ? WHERE email = ?");
 			myPS.setString(1, userBean.getFirstName());
 			myPS.setString(2, userBean.getFamilyName());
-			myPS.setString(3, cryptMD5(userBean.getPassword()));
+			myPS.setString(3, Funciones.cryptMD5("0351"+userBean.getPassword()));
 			myPS.setString(4, userBean.getEmail());
 			myPS.executeUpdate();
 
@@ -90,34 +88,4 @@ public class AccountServlet extends HttpServlet {
 			}
 		} 
 	}
-
-	/** 
-	 * Encripta un String con el algoritmo MD5. 
-	 * @return String - cadena a encriptar
-	 * @throws Exception 
-	 */ 
-	protected String cryptMD5(String textoPlano)
-	{
-		try
-		{
-			final char[] HEXADECIMALES = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
-
-			textoPlano = "0208"+textoPlano;//metemos unos nuemros antes de la contrase�a en claro
-
-			MessageDigest msgdgt = MessageDigest.getInstance("MD5");
-			byte[] bytes = msgdgt.digest(textoPlano.getBytes());
-			StringBuilder strCryptMD5 = new StringBuilder(2 * bytes.length);
-			for (int i = 0; i < bytes.length; i++)
-			{//ciframos
-				int low = (int)(bytes[i] & 0x0f);
-				int high = (int)((bytes[i] & 0xf0) >> 4);
-				strCryptMD5.append(HEXADECIMALES[high]);
-				strCryptMD5.append(HEXADECIMALES[low]);
-			}
-			return strCryptMD5.toString();
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		}
-	}
-
 }

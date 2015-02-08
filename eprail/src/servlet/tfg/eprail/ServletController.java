@@ -1,16 +1,12 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
-
 import javabeans.tfg.eprail.User;
-
 import javax.annotation.Resource;
 import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
@@ -20,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import funciones.tfg.eprail.Funciones;
 
 /**
  * Servlet implementation class ServletController
@@ -63,9 +60,9 @@ public class ServletController extends HttpServlet {
 
 			// String que contiene la ruta de la pagina solicitada
 			String nextPage = request.getPathInfo();
-			
+
 			System.out.println("------------------- "+nextPage);//debug
-			
+
 			// Buscamos el userBean en la session
 			HttpSession session = request.getSession(true);
 			User userBean = (User) session.getAttribute("userBean");
@@ -73,35 +70,32 @@ public class ServletController extends HttpServlet {
 			//Comprobamos si estaba en la session
 			if ((userBean == null || !userBean.getLoggedIn())) 
 			{//comprobamos si quiere loguearse, recuperar contrase�a o registrarse
-				if(!nextPage.equals("/register")&&!nextPage.equals("/recover")&&!nextPage.equals("/activate"))
-				{//login
-					if (userBean == null) 
-					{//creamos el bean
-						userBean = new User();
-						session.setAttribute("userBean", userBean);
-					}
-
-					//le pasamos los parametros de la request
-					userBean.setEmail(request.getParameter("email"));
-					userBean.setPassword(request.getParameter("pass"));
-
-					Connection conexion = myDS.getConnection();
-
-					Statement st = conexion.createStatement();
-
-					ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+
-							"' AND password ='"+cryptMD5(userBean.getPassword())+"' AND IsValidate = 1");
-					rs.last();
-
-					if(rs.getRow()==0 || !userBean.doLogin(rs))//hacemos el login (ver en esta funcion si esta activa la cuenta)
-					{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
-						nextPage = "/index.html";
-					}
-
-					rs.close();
-					st.close();
-					conexion.close();
+				if (userBean == null) 
+				{//creamos el bean
+					userBean = new User();
+					session.setAttribute("userBean", userBean);
 				}
+
+				//le pasamos los parametros de la request
+				userBean.setEmail(request.getParameter("email"));
+				userBean.setPassword(request.getParameter("pass"));
+
+				Connection conexion = myDS.getConnection();
+
+				Statement st = conexion.createStatement();
+
+				ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+
+						"' AND password ='"+Funciones.cryptMD5("0351"+userBean.getPassword())+"' AND IsValidate = 1");
+				rs.last();
+
+				if(rs.getRow()==0 || !userBean.doLogin(rs))//hacemos el login (ver en esta funcion si esta activa la cuenta)
+				{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
+					nextPage = "/index.html";
+				}
+
+				rs.close();
+				st.close();
+				conexion.close();
 			}
 
 			//Redirigimos a la pagina que va a tramitar su peticion
@@ -139,34 +133,4 @@ public class ServletController extends HttpServlet {
 		// TODO Auto-generated method stub
 		processRequest(request, response);
 	}
-
-	/** 
-	 * Encripta un String con el algoritmo MD5. 
-	 * @return String - cadena a encriptar
-	 * @throws Exception 
-	 */ 
-	protected String cryptMD5(String textoPlano)
-	{
-		try
-		{
-			final char[] HEXADECIMALES = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
-
-			textoPlano = "0208"+textoPlano;//metemos unos nuemros antes de la contrase�a en claro
-
-			MessageDigest msgdgt = MessageDigest.getInstance("MD5");
-			byte[] bytes = msgdgt.digest(textoPlano.getBytes());
-			StringBuilder strCryptMD5 = new StringBuilder(2 * bytes.length);
-			for (int i = 0; i < bytes.length; i++)
-			{//ciframos
-				int low = (int)(bytes[i] & 0x0f);
-				int high = (int)((bytes[i] & 0xf0) >> 4);
-				strCryptMD5.append(HEXADECIMALES[high]);
-				strCryptMD5.append(HEXADECIMALES[low]);
-			}
-			return strCryptMD5.toString();
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		}
-	}
-
 }

@@ -12,6 +12,10 @@
     <session-timeout>30</session-timeout>
   </session-config>
   <error-page>
+  	<error-code>404</error-code>
+  	<location>/errors/404.html</location>
+  </error-page>
+  <error-page>
     <location>/errors/error.html</location>
   </error-page>
   <display-name>eprail</display-name>

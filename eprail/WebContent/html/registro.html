@@ -10,12 +10,12 @@
 <body>
     <div class="center"  id="reg">
     <div class="title">Formulario de registro</div>
-        <form action="/eprail/controller/register" method="post" name="recuperar">
+        <form action="/eprail/register" method="post" name="recuperar">
         	<fieldset>
-            <span class="campo"><label class="log-i">E-mail</label><input class="reg-i" type="email" name="email" required/></span><br>
-            <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" required/></span><br>
-            <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" required/></span><br>
-            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" required/></span><br>
+            <span class="campo"><label class="log-i">E-mail</label><input class="reg-i" type="email" name="email" maxlength="60" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" maxlength="60" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" maxlength="80" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" required="required" /></span><br>
             <span class="campo"><a class="but" id="but" href="/eprail/">Volver</a><input type="submit" value="Registrar" /></span>
             </fieldset>
         </form>

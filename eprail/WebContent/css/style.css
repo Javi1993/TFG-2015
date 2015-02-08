@@ -51,6 +51,10 @@ div.center{
 	margin-top:-130px; 
 	}
 
+a{
+	outline: 0;
+}
+
 div.center2{
 	position: absolute; 
 	/*situar centro pantalla*/ 
@@ -125,7 +129,7 @@ fieldset input[type="text"]{
 	width:200px;
 }
 
-#edit{
+#edit-s{
 	float:right;
 	margin-right:10px;
 }
