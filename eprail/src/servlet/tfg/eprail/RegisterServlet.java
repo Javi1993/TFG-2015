@@ -76,7 +76,7 @@ public class RegisterServlet extends HttpServlet {
 					+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "
 					+request.getParameter("nombre")+"</h2><br>"
 					+ "<p>Gracias por registrarte en nuestra aplicación de simulaciones. Para activar tú cuenta visita el siguiente enlace: </p><br>"
-					+ "<a href='http://localhost:8080/eprail/activate?op="+request.getAttribute("uid")+"' target='_blank'>Activar mi cuenta</a>"+
+					+ "http://localhost:8080/eprail/activate?op="+request.getAttribute("uid")+
 					"<br><br><p>Un saludo</p></div></body></html>",request.getParameter("email"));
 
 			//redirigimos

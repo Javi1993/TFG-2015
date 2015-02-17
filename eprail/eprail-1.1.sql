@@ -18,6 +18,37 @@ USE `eprail`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `projects`
+--
+
+DROP TABLE IF EXISTS `projects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projects` (
+  `IdProject` int(11) NOT NULL COMMENT 'ID of the project',
+  `ProjectName` varchar(60) NOT NULL COMMENT 'Name of the project',
+  `ProjectDescription` varchar(150) DEFAULT NULL COMMENT 'Description of the project',
+  `ONGFile` blob NOT NULL COMMENT 'Binary file containing the project',
+  `UID` int(11) NOT NULL COMMENT 'UID of the user that created the project',
+  `IdProjectStatus` tinyint(4) NOT NULL COMMENT 'Status of the project: 0 - pending, 1- calculated, 2- simulated, 3- errors.',
+  `DateCreation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date at which the project was created',
+  `DateModified` timestamp NULL DEFAULT NULL COMMENT 'Date at which the project was modified',
+  PRIMARY KEY (`IdProject`),
+  KEY `FK_USER_idx` (`UID`),
+  CONSTRAINT `FK_USER` FOREIGN KEY (`UID`) REFERENCES `users` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla con la información de los poryectos';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projects`
+--
+
+LOCK TABLES `projects` WRITE;
+/*!40000 ALTER TABLE `projects` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projects` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -34,7 +65,7 @@ CREATE TABLE `users` (
   `password` varchar(32) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +74,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (9,'Javier','García Pérez','javierdavid93@gmail.com',1,'2015-02-01 18:33:07','844528afc53d8697adf7ca02805fa2b5');
+INSERT INTO `users` VALUES (18,'Javier','García Pérez','javierdavid93@gmail.com',1,'2015-02-17 10:10:57','7eaebeeccb821546a4a82efb14c7d896');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +87,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-02-01 19:35:10
+-- Dump completed on 2015-02-17 14:32:24

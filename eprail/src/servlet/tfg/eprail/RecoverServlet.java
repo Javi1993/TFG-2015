@@ -120,7 +120,7 @@ public class RecoverServlet extends HttpServlet {
 								+rs.getString("firstName")+"</h2><br>"
 								+ "<p>Hemos recibido una solicitud para restablecer tu contrase&ntilde;a. Si no has solicitado esta servicio ignora el mensaje por favor.<br>"
 								+ "Para restablecer tu contrase&ntilde;a visita el siguiente link: </p><br>"
-								+ "<a href='http://localhost:8080/eprail/recover?op="+rs.getInt("UID")+"&em="+Funciones.cryptMD5("0021"+rs.getString("email"))+"' target='_blank'>Restablecer contrase&ntilde;a</a> MANDAR A FORMULARIO DONDE PiDA LA NEUVA PASS"+
+								+ "http://localhost:8080/eprail/recover?op="+rs.getInt("UID")+"&em="+Funciones.cryptMD5("0021"+rs.getString("email"))+
 								"<br><br><p>Un saludo</p></div></body></html>",request.getParameter("email"));
 					}
 					request.setAttribute("user", true);	

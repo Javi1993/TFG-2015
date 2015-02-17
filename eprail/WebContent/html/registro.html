@@ -6,9 +6,10 @@
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/form.js"></script>
+<script type="text/javascript" src="/eprail/script/center.js"></script>
 </head>
 <body>
-    <div class="center"  id="reg">
+    <div class="center" style="height:200px; width:400px;">
     <div class="title">Formulario de registro</div>
         <form action="/eprail/register" method="post" name="recuperar">
         	<fieldset>
@@ -16,7 +17,7 @@
             <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" maxlength="60" required="required" /></span><br>
             <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" maxlength="80" required="required" /></span><br>
             <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" required="required" /></span><br>
-            <span class="campo"><a class="but" id="but" href="/eprail/">Volver</a><input type="submit" value="Registrar" /></span>
+            <span class="campo"><a class="but" href="/eprail/" style="width:70%;">Volver</a><input type="submit" value="Registrar" /></span>
             </fieldset>
         </form>
     </div>

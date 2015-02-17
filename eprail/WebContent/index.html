@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <title>Pagina de inicio</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/eprail/script/center.js"></script>
 </head>
 <body>
-<div class="center" id="login">
+<div class="center" style="height:130px; width:400px;">
 	<form method="post" action="/eprail/controller/login" name="login">
     <fieldset>
     	<span class="campo">
@@ -18,7 +20,7 @@
         	<br><a id="remem" href="/eprail/html/recuperar.html">&iquest;No recuerdas t&uacute; contrase&ntilde;a?</a>
         </span>
 		<br><br>
-        <span class="campo"><a class="but" id="but" href="/eprail/html/registro.html">Registrarse</a><input type="submit" value="Login" /></span>
+        <span class="campo"><a class="but" href="/eprail/html/registro.html" style="width:70%;">Registrarse</a><input type="submit" value="Login" /></span>
     </fieldset>
     </form>
 </div>

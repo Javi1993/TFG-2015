@@ -3,27 +3,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/form.js"></script>
+<script type="text/javascript" src="/eprail/script/center.js"></script>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="javabeans.tfg.eprail.User"
 		scope="session" />
-	<div id="top">
-		<img class="top" src="/eprail/img/off.png" alt="off" width="20"
-			height="20" /><span class="top"><jsp:getProperty
-				name="userBean" property="firstName" /></span><span class="top"><jsp:getProperty
-				name="userBean" property="familyName" /></span> <span class="top"><a
-			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
-			href="/eprail/jsp/account.jsp">Cuenta</a></span>
-	</div>
-	<div class="center" id="edit">
-		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a href="/eprail/jsp/inicio.jsp" alt="volver"><img
-			id="title3" src="/eprail/img/back.png" alt="back" width="30"
+	<jsp:include page="./top.jsp" flush="true" />
+	<div class="center" style="height:230px; width:400px;">
+		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a class="subtitle" style="left:45%;" href="/eprail/jsp/inicio.jsp" alt="volver"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<form action="/eprail/controller/account" method="post" name="edit" id="edit-f">
 			<fieldset>
