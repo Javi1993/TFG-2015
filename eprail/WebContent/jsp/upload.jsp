@@ -15,7 +15,7 @@
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height: 500px; width: 1000px;">
 		<span class="title">A&ntilde;adir proyectos</span>&nbsp;&nbsp;&nbsp;&nbsp;<a
-			class="subtitle" style="left:16%;" href="/eprail/jsp/inicio.jsp"><img src="/eprail/img/back.png" alt="back" width="30" height="30"></a>
+			class="subtitle" style="left:16%;" href="/eprail/controller/login"><img src="/eprail/img/back.png" alt="back" width="30" height="30"></a>
 		<form action="/eprail/upload" class="dropzone">
 			<div class="fallback">
 				<input name="file" type="file" multiple />

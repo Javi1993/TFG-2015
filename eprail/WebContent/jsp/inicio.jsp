@@ -1,5 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.*,javabeans.tfg.eprail.Project"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -16,10 +18,54 @@
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
 		<span class="title">Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp"><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
-		<p>	Aqu&iacute; ir&iacute;an los proyectos. Imprimir lista de
-			proyectos, primero la de lso propios y luego los que te han
-			compartido (ver si usar overflow o p&aacute;ginas para cuando no de
-			m&aacute;s de s&iacute; la caja)</p>
+					<table class="project" style="width: 100%">
+					<%
+						List<Project> list = (List<Project>) request.getAttribute("projectList");
+						if (list != null) {
+							for (Project project : list) {
+								//TABLA CON DOCIMENTOS
+					%>
+					<tr class="row">
+						<td><img src="/eprail/img/thunder.png" alt="icon" width="30" height="30"></td>
+						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
+						<td><span style="border:2px solid #800000; padding: 10px;">
+						<%
+						String mensaje;
+						switch(project.getIdProjectStatus()){
+							case 0:
+								mensaje="Pendiente";
+								break;
+							case 1:
+								mensaje="Calculando...";
+								break;
+							case 2:
+								mensaje="Simulado";
+								break;
+							default:
+								mensaje="Errores";
+								break;
+						}
+						%>
+						<%=mensaje%>
+						</span></td>
+						<td>
+						<%
+						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
+						<%=sdf.format(project.getDateModifed()) %>
+						</td>
+						<td><img src="/eprail/img/eye.png" alt="see"></td>
+						<td><img src="/eprail/img/gear.png" alt="run"></td>
+						<td><img src="/eprail/img/download.png" alt="download"></td>
+						<td><img src="/eprail/img/share.png" alt="share"></td>
+						<td><img src="/eprail/img/delete.png" alt="delete"></td>
+					</tr>
+					<%
+							}
+						}else{
+					%>
+					<p>No hay ning&uacute;n proyecto.</p>
+					<%} %>
+					</table>
 	</div>
 </body>
 </html>
