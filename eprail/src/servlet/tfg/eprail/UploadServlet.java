@@ -2,14 +2,25 @@ package servlet.tfg.eprail;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import javabeans.tfg.eprail.User;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.sql.DataSource;
+
+import com.mysql.jdbc.PreparedStatement;
+
+import funciones.tfg.eprail.Funciones;
 
 /**
  * Servlet implementation class UploadServlet
@@ -21,6 +32,9 @@ import javax.servlet.http.Part;
 		maxRequestSize=1024*1024*50)   // 50MB
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	@Resource(lookup="java:app/jdbc/eprail")
+	private DataSource myDS;
 
 	/**
 	 * Name of the directory where uploaded files will be saved,
@@ -49,15 +63,19 @@ public class UploadServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		//nos protegemos ante caracteres especiales 
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		
+
+		// Buscamos el userBean en la session
+		HttpSession session = request.getSession(true);
+		User userBean = (User) session.getAttribute("userBean");
+
 		// gets absolute path of the web application
 		String applicationPath = request.getServletContext().getRealPath("");
 		// constructs path of the directory to save uploaded file
-		String uploadFilePath = applicationPath + File.separator + SAVE_DIR;
+		String uploadFilePath = applicationPath + File.separator + SAVE_DIR + File.separator + userBean.getUid();
 
 		// creates the save directory if it does not exists
 		File fileSaveDir = new File(uploadFilePath);
@@ -69,23 +87,49 @@ public class UploadServlet extends HttpServlet {
 		String fileName = null;
 		//Get all the parts from request and write it to the file on server
 		for (Part part : request.getParts()) {
-			fileName = getFileName(part);
+			fileName = Funciones.getFileName(part);
 			part.write(uploadFilePath + File.separator + fileName);
+			insertFile(fileName, userBean.getUid(), uploadFilePath);
 		}
 	}
-
+	
 	/**
-	 * Utility method to get file name from HTTP header content-disposition
+	 * Inserta los metadatos de un fichero subido en la BBDD
+	 * @param fileName - nombre del fichero
+	 * @param user - UID del usuario que lo subio
+	 * @param path - Localización
 	 */
-	private String getFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		System.out.println("content-disposition header= "+contentDisp);
-		String[] tokens = contentDisp.split(";");
-		for (String token : tokens) {
-			if (token.trim().startsWith("filename")) {
-				return token.substring(token.indexOf("=") + 2, token.length()-1);
+	protected void insertFile(String fileName, int user, String path){
+		try {
+
+			Connection conexion = myDS.getConnection();
+
+			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO projects (ProjectName, ONGFile, UID) values (?,?,?)");
+			myPS.setString(1, fileName);
+			Blob blob = conexion.createBlob();
+			blob.setBytes(1, path.getBytes());
+			myPS.setBlob(2, blob);
+			myPS.setInt(3, user);
+			myPS.executeUpdate();
+
+			myPS.close();
+
+			conexion.close();
+
+		} catch (SQLWarning sqlWarning) {
+			while (sqlWarning != null) {
+				System.out.println("Error: " + sqlWarning.getErrorCode());
+				System.out.println("Descripción: " + sqlWarning.getMessage());
+				System.out.println("SQLstate: " + sqlWarning.getSQLState());
+				sqlWarning = sqlWarning.getNextWarning();
 			}
-		}
-		return "";
+		} catch (SQLException sqlException) {
+			while (sqlException != null) {
+				System.out.println("Error: " + sqlException.getErrorCode());
+				System.out.println("Descripción: " + sqlException.getMessage());
+				System.out.println("SQLstate: " + sqlException.getSQLState());
+				sqlException = sqlException.getNextException();
+			}
+		} 
 	}
 }

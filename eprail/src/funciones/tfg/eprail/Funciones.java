@@ -3,6 +3,7 @@ package funciones.tfg.eprail;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -10,9 +11,10 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Part;
 
 public class Funciones {
-	
+
 	/**
 	 * Envia un email a un destino con un mensaje y asunto
 	 * @param asunto
@@ -54,7 +56,7 @@ public class Funciones {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/** 
 	 * Encripta un String con el algoritmo MD5. 
 	 * @return String - cadena a encriptar
@@ -82,5 +84,22 @@ public class Funciones {
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Utility method to get file name from HTTP header content-disposition
+	 * @param part - file
+	 * @return
+	 */
+	public static String getFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		System.out.println("content-disposition header= "+contentDisp);
+		String[] tokens = contentDisp.split(";");
+		for (String token : tokens) {
+			if (token.trim().startsWith("filename")) {
+				return token.substring(token.indexOf("=") + 2, token.length()-1);
+			}
+		}
+		return "";
 	}
 }
