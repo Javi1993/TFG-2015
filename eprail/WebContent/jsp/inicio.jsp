@@ -17,10 +17,10 @@
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
-		<span class="title">Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp"><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
+		<span class="title">Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
 					<table class="project" style="width: 100%">
 					<%
-						List<Project> list = (List<Project>) request.getAttribute("projectList");
+						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");
 						if (list != null) {
 							for (Project project : list) {
 								//TABLA CON DOCIMENTOS
@@ -28,25 +28,8 @@
 					<tr class="row">
 						<td><img src="/eprail/img/thunder.png" alt="icon" width="30" height="30"></td>
 						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
-						<td><span style="border:2px solid #800000; padding: 10px;">
-						<%
-						String mensaje;
-						switch(project.getIdProjectStatus()){
-							case 0:
-								mensaje="Pendiente";
-								break;
-							case 1:
-								mensaje="Calculando...";
-								break;
-							case 2:
-								mensaje="Simulado";
-								break;
-							default:
-								mensaje="Errores";
-								break;
-						}
-						%>
-						<%=mensaje%>
+						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getIdProjectStatus().getStatusDescription()%>">
+						<%=project.getIdProjectStatus().getStatusName() %>
 						</span></td>
 						<td>
 						<%
@@ -57,7 +40,7 @@
 						<td><img src="/eprail/img/gear.png" alt="run"></td>
 						<td><img src="/eprail/img/download.png" alt="download"></td>
 						<td><img src="/eprail/img/share.png" alt="share"></td>
-						<td><img src="/eprail/img/delete.png" alt="delete"></td>
+						<td><a href="/eprail/controller/delete?id=<%=project.getIdProject()%>" title="Borrar proyecto"><img src="/eprail/img/delete.png" alt="delete"></a></td>
 					</tr>
 					<%
 							}

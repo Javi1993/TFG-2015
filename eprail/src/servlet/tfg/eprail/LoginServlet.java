@@ -1,7 +1,6 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 
 			Statement myST = conexion.createStatement();
 
-			ResultSet rs = myST.executeQuery("SELECT * FROM projects WHERE UID = "+userBean.getUid());
+			ResultSet rs = myST.executeQuery("SELECT * FROM projects p, statuscategories s WHERE p.IdProjectStatus = s.IdProjectStatus AND p.UID = "+userBean.getUid());
 
 			List<Project> list = null;
 			rs.last();
@@ -73,13 +72,15 @@ public class LoginServlet extends HttpServlet {
 				list = new ArrayList<Project>();
 				rs.beforeFirst();
 				Project p;
-				Blob blob;
-				String path;
+				Status s;
+				//Blob blob;
+				//String path;
 				while(rs.next())
 				{
-					blob = rs.getBlob(4);
-					path = new String(blob.getBytes(1l, (int) blob.length()));
-					p = new Project(rs.getInt(1), rs.getString(2), rs.getString(3), path, rs.getInt(5), rs.getByte(6), rs.getTimestamp(7), rs.getTimestamp(8));
+					//blob = rs.getBlob("ONGFile");
+					//path = new String(blob.getBytes(1l, (int) blob.length()));
+					s = new Status(rs.getByte("IdProjectStatus"), rs.getString("StatusName"), rs.getString("StatusDescription"));
+					p = new Project(rs.getInt("IdProject"), rs.getString("ProjectName"), rs.getString("ProjectDescription"), rs.getBlob("ONGFile"), userBean, s, rs.getTimestamp("DateCreation"), rs.getTimestamp("DateModified"));
 					list.add(p);
 				}
 			}
@@ -88,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 			myST.close();
 			conexion.close();
 
-			request.setAttribute("projectList", list);
+			request.getSession().setAttribute("projectList", list);
 			request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 
 		} catch (SQLWarning sqlWarning) {

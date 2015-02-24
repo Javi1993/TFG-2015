@@ -16,7 +16,7 @@
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:230px; width:400px;">
-		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a class="subtitle" style="left:45%;" href="/eprail/controller/login" alt="volver"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title">Modificar datos de registro</span>&nbsp;&nbsp;<a class="subtitle" style="left:45%;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<form action="/eprail/controller/account" method="post" name="edit" id="edit-f">
 			<fieldset>

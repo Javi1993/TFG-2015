@@ -1,19 +1,22 @@
 package javabeans.tfg.eprail;
 
+import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Timestamp;
 
-public class Project {
-
+public class Project implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private int idProject;
 	private String projectName;
 	private String projectDescription;
-	private String ONGFile;
-	private int uid;
-	private byte idProjectStatus;
+	private Blob ONGFile;
+	private User uid;
+	private Status idProjectStatus;
 	private Timestamp dateCreation;
 	private Timestamp dateModifed;
 
-	public Project(int idProject, String projectName, String projectDescription, String ONGFile, int uid, byte idProjectStatus, Timestamp dateCreation, Timestamp dateModifed){
+	public Project(int idProject, String projectName, String projectDescription, Blob ONGFile, User uid, Status idProjectStatus, Timestamp dateCreation, Timestamp dateModifed){
 
 		this.setIdProject(idProject);
 		this.setProjectName(projectName);
@@ -65,37 +68,38 @@ public class Project {
 	/**
 	 * @return the oNGFile
 	 */
-	public String getONGFile() {
+	public Blob getONGFile() {
 		return ONGFile;
 	}
 	/**
 	 * @param oNGFile the oNGFile to set
 	 */
-	public void setONGFile(String oNGFile) {
+	public void setONGFile(Blob oNGFile) {
 		ONGFile = oNGFile;
 	}
 	/**
 	 * @return the uid
 	 */
-	public int getUid() {
+	public User getUid() {
 		return uid;
 	}
 	/**
 	 * @param uid the uid to set
 	 */
-	public void setUid(int uid) {
+	public void setUid(User uid) {
 		this.uid = uid;
 	}
 	/**
 	 * @return the idProjectStatus
 	 */
-	public byte getIdProjectStatus() {
+	public Status getIdProjectStatus() {
 		return idProjectStatus;
 	}
+
 	/**
 	 * @param idProjectStatus the idProjectStatus to set
 	 */
-	public void setIdProjectStatus(byte idProjectStatus) {
+	public void setIdProjectStatus(Status idProjectStatus) {
 		this.idProjectStatus = idProjectStatus;
 	}
 	/**
@@ -122,4 +126,5 @@ public class Project {
 	public void setDateModifed(Timestamp dateModifed) {
 		this.dateModifed = dateModifed;
 	}
+
 }
