@@ -38,9 +38,9 @@
 						</td>
 						<td><img src="/eprail/img/eye.png" alt="see"></td>
 						<td><img src="/eprail/img/gear.png" alt="run"></td>
-						<td><img src="/eprail/img/download.png" alt="download"></td>
+						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><img src="/eprail/img/share.png" alt="share"></td>
-						<td><a href="/eprail/controller/delete?id=<%=project.getIdProject()%>" title="Borrar proyecto"><img src="/eprail/img/delete.png" alt="delete"></a></td>
+						<td><a href="/eprail/controller/delete?id=<%=project.getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a></td>
 					</tr>
 					<%
 							}

@@ -63,14 +63,14 @@ public class DeleteServlet extends HttpServlet {
 			Connection conexion = myDS.getConnection();
 
 			Statement mySt = conexion.createStatement();
-			ResultSet rs = mySt.executeQuery("SELECT ONGFile, ProjectName FROM projects WHERE IdProject = "+request.getParameter("id")+" AND UID = "+userBean.getUid()); 
+			ResultSet rs = mySt.executeQuery("SELECT ONGFile, IdProject FROM projects WHERE IdProject = "+request.getParameter("id")+" AND UID = "+userBean.getUid()); 
 
 			while(rs.next())
 			{//borramos del servidor el archivo
 				Blob blob = rs.getBlob("ONGFile");
 				String path = new String(blob.getBytes(1l, (int) blob.length()));
 
-				File file = new File(path+File.separator+rs.getString("ProjectName"));
+				File file = new File(path+File.separator+rs.getLong("IdProject"));
 
 				// creates the save directory if it does not exists
 				File fileSaveDir = new File(path.replaceAll(String.valueOf(userBean.getUid()), File.separator+"0"));
@@ -79,7 +79,7 @@ public class DeleteServlet extends HttpServlet {
 				}
 
 				//archivo que almaecenara el contenido
-				File fileD = new File(fileSaveDir.getPath()+File.separator+rs.getString("ProjectName"));
+				File fileD = new File(fileSaveDir.getPath()+File.separator+rs.getLong("IdProject"));
 
 				//copiamos el contenido
 				FileInputStream in = new FileInputStream(file);
