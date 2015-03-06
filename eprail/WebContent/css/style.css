@@ -77,6 +77,29 @@ a#remem{
 	margin-left:10px;
 }
 
+table.project{
+	border-collapse: collapse;
+}
+
+th{
+	color: #800000;
+	border-bottom: 1px solid #000;
+}
+
+tr.alt{
+	background-color: #ecd2d1;  
+}
+
+.delete{
+	background-color: #FFF; 
+	border-bottom: none; 
+}
+
+caption {
+    caption-side: bottom;
+    font-size: 10px;
+}
+
 span.campo{
 	display: block;
 }

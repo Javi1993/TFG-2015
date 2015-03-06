@@ -9,4 +9,5 @@ $(document).ready(function () {
 	$('a[title]').qtip();
 	$('img[title]').qtip();
 	$('span[title]').qtip();
+	$('input[type="image"][title]').qtip();
 });

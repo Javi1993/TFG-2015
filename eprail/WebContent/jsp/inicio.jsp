@@ -23,10 +23,10 @@
 						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");
 						if (list != null) {
 							for (Project project : list) {
-								//TABLA CON DOCIMENTOS
+								//tabla con documentos propios
 					%>
 					<tr class="row">
-						<td><img src="/eprail/img/thunder.png" alt="icon" width="30" height="30"></td>
+						<td><img src="/eprail/img/thunder.png" alt="project" width="30" height="30"></td>
 						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
 						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getIdProjectStatus().getStatusDescription()%>">
 						<%=project.getIdProjectStatus().getStatusName() %>
@@ -39,15 +39,44 @@
 						<td><img src="/eprail/img/eye.png" alt="see"></td>
 						<td><img src="/eprail/img/gear.png" alt="run"></td>
 						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
-						<td><img src="/eprail/img/share.png" alt="share"></td>
+						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName().replaceAll(".ongf", "") %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
 						<td><a href="/eprail/controller/delete?id=<%=project.getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a></td>
 					</tr>
 					<%
 							}
 						}else{
 					%>
-					<p>No hay ning&uacute;n proyecto.</p>
+					<p>No hay ning&uacute;n proyecto propio.</p>
 					<%} %>
+					</table>
+					<table class="project" style="width: 100%">
+					<%
+						List<Project> listSh = (List<Project>) request.getSession().getAttribute("projectListShared");
+						if (listSh != null) {
+							for (Project project : listSh) {
+								//tabla con documentos propios
+					%>
+					<tr class="row">
+						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
+						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
+						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getIdProjectStatus().getStatusDescription()%>">
+						<%=project.getIdProjectStatus().getStatusName() %>
+						</span></td>
+						<td>
+						<%
+						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
+						<%=sdf.format(project.getDateModifed()) %>
+						</td>
+						<td><img src="/eprail/img/eye.png" alt="see"></td>
+						<td><img src="/eprail/img/gear.png" alt="run"></td>
+						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
+						<td><a href="/eprail/controller/jsp/shared.jsp" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
+						<td><a href="/eprail/controller/delete?id=<%=project.getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a></td>
+					</tr>
+					<%
+							}
+						}
+					%>
 					</table>
 	</div>
 </body>

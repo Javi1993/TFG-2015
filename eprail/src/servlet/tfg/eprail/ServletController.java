@@ -87,7 +87,7 @@ public class ServletController extends HttpServlet {
 				ResultSet rs = st.executeQuery("SELECT * FROM users WHERE email = '"+userBean.getEmail()+
 						"' AND password ='"+Funciones.cryptMD5("0351"+userBean.getPassword())+"' AND IsValidate = 1");
 				rs.last();
-
+				
 				if(rs.getRow()==0 || !userBean.doLogin(rs))//hacemos el login (ver en esta funcion si esta activa la cuenta)
 				{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
 					nextPage = "/index.html";
