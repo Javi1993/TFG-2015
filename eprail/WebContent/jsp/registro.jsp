@@ -20,7 +20,7 @@
 		</p>
 		<p>Si tienes cualquier problema con el registro, puedes escribirme
 			a eduardo.pilo@eprail.com</p>
-		<br> <span class="campo"><a class="but" href="/eprail/">Inicio</a></span>
+		<br><br> <span class="campo"><a class="but" href="/eprail/">Inicio</a></span>
 	</div>
 </body>
 </html>

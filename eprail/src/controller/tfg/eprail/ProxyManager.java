@@ -9,6 +9,7 @@ import modeldata.tfg.eprail.*;
 @SuppressWarnings("unchecked")
 public class ProxyManager {
 
+	
 	@PersistenceUnit(unitName="eprail")
 	private EntityManagerFactory emf;
 
@@ -38,7 +39,7 @@ public class ProxyManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public String createObject(Object object) throws Exception {
+	public Object createObject(Object object) throws Exception {
 		EntityManager em = getEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -57,7 +58,7 @@ public class ProxyManager {
 		} finally {
 			em.close();
 		}
-		return "";
+		return object;
 	}
 
 	/**

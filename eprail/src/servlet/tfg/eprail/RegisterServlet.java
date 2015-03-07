@@ -1,10 +1,6 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import com.mysql.jdbc.PreparedStatement;
+import modeldata.tfg.eprail.User;
+import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -45,55 +42,25 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		try {
-			//nos protegemos ante caracteres especiales 
-			response.setContentType("text/html;charset=UTF-8");
-			request.setCharacterEncoding("UTF-8");
-			
-			Connection conexion = myDS.getConnection();
 
-			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO users (FirstName, FamilyName, email, password) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			myPS.setString(1, request.getParameter("nombre"));
-			myPS.setString(2, request.getParameter("apellidos"));
-			myPS.setString(3, request.getParameter("email"));
-			myPS.setString(4, Funciones.cryptMD5("0351"+request.getParameter("pass")));
-			myPS.executeUpdate();
+		//nos protegemos ante caracteres especiales 
+		response.setContentType("text/html;charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
-			ResultSet rs = myPS.getGeneratedKeys();
+		User user = new User();
+		user.setFirstName(request.getParameter("nombre"));
+		user.setFamilyName(request.getParameter("apellidos"));
+		user.setEmail(request.getParameter("email"));
+		user.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
+		ManagementUser.registrarJPAUser(user);
 
-			if (rs != null && rs.next()) {
-				request.setAttribute("uid", rs.getLong(1));
-			}
+		Funciones.sendEmail("Eprail: Confirmaci髇 de registro","<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+				+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "
+				+user.getFirstName()+"</h2><br>"
+				+ "<p>Gracias por registrarte en nuestra aplicaci&oacute;n de simulaciones. Para activar t&uacute; cuenta visita el siguiente enlace: </p><br>"
+				+ "http://localhost:8080/eprail/activate?op="+user.getUid()+
+				"<br><br><p>Un saludo</p></div></body></html>",user.getEmail());
 
-			myPS.close();
-
-			conexion.close();
-
-			//mandamos el email de activacion
-			Funciones.sendEmail("Eprail: Confirmaci贸n de registro","<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
-					+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "
-					+request.getParameter("nombre")+"</h2><br>"
-					+ "<p>Gracias por registrarte en nuestra aplicaci贸n de simulaciones. Para activar t煤 cuenta visita el siguiente enlace: </p><br>"
-					+ "http://localhost:8080/eprail/activate?op="+request.getAttribute("uid")+
-					"<br><br><p>Un saludo</p></div></body></html>",request.getParameter("email"));
-
-			//redirigimos
-			request.getRequestDispatcher("/jsp/registro.jsp").forward(request, response);
-
-		} catch (SQLWarning sqlWarning) {
-			while (sqlWarning != null) {
-				System.out.println("Error: " + sqlWarning.getErrorCode());
-				System.out.println("Descripci贸n: " + sqlWarning.getMessage());
-				System.out.println("SQLstate: " + sqlWarning.getSQLState());
-				sqlWarning = sqlWarning.getNextWarning();
-			}
-		} catch (SQLException sqlException) {
-			while (sqlException != null) {
-				System.out.println("Error: " + sqlException.getErrorCode());
-				System.out.println("Descripci贸n: " + sqlException.getMessage());
-				System.out.println("SQLstate: " + sqlException.getSQLState());
-				sqlException = sqlException.getNextException();
-			}
-		} 
+		request.getRequestDispatcher("/jsp/registro.jsp").forward(request, response);
 	}
 }

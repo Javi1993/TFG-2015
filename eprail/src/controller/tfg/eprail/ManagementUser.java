@@ -7,18 +7,19 @@ import modeldata.tfg.eprail.User;
 
 public class ManagementUser {
 	
-	/*public static void registrarJPAUser(User newUser) {
+	public static User registrarJPAUser(User newUser) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
 		try {
-			manager.createObject(newUser);//mandamos el objeto cliente al JPA para que lo inserte en la BBDD
+			return (User) manager.createObject(newUser);//mandamos el objeto cliente al JPA para que lo inserte en la BBDD
 		} catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
-	}*/
+		return null;
+	}
 	
 	public static User buscarJPAUser(long uid){
 
@@ -66,7 +67,7 @@ public class ManagementUser {
 		}
 	}
 	
-	/*public static void updateJPAUser(User user) {
+	public static void updateJPAUser(User user) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
 
 		ProxyManager manager = new ProxyManager();
@@ -77,5 +78,5 @@ public class ManagementUser {
 		} catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
-	}*/
+	}
 }

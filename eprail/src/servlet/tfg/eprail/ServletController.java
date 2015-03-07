@@ -24,7 +24,7 @@ import funciones.tfg.eprail.Funciones;
 		databaseName = "eprail",
 		user = "root",
 		password = "Javi.93",
-		properties = {"pedantic=true"}
+		properties = {"JtaManaged=false","pedantic=true"}
 		)
 @WebServlet(name="ServletController", urlPatterns={"/controller/*"})
 public class ServletController extends HttpServlet {
@@ -68,13 +68,14 @@ public class ServletController extends HttpServlet {
 			//le pasamos los parametros de la request
 			userBean.setEmail(request.getParameter("email"));
 			userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
-			System.out.println(userBean.getPassword());
 			userBean = ManagementUser.realizarJPALogin(userBean);
 			
 			if(userBean.getLoggedIn() == false || userBean == null)
 			{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
+				userBean.setLoggedIn(false);
 				nextPage = "/index.html";
 			}else{
+				userBean.setLoggedIn(true);
 				session.setAttribute("userBean", userBean);
 			}
 		}

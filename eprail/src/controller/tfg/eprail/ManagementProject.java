@@ -1,14 +1,17 @@
 package controller.tfg.eprail;
 
 import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import modeldata.tfg.eprail.Deletedproject;
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.User;
 
 public class ManagementProject {
 	
-	/*public static void subirJPAProyecto(Project newProject) {
+	public static void subirJPAProyecto(Project newProject) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
 
@@ -19,7 +22,33 @@ public class ManagementProject {
 		} catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
-	}*/
+	}
+	
+	public static void moverJPAProyecto(Deletedproject delProject) {
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			manager.createObject(delProject);//mandamos el objeto cliente al JPA para que lo inserte en la BBDD
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+	}
+	
+	public static void borrarJPAProyecto(Project project) {
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			manager.deleteObject(project);//mandamos el objeto cliente al JPA para que lo borre en la BBDD
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+	}
 	
 	public static List<Project> buscarProyectosPropios(User user){
 
