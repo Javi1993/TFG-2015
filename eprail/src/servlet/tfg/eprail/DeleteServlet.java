@@ -13,8 +13,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import javabeans.tfg.eprail.Project;
-import javabeans.tfg.eprail.User;
+
+import modeldata.tfg.eprail.User;
+import modeldata.tfg.eprail.Project;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import javax.sql.rowset.serial.SerialBlob;
+
 import com.mysql.jdbc.PreparedStatement;
+
+import controller.tfg.eprail.ManagementProject;
 
 
 /**
@@ -58,9 +64,68 @@ public class DeleteServlet extends HttpServlet {
 			// Buscamos el userBean en la session
 			HttpSession session = request.getSession(true);
 			User userBean = (User) session.getAttribute("userBean");
-			List<Project> list = (List<Project>) session.getAttribute("projectList");
+			//List<Project> list = (List<Project>) session.getAttribute("projectList");
+			
+			Project project = ManagementProject.buscarProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
 
-			Connection conexion = myDS.getConnection();
+			if(project!=null)
+			{//borramos de la carpeta del usuario el fichero y lo movemos a la carpeta de borrados
+				String path = new String(project.getONGFile());
+				File file = new File(path+File.separator+project.getIdProject());
+				
+				// creates the save directory if it does not exists
+				File fileSaveDir = new File(path.replaceAll(String.valueOf(userBean.getUid()), File.separator+"0"));
+				if (!fileSaveDir.exists()) {
+					fileSaveDir.mkdirs();
+				}
+
+				//archivo que almaecenara el contenido
+				File fileD = new File(fileSaveDir.getPath()+File.separator+project.getIdProject());
+
+				//copiamos el contenido
+				FileInputStream in = new FileInputStream(file);
+				FileOutputStream out = new FileOutputStream(fileD);
+
+				int c;
+				while( (c = in.read() ) != -1)
+					out.write(c);
+
+				in.close();
+				out.close();
+
+				file.delete();
+				
+				//insertamos en la tabla de borrados y borramos de la tabla del usuario ese proyecto
+				
+				//MOVER A OTRA FUNCION AHORA
+				
+				Connection conexion = myDS.getConnection();
+				Statement mySt = conexion.createStatement();
+				
+				Date date= new Date();
+				Timestamp ts = new Timestamp(date.getTime());
+
+				PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO deletedprojects (IdProject, ProjectName, ProjectDescription, ONGFile, UID, IdProjectStatus, DateCreation, DateDeleted) values (?,?,?,?,?,?,?,?)");
+				myPS.setLong(1, project.getIdProject());
+				myPS.setString(2, project.getProjectName());
+				myPS.setString(3, project.getProjectDescription());
+				Blob blob = new SerialBlob(project.getONGFile());
+				myPS.setBlob(4, blob);
+				myPS.setLong(5, project.getUser().getUid());
+				myPS.setByte(6, project.getStatuscategory().getIdProjectStatus());
+				myPS.setTimestamp(7, project.getDateCreation());
+				myPS.setTimestamp(8, ts);
+				myPS.executeUpdate();
+				myPS.close();
+				
+				mySt = conexion.createStatement();
+				mySt.executeUpdate("DELETE FROM projects WHERE IdProject = "+project.getIdProject()+" AND UID = "+project.getUser().getUid());
+				mySt.close();
+				conexion.close();
+			}
+			
+			
+			/*Connection conexion = myDS.getConnection();
 
 			Statement mySt = conexion.createStatement();
 			ResultSet rs = mySt.executeQuery("SELECT ONGFile, IdProject FROM projects WHERE IdProject = "+request.getParameter("id")+" AND UID = "+userBean.getUid()); 
@@ -125,7 +190,7 @@ public class DeleteServlet extends HttpServlet {
 			mySt = conexion.createStatement();
 			mySt.executeUpdate("DELETE FROM projects WHERE IdProject = "+request.getParameter("id")+" AND UID = "+userBean.getUid());
 			mySt.close();
-			conexion.close();
+			conexion.close();*/
 
 			request.getRequestDispatcher("/controller/login").forward(request, response);
 		} catch (SQLWarning sqlWarning) {

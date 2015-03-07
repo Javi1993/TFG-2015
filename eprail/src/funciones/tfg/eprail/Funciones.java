@@ -42,7 +42,7 @@ public class Funciones {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("100290698@alumnos.uc3m.es"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(to));
 			message.setSubject(asunto);
@@ -50,7 +50,7 @@ public class Funciones {
 
 			Transport.send(message);
 
-			//System.out.println("Sent message successfully....");
+			System.out.println("Sent message successfully....");
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

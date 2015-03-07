@@ -28,6 +28,7 @@
 		<%
 			}
 		%>
+		<br><br>
 		<span class="campo"><a class="but" href="/eprail/">Inicio</a></span>
 	</div>
 </body>

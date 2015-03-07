@@ -10,7 +10,7 @@
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="javabeans.tfg.eprail.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.eprail.User"
 		scope="session" />
 	<div id="top">
 		<img class="top" src="/eprail/img/off.png" alt="off" width="20"

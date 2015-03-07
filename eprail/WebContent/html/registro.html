@@ -13,10 +13,10 @@
     <div class="title">Formulario de registro</div>
         <form action="/eprail/register" method="post" name="recuperar">
         	<fieldset>
-            <span class="campo"><label class="log-i">E-mail</label><input class="reg-i" type="email" name="email" maxlength="60" required="required" /></span><br>
-            <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" maxlength="60" required="required" /></span><br>
-            <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" maxlength="80" required="required" /></span><br>
-            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" required="required" /></span><br>
+            <span class="campo"><label class="log-i">E-mail</label><input class="reg-i" type="email" name="email" maxlength="60" minlength="3" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Nombre</label><input class="reg-i" type="text" name="nombre" maxlength="60" minlength="3" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Apellidos</label><input class="reg-i" type="text" name="apellidos" maxlength="80" minlength="3" required="required" /></span><br>
+            <span class="campo"><label class="log-i">Contrase&ntilde;a</label><input class="reg-i" type="password" name="pass" minlength="6" required="required"/></span><br>
             <span class="campo"><a class="but" href="/eprail/" style="width:70%;">Volver</a><input type="submit" value="Registrar" /></span>
             </fieldset>
         </form>

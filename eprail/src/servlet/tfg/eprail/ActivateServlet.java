@@ -2,13 +2,11 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import controller.tfg.eprail.ManagementUser;
+import modeldata.tfg.eprail.User;
 
 /**
  * Servlet implementation class ActivateServlet
@@ -25,8 +25,8 @@ public class ActivateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Resource(lookup="java:app/jdbc/eprail")
-    private DataSource myDS;
-	
+	private DataSource myDS;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -43,38 +43,29 @@ public class ActivateServlet extends HttpServlet {
 		String nextPage = "/jsp/activate.jsp";
 
 		try {
+			User userAux = ManagementUser.buscarJPAUser(Long.parseLong(request.getParameter("op")));
+
 			Connection conexion = myDS.getConnection();
+			Statement mySt = conexion.createStatement();
 
-			Statement myST = conexion.createStatement();
-			Statement mySTaux = conexion.createStatement();
-
-			ResultSet rs = myST.executeQuery("SELECT * FROM users WHERE UID = "+request.getParameter("op"));
-
-			rs.last();
-			if(rs.getRow()!=0)
+			if(userAux!=null)
 			{
-				rs.beforeFirst();
-				while(rs.next())
-				{
-					if(!rs.getBoolean("IsValidate"))
-					{//la cuenta no está activa
-						Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-						mySTaux.executeUpdate("UPDATE users SET IsValidate = 1, DateRegistration = '"+currentTimestamp+"' WHERE UID = "+request.getParameter("op"));
-						request.setAttribute("active", true);
-					}
-					else{//la cuenta ya está activada
-						request.setAttribute("fecha", rs.getTimestamp("DateRegistration"));
-						request.setAttribute("active", false);
-					}
+				if(userAux.getIsValidate()!=1)
+				{//la cuenta no está activa
+					Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+					mySt.executeUpdate("UPDATE users SET IsValidate = 1, DateRegistration = '"+currentTimestamp+"' WHERE UID = "+userAux.getUid());
+					request.setAttribute("active", true);
+				}
+				else{//la cuenta ya está activada
+					request.setAttribute("fecha", userAux.getDateRegistration());
+					request.setAttribute("active", false);
 				}
 			}else
 			{//no se encuentra ningun usuario con esa UID
 				nextPage = "/errors/404.html";
 			}
 
-			rs.close();
-			mySTaux.close();
-			myST.close();
+			mySt.close();
 			conexion.close();
 
 			//redirigimos

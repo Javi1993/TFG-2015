@@ -7,9 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-
-import javabeans.tfg.eprail.User;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,9 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
-
+import modeldata.tfg.eprail.User;
 import com.mysql.jdbc.PreparedStatement;
-
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -91,7 +87,7 @@ public class UploadServlet extends HttpServlet {
 		//Get all the parts from request and write it to the file on server
 		for (Part part : request.getParts()) {
 			fileName = Funciones.getFileName(part);
-			part.write(uploadFilePath + File.separator + insertFile(fileName, userBean.getUid(), uploadFilePath));	
+			part.write(uploadFilePath + File.separator + insertFile(fileName, userBean, uploadFilePath));	
 		}
 	}
 
@@ -102,8 +98,10 @@ public class UploadServlet extends HttpServlet {
 	 * @param path - Localización
 	 * @return - ID del proyecto
 	 */
-	protected long insertFile(String fileName, int user, String path){
+	protected long insertFile(String fileName, User user, String path){
+		
 		long id = 0;
+		
 		try {
 
 			Connection conexion = myDS.getConnection();
@@ -113,7 +111,7 @@ public class UploadServlet extends HttpServlet {
 			Blob blob = conexion.createBlob();
 			blob.setBytes(1, path.getBytes());
 			myPS.setBlob(2, blob);
-			myPS.setInt(3, user);
+			myPS.setLong(3, user.getUid());
 			myPS.executeUpdate();
 
 			ResultSet rs = myPS.getGeneratedKeys();

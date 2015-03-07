@@ -2,9 +2,10 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import javabeans.tfg.eprail.User;
+import modeldata.tfg.eprail.User;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import com.mysql.jdbc.PreparedStatement;
+//import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -46,6 +47,8 @@ public class AccountServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
+
+
 		try {
 
 			//Rellenamos el bean con los nuevos atributos
@@ -54,7 +57,7 @@ public class AccountServlet extends HttpServlet {
 			userBean.setFamilyName(request.getParameter("apellidos"));
 			if(!request.getParameter("pass").equals(""))
 			{
-				userBean.setPassword(request.getParameter("pass"));
+				userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
 			}
 
 			Connection conexion = myDS.getConnection();
@@ -62,7 +65,7 @@ public class AccountServlet extends HttpServlet {
 			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("UPDATE users SET FirstName = ?, FamilyName = ?, password = ? WHERE email = ?");
 			myPS.setString(1, userBean.getFirstName());
 			myPS.setString(2, userBean.getFamilyName());
-			myPS.setString(3, Funciones.cryptMD5("0351"+userBean.getPassword()));
+			myPS.setString(3, userBean.getPassword());
 			myPS.setString(4, userBean.getEmail());
 			myPS.executeUpdate();
 
@@ -87,5 +90,21 @@ public class AccountServlet extends HttpServlet {
 				sqlException = sqlException.getNextException();
 			}
 		} 
+		
+		//VERSION CON JPA, no funciona, no permite EntityTransaction el TomEE
+
+		//Rellenamos el bean con los nuevos atributos
+		/*User userBean = (User)request.getSession(true).getAttribute("userBean");
+		userBean.setFirstName(request.getParameter("name"));
+		userBean.setFamilyName(request.getParameter("apellidos"));
+		if(!request.getParameter("pass").equals(""))
+		{
+			userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
+		}
+
+		ManagementUser.updateJPAUser(userBean);
+
+		//redirigimos
+		request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);*/
 	}
 }

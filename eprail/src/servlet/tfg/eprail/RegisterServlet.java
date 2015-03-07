@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -51,7 +49,7 @@ public class RegisterServlet extends HttpServlet {
 			//nos protegemos ante caracteres especiales 
 			response.setContentType("text/html;charset=UTF-8");
 			request.setCharacterEncoding("UTF-8");
-
+			
 			Connection conexion = myDS.getConnection();
 
 			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO users (FirstName, FamilyName, email, password) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);

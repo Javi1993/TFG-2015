@@ -1,7 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.*,javabeans.tfg.eprail.Project"%>
+<%@page import="java.util.List, modeldata.tfg.eprail.Project"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,7 +13,7 @@
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="javabeans.tfg.eprail.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.eprail.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
@@ -28,13 +28,13 @@
 					<tr class="row">
 						<td><img src="/eprail/img/thunder.png" alt="project" width="30" height="30"></td>
 						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
-						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getIdProjectStatus().getStatusDescription()%>">
-						<%=project.getIdProjectStatus().getStatusName() %>
+						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getStatuscategory().getStatusDescription()%>">
+						<%=project.getStatuscategory().getStatusName()%>
 						</span></td>
 						<td>
 						<%
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
-						<%=sdf.format(project.getDateModifed()) %>
+						<%=sdf.format(project.getDateModified())%>
 						</td>
 						<td><img src="/eprail/img/eye.png" alt="see"></td>
 						<td><img src="/eprail/img/gear.png" alt="run"></td>
@@ -59,13 +59,13 @@
 					<tr class="row">
 						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
 						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
-						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getIdProjectStatus().getStatusDescription()%>">
-						<%=project.getIdProjectStatus().getStatusName() %>
+						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getStatuscategory().getStatusDescription()%>">
+						<%=project.getStatuscategory().getStatusName()%>
 						</span></td>
 						<td>
 						<%
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
-						<%=sdf.format(project.getDateModifed()) %>
+						<%=sdf.format(project.getDateModified()) %>
 						</td>
 						<td><img src="/eprail/img/eye.png" alt="see"></td>
 						<td><img src="/eprail/img/gear.png" alt="run"></td>

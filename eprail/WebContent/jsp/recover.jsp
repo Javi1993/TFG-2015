@@ -22,9 +22,9 @@
 				<input type="hidden" name="uid"
 					value="<%=request.getParameter("op")%>"><span
 					class="campo"><label class="log-i">Contrase&ntilde;a</label><input
-					type="password" id="pass" name="pass" required /></span><br> <span
+					type="password" id="pass" name="pass" minlength="6" required /></span><br> <span
 					class="campo"><label class="log-i">Repetir
-						contrase&ntilde;a</label><input type="password" id="newpass" required /></span><br>
+						contrase&ntilde;a</label><input type="password" id="newpass" minlength="6" required /></span><br>
 				<span class="campo"><input id="edit-s" type="submit"
 					value="Guardar" /></span>
 			</fieldset>
