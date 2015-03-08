@@ -112,6 +112,7 @@ public class UploadServlet extends HttpServlet {
 		project.setUser(user);
 		
 		ManagementProject.subirJPAProyecto(project);
+		System.out.println("----------a "+project.getIdProject());
 		//terminarss
 		return project.getIdProject();*/
 		long id = 0;

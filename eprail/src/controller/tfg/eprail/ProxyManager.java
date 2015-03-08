@@ -129,6 +129,28 @@ public class ProxyManager {
 		}
 		return user;
 	}
+	
+	public Project findProjectByPK(long id) {
+		Project project = null;
+		EntityManager em = getEntityManager();
+		try {
+			project = (Project) em.find(Project.class, id);
+		} finally {
+			em.close();
+		}
+		return project;
+	}
+	
+	public Sharing findSharingByPK(long id) {
+		Sharing sharing = null;
+		EntityManager em = getEntityManager();
+		try {
+			sharing = (Sharing) em.find(Sharing.class, id);
+		} finally {
+			em.close();
+		}
+		return sharing;
+	}
 
 	public User findUserByEmail(String email) {
 		return (User) getEntityManager()
@@ -165,12 +187,22 @@ public class ProxyManager {
 						.getResultList();
 	}
 
-	public List<Project> findProjectsSharedByUserUID (User user)
+	public List<Sharing> findProjectsSharedByUserUID (User user)
 	{
-		return 	(List<Project>) getEntityManager()
+		return 	(List<Sharing>) getEntityManager()
 				.createQuery(
 						"SELECT c FROM Sharing c WHERE c.user1.uid LIKE :custUID")
 						.setParameter("custUID", user.getUid())
+						.getResultList();
+	}
+	
+	public List<Sharing> findUsersSharedByUserUIDAndIdProject (User user, long id)
+	{
+		return 	(List<Sharing>) getEntityManager()
+				.createQuery(
+						"SELECT c FROM Sharing c WHERE c.user1.uid <> :custUID AND c.project.idProject LIKE :custID")
+						.setParameter("custUID", user.getUid())
+						.setParameter("custID", id)
 						.getResultList();
 	}
 }

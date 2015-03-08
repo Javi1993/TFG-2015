@@ -2,14 +2,18 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import java.util.List;
+
+import modeldata.tfg.eprail.Sharing;
 import modeldata.tfg.eprail.User;
 import modeldata.tfg.eprail.Project;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import controller.tfg.eprail.ManagementProject;
 
 /**
@@ -35,10 +39,10 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);//cogemos los datos del usuario
 		User userBean = (User) session.getAttribute("userBean");
 
-		List<Project> list = ManagementProject.buscarProyectosPropios(userBean);
+		List<Project> list = ManagementProject.buscarJPAProyectosPropios(userBean);
 		request.getSession().setAttribute("projectList", list);
 
-		List<Project> listSh = ManagementProject.buscarProyectosCompartidos(userBean);
+		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
 		request.getSession().setAttribute("projectListShared", listSh);
 
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
@@ -52,10 +56,10 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);//cogemos los datos del usuario
 		User userBean = (User) session.getAttribute("userBean");
 
-		List<Project> list = ManagementProject.buscarProyectosPropios(userBean);
+		List<Project> list = ManagementProject.buscarJPAProyectosPropios(userBean);
 		request.getSession().setAttribute("projectList", list);
 
-		List<Project> listSh = ManagementProject.buscarProyectosCompartidos(userBean);
+		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
 		request.getSession().setAttribute("projectListShared", listSh);
 
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);

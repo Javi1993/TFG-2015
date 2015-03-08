@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javabeans.tfg.eprail.*;
+import modeldata.tfg.eprail.Sharing;
+import modeldata.tfg.eprail.User;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import com.mysql.jdbc.PreparedStatement;
+
+import controller.tfg.eprail.ManagementProject;
+import controller.tfg.eprail.ManagementUser;
 
 
 /**
@@ -45,13 +50,13 @@ public class ShareServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
 		if(request.getParameter("op").equals("1"))
-		{
-			deleteUser(request, response);
+		{//borramos a un usuario de la comparticion
+			ManagementProject.borrarJPAObject(ManagementProject.buscarJPACompartidoId(Long.parseLong(request.getParameter("i"))));
+			loadProjects(request, response);
 		}
 		else if(request.getParameter("op").equals("2"))
-		{
+		{//mostramos la lista de usuarios con acceso a ese documento
 			loadProjects(request, response);
 		}	
 	}
@@ -60,100 +65,60 @@ public class ShareServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Buscamos el userBean en la session
+		HttpSession session = request.getSession(true);
+		User userBean = (User) session.getAttribute("userBean");
 		try {
-			// Buscamos el userBean en la session
-			HttpSession session = request.getSession(true);
-			User userBean = (User) session.getAttribute("userBean");
-
-			Connection conexion = myDS.getConnection();
-
 			if(request.getParameter("op").equals("1"))
 			{//insertamos el nuevo usuario con el que se va a compartir en la BBDD
-				Statement mySt = conexion.createStatement();
-				ResultSet rs = mySt.executeQuery("SELECT UID FROM users WHERE email = '"+request.getParameter("email")+"'");
-				int uid=0;
-				rs.last();
-				if(rs.getRow()!=0)
+				User userAdd = ManagementUser.buscarJPAUserEmail(request.getParameter("email"));
+				if(userAdd!=null)
 				{
-					rs.beforeFirst();
-					while(rs.next())
-					{
-						uid = rs.getInt("UID");
-					}
-					rs.close();
-					mySt.close();
-
-					PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO sharings (IdProject, UID, UIDsharer) values (?,?,?)");
-					myPS.setInt(1, Integer.parseInt(request.getParameter("id")));
-					myPS.setInt(2, uid);
-					myPS.setInt(3, userBean.getUid());
-					myPS.executeUpdate();
-					myPS.close();
-
-				}else{
-					rs.close();
-					mySt.close();
+					//Sharing sh = new Sharing();
+					//sh.setProject(ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))));
+					//sh.setUser1(userAdd);
+					//sh.setUser2(userBean);
+					//ManagementProject.addJPACompartido(sh);
+					Connection conexion = myDS.getConnection();
+					PreparedStatement myPs = (PreparedStatement) conexion.prepareStatement("INSERT INTO sharings (IdProject, UID, UIDsharer) values (?,?,?)");
+					myPs.setLong(1, Long.parseLong(request.getParameter("id")));
+					myPs.setLong(2, userAdd.getUid());
+					myPs.setLong(3, userBean.getUid());
+					myPs.executeUpdate();
+					myPs.close();
 					conexion.close();
+				}else{
 					System.out.println("Email no encontrado-redirigir a pagina error, usar pagina error defecto con cmabio mensaje");
-					//REDIRIGIR A PAGINA Q DICE Q ESE EMAIL NO ESTA EN LA BBDD
 				}
+				loadProjects(request, response);
+			}else if(request.getParameter("op").equals("2")){
+
 			}
-			else if(request.getParameter("op").equals("2"))
-			{
-				//COMPROBAR NAMES QUE ACABAN EN 'C' y ver de QUE ID de usuarios son!!
+		}catch (SQLWarning sqlWarning) {
+			while (sqlWarning != null) {
+				System.out.println("Error: " + sqlWarning.getErrorCode());
+				System.out.println("Descripción: " + sqlWarning.getMessage());
+				System.out.println("SQLstate: " + sqlWarning.getSQLState());
+				sqlWarning = sqlWarning.getNextWarning();
 			}
-			conexion.close();
-			loadProjects(request, response);
-		}catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SQLException sqlException) {
+			while (sqlException != null) {
+				System.out.println("Error: " + sqlException.getErrorCode());
+				System.out.println("Descripción: " + sqlException.getMessage());
+				System.out.println("SQLstate: " + sqlException.getSQLState());
+				sqlException = sqlException.getNextException();
+			}
 		}
 	}
 
 	protected void loadProjects(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			// Buscamos el userBean en la session
-			HttpSession session = request.getSession(true);
-			User userBean = (User) session.getAttribute("userBean");
+		// Buscamos el userBean en la session
+		HttpSession session = request.getSession(true);
+		User userBean = (User) session.getAttribute("userBean");
 
-			Connection conexion = myDS.getConnection();
-			Statement st = conexion.createStatement();
+		List<Sharing> list = ManagementProject.buscarJPAUsuariosCompartidos(userBean, Long.parseLong(request.getParameter("id")));
+		request.getSession().setAttribute("userSharedList", list);
 
-			//Obtenemos la lista de usuarios ligados a ese proyecto
-			ResultSet rs = st.executeQuery("SELECT * FROM sharings s, projects p, users u WHERE s.IdProject = '"+request.getParameter("id")+
-					"' AND s.UID != "+userBean.getUid()+" AND s.IdProject = p.IdProject AND u.UID = s.UID");
-			List<Sharings> list = null;
-			rs.last();
-			if(rs.getRow()!=0){
-				list = new ArrayList<Sharings>();
-				rs.beforeFirst();
-				Sharings sh;
-				Status s;
-				Project p;
-				User u;
-				while(rs.next())
-				{
-					u = new User(rs.getInt("UID"), rs.getString("FirstName"), "", rs.getString("email"), (byte) rs.getByte("IsValidate"), rs.getTimestamp("DateRegistration"), "");
-					s = new Status(rs.getByte("IdProjectStatus"), "", "");
-					p = new Project(rs.getInt("IdProject"), rs.getString("ProjectName"), rs.getString("ProjectDescription"), rs.getBlob("ONGFile"), u, s, rs.getTimestamp("DateCreation"), rs.getTimestamp("DateModified"));
-
-					sh = new Sharings(rs.getInt("IdSharing"), p, u, null, rs.getTimestamp("DateShared"), rs.getTimestamp("DateChanged"), rs.getByte("AllowRecalculate"), rs.getByte("AllowDelete"), rs.getByte("AllowDownload"), rs.getByte("AllowShare"));
-					list.add(sh);
-				}
-			}
-			rs.close();
-			st.close();
-
-			request.getSession().setAttribute("userSharedList", list);
-			conexion.close();
-			request.getRequestDispatcher("/jsp/shared.jsp").forward(request, response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	protected void deleteUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
+		request.getRequestDispatcher("/jsp/shared.jsp?n="+ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))).getProjectName()).forward(request, response);
 	}
 }

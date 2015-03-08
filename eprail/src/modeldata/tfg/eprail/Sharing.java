@@ -1,7 +1,9 @@
 package modeldata.tfg.eprail;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
@@ -16,6 +18,7 @@ public class Sharing implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idSharing;
 
 	private byte allowDelete;
