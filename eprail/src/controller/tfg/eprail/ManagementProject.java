@@ -1,8 +1,10 @@
 package controller.tfg.eprail;
 
 import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
 import modeldata.tfg.eprail.Deletedproject;
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.User;
@@ -162,5 +164,18 @@ public class ManagementProject {
 			System.out.println("Descripción: " + e.getMessage());
 		}
 		return null;
+	}
+	
+	public static void updateJPASharing(Sharing sharing) {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+
+		try {
+			manager.updateObject(sharing);//objeto a actualizar se pasa a funcion JPA
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
 	}
 }

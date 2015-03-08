@@ -13,6 +13,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Part;
 
+import controller.tfg.eprail.ManagementProject;
+import modeldata.tfg.eprail.Sharing;
+
 public class Funciones {
 
 	/**
@@ -101,5 +104,33 @@ public class Funciones {
 			}
 		}
 		return "";
+	}
+	
+	/**
+	 * Cambia los permisos de un usuario sobre un proyecto
+	 * @param sharing
+	 * @param perm
+	 */
+	public static void asignarPermiso(Sharing sharing, char perm)
+	{
+		switch(perm)
+		{
+		case 'R':
+			sharing.setAllowRecalculate((byte)1);
+			break;
+		case 'D':
+			sharing.setAllowDownload((byte)1);
+			break;
+		case 'S':
+			sharing.setAllowShare((byte)1);
+			break;
+		case 'X':
+			sharing.setAllowDelete((byte)1);
+			break;
+		default:
+			System.out.println("Permiso "+perm+" no reconocido.");
+
+		}
+		ManagementProject.updateJPASharing(sharing);
 	}
 }

@@ -9,7 +9,6 @@
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/center.js"></script>
-<script type="text/javascript" src="/eprail/script/allowed.js"></script>
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
@@ -24,7 +23,7 @@
 			<input type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
 		</form>
 		<br><br><br><br>
-		<form action="/eprail/controller/share?op=2" method="post" name="recuperar">
+		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>
 			<table class="project" style="width: 100%">
 					<tr>
@@ -49,10 +48,10 @@
 						<td><%=sh.getUser1().getFirstName() %></td>
 						<td><%=sh.getUser1().getEmail() %></td>
 						<td><input type="checkbox" checked="checked" disabled="disabled"></td>
-						<td><input type="checkbox" name="<%=sh.getUser1().getUid()+"R"%>" <%if(sh.getAllowRecalculate()!=0){ %>checked="checked"<%} %>></td>
-						<td><input type="checkbox" name="<%="dow"+sh.getUser1().getUid()%>" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} %>></td>
-						<td><input type="checkbox" name="<%="sha"+sh.getUser1().getUid()%>" <%if(sh.getAllowShare()!=0){ %>checked="checked"<%} %>></td>
-						<td><input type="checkbox" name="<%="del"+sh.getUser1().getUid()%>" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="R"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowRecalculate()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="D"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="S"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowShare()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="X"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} %>></td>
 						<td class="delete"><a href="/eprail/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="Quitar"><img src="/eprail/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
 					</tr>
 					<%
@@ -66,7 +65,7 @@
 					<caption>ARCHIVO NO COMPARTIDO</caption>
 					<%} %>
 					</table>
-				<input type="submit" value="Guardar" id="edit-s" disabled="disabled"/>
+				<input type="submit" value="Guardar" id="edit-s" />
 			</fieldset>
 		</form>
 	</div>

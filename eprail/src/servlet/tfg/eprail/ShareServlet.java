@@ -2,11 +2,8 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import modeldata.tfg.eprail.Sharing;
@@ -25,6 +22,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import controller.tfg.eprail.ManagementProject;
 import controller.tfg.eprail.ManagementUser;
+import funciones.tfg.eprail.Funciones;
 
 
 /**
@@ -91,8 +89,34 @@ public class ShareServlet extends HttpServlet {
 					System.out.println("Email no encontrado-redirigir a pagina error, usar pagina error defecto con cmabio mensaje");
 				}
 				loadProjects(request, response);
-			}else if(request.getParameter("op").equals("2")){
-
+			}else if(request.getParameter("op").equals("2"))
+			{//cambio de permisos
+				String[] j = request.getParameterValues("perm");
+				Sharing sh = null;
+				if(j!=null)
+				{
+					
+					//NO RECONOCE CUANDO SE DESMARCA UNA CASILLA, VER COMO HACER COGIENDO EL 
+					//NAME Y VIENDO SI ESTA UNCECKEDS
+					
+					for(int i = 0; i<j.length; i++)
+					{
+						if(i!=0)
+						{
+							if(j[i].charAt(1)==j[i-1].charAt(1))
+							{//el id de ahora es del mismo usuario que antes
+								Funciones.asignarPermiso(sh, j[i].charAt(0));
+							}else{
+								sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+								Funciones.asignarPermiso(sh, j[i].charAt(0));
+							}
+						}else{
+							sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+							Funciones.asignarPermiso(sh, j[i].charAt(0));
+						}
+					}
+				}
+				loadProjects(request, response);
 			}
 		}catch (SQLWarning sqlWarning) {
 			while (sqlWarning != null) {
