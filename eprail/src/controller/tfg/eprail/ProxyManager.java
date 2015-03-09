@@ -1,9 +1,11 @@
 package controller.tfg.eprail;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+
 import modeldata.tfg.eprail.*;
 
 @SuppressWarnings("unchecked")
@@ -97,7 +99,7 @@ public class ProxyManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public String updateObject(Object object) throws Exception {
+	public Object updateObject(Object object) throws Exception {
 		EntityManager em = getEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -116,7 +118,7 @@ public class ProxyManager {
 		} finally {
 			em.close();
 		}
-		return "";
+		return object;
 	}
 
 	public User findUserByPK(long uid) {

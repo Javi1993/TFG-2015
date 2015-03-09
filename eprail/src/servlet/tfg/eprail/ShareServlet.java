@@ -95,10 +95,6 @@ public class ShareServlet extends HttpServlet {
 				Sharing sh = null;
 				if(j!=null)
 				{
-					
-					//NO RECONOCE CUANDO SE DESMARCA UNA CASILLA, VER COMO HACER COGIENDO EL 
-					//NAME Y VIENDO SI ESTA UNCECKEDS
-					
 					for(int i = 0; i<j.length; i++)
 					{
 						if(i!=0)
@@ -108,10 +104,18 @@ public class ShareServlet extends HttpServlet {
 								Funciones.asignarPermiso(sh, j[i].charAt(0));
 							}else{
 								sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+								sh.setAllowDelete((byte)0);
+								sh.setAllowDownload((byte)0);
+								sh.setAllowRecalculate((byte)0);
+								sh.setAllowShare((byte)0);
 								Funciones.asignarPermiso(sh, j[i].charAt(0));
 							}
 						}else{
 							sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+							sh.setAllowDelete((byte)0);
+							sh.setAllowDownload((byte)0);
+							sh.setAllowRecalculate((byte)0);
+							sh.setAllowShare((byte)0);
 							Funciones.asignarPermiso(sh, j[i].charAt(0));
 						}
 					}

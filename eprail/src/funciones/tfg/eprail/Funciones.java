@@ -2,6 +2,8 @@ package funciones.tfg.eprail;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -105,7 +107,7 @@ public class Funciones {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Cambia los permisos de un usuario sobre un proyecto
 	 * @param sharing
@@ -113,24 +115,43 @@ public class Funciones {
 	 */
 	public static void asignarPermiso(Sharing sharing, char perm)
 	{
+		Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		switch(perm)
 		{
 		case 'R':
-			sharing.setAllowRecalculate((byte)1);
+			if(sharing.getAllowRecalculate()==0)
+			{
+				sharing.setAllowRecalculate((byte)1);
+				sharing.setDateChanged(currentTimestamp);
+				ManagementProject.updateJPASharing(sharing);
+			}
 			break;
 		case 'D':
-			sharing.setAllowDownload((byte)1);
+			if(sharing.getAllowDownload()==0)
+			{
+				sharing.setAllowDownload((byte)1);
+				sharing.setDateChanged(currentTimestamp);
+				ManagementProject.updateJPASharing(sharing);	
+			}
 			break;
 		case 'S':
-			sharing.setAllowShare((byte)1);
+			if(sharing.getAllowShare()==0)
+			{
+				sharing.setAllowShare((byte)1);
+				sharing.setDateChanged(currentTimestamp);
+				ManagementProject.updateJPASharing(sharing);	
+			}
 			break;
 		case 'X':
-			sharing.setAllowDelete((byte)1);
+			if(sharing.getAllowDelete()==0)
+			{
+				sharing.setAllowDelete((byte)1);
+				sharing.setDateChanged(currentTimestamp);
+				ManagementProject.updateJPASharing(sharing);
+			}
 			break;
 		default:
 			System.out.println("Permiso "+perm+" no reconocido.");
-
 		}
-		ManagementProject.updateJPASharing(sharing);
 	}
 }

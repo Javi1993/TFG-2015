@@ -37,7 +37,7 @@ public class Project implements Serializable {
 	private Statuscategory statuscategory;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne//(cascade=CascadeType.PERSIST)
+	@ManyToOne//(cascade=CascadeType.ALL)
 	@JoinColumn(name="UID")
 	private User user;
 

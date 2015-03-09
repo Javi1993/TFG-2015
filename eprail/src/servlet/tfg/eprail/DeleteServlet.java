@@ -33,7 +33,6 @@ import controller.tfg.eprail.ManagementProject;
  * Servlet implementation class DeleteServlet
  */
 @WebServlet("/delete")
-@SuppressWarnings("unchecked")
 public class DeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
