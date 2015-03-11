@@ -31,7 +31,7 @@
 						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getStatuscategory().getStatusDescription()%>">
 						<%=project.getStatuscategory().getStatusName()%>
 						</span></td>
-						<td>
+						<td style="color: #C0C0C0;">
 						<%
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
 						<%=sdf.format(project.getDateModified())%>
@@ -59,19 +59,20 @@
 					<tr class="row">
 						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
 						<td><%=project.getProject().getProjectName().replaceAll(".ongf", "") %></td>
+						<td style="color: #C0C0C0;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
 						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
 						<%=project.getProject().getStatuscategory().getStatusName()%>
 						</span></td>
-						<td>
+						<td style="color: #C0C0C0;">
 						<%
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
 						<%=sdf.format(project.getProject().getDateModified()) %>
 						</td>
 						<td><img src="/eprail/img/eye.png" alt="see"></td>
-						<td><img src="/eprail/img/gear.png" alt="run"></td>
-						<td><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
-						<td><a href="/eprail/controller/jsp/shared.jsp?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
-						<td><a href="/eprail/controller/delete?id=<%=project.getProject().getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a></td>
+						<td><%if(project.getAllowRecalculate()!=0){ %><img src="/eprail/img/gear.png" alt="run"><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
+						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
+						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/jsp/shared.jsp?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>
+						<td><%if(project.getAllowDelete()!=0){ %><a href="/eprail/controller/delete?id=<%=project.getProject().getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>
 					</tr>
 					<%
 							}
