@@ -109,14 +109,6 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public List<Deletedproject> getDeletedprojects() {
-		return this.deletedprojects;
-	}
-
-	public void setDeletedprojects(List<Deletedproject> deletedprojects) {
-		this.deletedprojects = deletedprojects;
-	}
 	
 	public boolean getLoggedIn() {
 		return loggedIn;
@@ -124,6 +116,14 @@ public class User implements Serializable {
 
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
+	}
+	
+	public List<Deletedproject> getDeletedprojects() {
+		return this.deletedprojects;
+	}
+
+	public void setDeletedprojects(List<Deletedproject> deletedprojects) {
+		this.deletedprojects = deletedprojects;
 	}
 
 	public Deletedproject addDeletedproject(Deletedproject deletedproject) {

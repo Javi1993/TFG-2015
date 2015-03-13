@@ -1,5 +1,7 @@
 package controller.tfg.eprail;
 
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -77,5 +79,23 @@ public class ManagementUser {
 		} catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
+	}
+	
+	public static List<User> buscarJPAUserCompartir(User user){
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			List<User> listUser = manager.findUsersToShare(user);//Buscamos al proveedor con ese eamil		
+			if(!listUser.isEmpty())
+			{
+				return listUser;
+			}
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+		return null;
 	}
 }

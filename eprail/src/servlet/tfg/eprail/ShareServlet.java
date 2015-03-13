@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.util.ArrayList;
 import java.util.List;
 
 import modeldata.tfg.eprail.Sharing;
@@ -145,6 +146,34 @@ public class ShareServlet extends HttpServlet {
 		User userBean = (User) session.getAttribute("userBean");
 
 		List<Sharing> list = ManagementProject.buscarJPAUsuariosCompartidos(userBean, Long.parseLong(request.getParameter("id")));
+		List<User> listU = ManagementUser.buscarJPAUserCompartir(userBean);
+		List<User> aux = new ArrayList<User>();
+		if(list!=null && listU!=null)
+		{
+			int cnt;
+			for(Sharing userSh : list)
+			{//borramos de la lista de Sharings usuarios a los que ya ha sido compartido y a usuarios que compartieron ese proyecto
+				cnt = 0;
+				for(User user : listU)
+				{
+					if((userSh.getUser1().getUid()==user.getUid())||(userSh.getUser2().getUid()==user.getUid()))
+					{
+						cnt++;
+						if(cnt==2)
+						{//nos ahorramos recorrer todos los usuarios por cada comparticion (maximo 2 (el que hizo la comparticion y el compartido))
+							break;
+						}
+					}else{
+						aux.add(user);
+					}
+				}
+			}
+
+			request.getSession().setAttribute("userList", aux);
+		}else{
+			request.getSession().setAttribute("userList", listU);
+		}
+
 		request.getSession().setAttribute("userSharedList", list);
 
 		request.getRequestDispatcher("/jsp/shared.jsp?n="+ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))).getProjectName()).forward(request, response);

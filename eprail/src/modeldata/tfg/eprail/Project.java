@@ -1,7 +1,9 @@
 package modeldata.tfg.eprail;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -24,7 +26,6 @@ public class Project implements Serializable {
 
 	private Timestamp dateModified;
 
-	@Lob
 	private byte[] ONGFile;
 
 	private String projectDescription;
@@ -37,7 +38,7 @@ public class Project implements Serializable {
 	private Statuscategory statuscategory;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne//(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne//(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="UID")
 	private User user;
 

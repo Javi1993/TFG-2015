@@ -22,7 +22,6 @@ public class Deletedproject implements Serializable {
 
 	private Timestamp dateDeleted;
 
-	@Lob
 	private byte[] ONGFile;
 
 	private String projectDescription;

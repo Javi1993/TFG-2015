@@ -11,7 +11,7 @@ import modeldata.tfg.eprail.*;
 @SuppressWarnings("unchecked")
 public class ProxyManager {
 
-	
+
 	@PersistenceUnit(unitName="eprail")
 	private EntityManagerFactory emf;
 
@@ -131,7 +131,7 @@ public class ProxyManager {
 		}
 		return user;
 	}
-	
+
 	public Project findProjectByPK(long id) {
 		Project project = null;
 		EntityManager em = getEntityManager();
@@ -142,7 +142,7 @@ public class ProxyManager {
 		}
 		return project;
 	}
-	
+
 	public Sharing findSharingByPK(long id) {
 		Sharing sharing = null;
 		EntityManager em = getEntityManager();
@@ -160,6 +160,14 @@ public class ProxyManager {
 						"SELECT c FROM User c WHERE c.email LIKE :custEmail")
 						.setParameter("custEmail",email)
 						.getSingleResult();
+	}
+
+	public List<User> findUsersToShare(User user) {
+		return (List<User>) getEntityManager()
+				.createQuery(
+						"SELECT c FROM User c WHERE c.uid <> :custUID")
+						.setParameter("custUID",user.getUid())
+						.getResultList();
 	}
 
 	public User findUserByEmailAndPass(User user) {
@@ -197,7 +205,7 @@ public class ProxyManager {
 						.setParameter("custUID", user.getUid())
 						.getResultList();
 	}
-	
+
 	public List<Sharing> findUsersSharedByUserUIDAndIdProject (User user, long id)
 	{
 		return 	(List<Sharing>) getEntityManager()

@@ -1,14 +1,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.*, modeldata.tfg.eprail.Sharing"%>
+<%@page import="java.util.*, modeldata.tfg.eprail.Sharing, modeldata.tfg.eprail.User"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%List<User> listUser = (List<User>) request.getSession().getAttribute("userList"); %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+<link href="/eprail/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/center.js"></script>
+<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/eprail/script/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    var projects = [
+	<%if(listUser!=null && listUser.size()!=0){ 
+		for(User us : listUser){ %>
+      {
+        value: "<%= us.getFirstName().toUpperCase()%> <%=us.getFamilyName().toUpperCase()%>",
+        desc: "<%=us.getEmail()%>"
+      },
+      <%}}%>
+    ];
+ 
+    $( "#tags" ).autocomplete({
+      minLength: 0,
+      source: projects,
+      focus: function( event, ui ) {
+        $( "#tags" ).val( ui.item.value );
+        $( "#tags" ).val( ui.item.desc );
+        return false;
+      },
+      select: function( event, ui ) {
+        $( "#tags" ).val( ui.item.desc );
+ 
+        return false;
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a>" + item.value + "<br>" + item.desc + "</a>" )
+        .appendTo( ul );
+    };
+  });
+</script>
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
@@ -20,7 +57,7 @@
 			height="30"></a>
 		<p>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto</p>
 		<form action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
-			<input type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
+			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
 		</form>
 		<br><br><br><br>
 		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
