@@ -53,7 +53,7 @@ $(function() {
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
-		<span class="title">Compartir proyecto <%=request.getParameter("n").replaceAll(".ongf", "")%></span>&nbsp;&nbsp;<a class="subtitle" style="left:28%;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title">Compartir proyecto <%=request.getParameter("n")%></span>&nbsp;&nbsp;<a class="subtitle" style="left:28%;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<p>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto</p>
 		<form action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">

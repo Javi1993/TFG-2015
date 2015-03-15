@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -18,14 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
-
 import modeldata.tfg.eprail.User;
 import modeldata.tfg.eprail.Project;
-
 import com.mysql.jdbc.PreparedStatement;
-
-import controller.tfg.eprail.ManagementProject;
-import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -46,6 +40,7 @@ public class UploadServlet extends HttpServlet {
 	 * Name of the directory where uploaded files will be saved,
 	 */
 	private static final String SAVE_DIR = "ONGFiles";
+	private static final String TEMP_DIR = "temp";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -90,11 +85,21 @@ public class UploadServlet extends HttpServlet {
 		}
 		System.out.println("Upload File Directory="+fileSaveDir.getAbsolutePath());
 
-		String fileName = null;
 		//Get all the parts from request and write it to the file on server
 		for (Part part : request.getParts()) {
-			fileName = Funciones.getFileName(part);
-			part.write(uploadFilePath + File.separator + insertFile(fileName, userBean, uploadFilePath));	
+			//validamos el Manifest.xml
+			if(Funciones.getManifest(part, userBean.getUid(), applicationPath))
+			{
+				String urlManifest = applicationPath + File.separator + TEMP_DIR + File.separator + userBean.getUid();
+				Project p = new Project();
+				Funciones.getFileName(urlManifest, p);
+				if(p.getProjectName()!=null&&p.getProjectDescription()!=null)
+				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
+					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));	
+				}
+			}else{
+				//redirigir a pagina diciendo que no hay amnifest o este es invalido!
+			}
 		}
 	}
 
@@ -105,7 +110,7 @@ public class UploadServlet extends HttpServlet {
 	 * @param path - Localización
 	 * @return - ID del proyecto
 	 */
-	protected long insertFile(String fileName, User user, String path){
+	protected long insertFile(Project project, User user, String path){
 		/*Project project  = new Project();
 		project.setProjectName(fileName);
 		project.setONGFile(path.getBytes());
@@ -121,12 +126,13 @@ public class UploadServlet extends HttpServlet {
 
 			Connection conexion = myDS.getConnection();
 
-			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO projects (ProjectName, ONGFile, UID) values (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			myPS.setString(1, fileName);
+			PreparedStatement myPS = (PreparedStatement) conexion.prepareStatement("INSERT INTO projects (ProjectName, ProjectDescription, ONGFile, UID) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			myPS.setString(1, project.getProjectName());
 			Blob blob = conexion.createBlob();
 			blob.setBytes(1, path.getBytes());
-			myPS.setBlob(2, blob);
-			myPS.setLong(3, user.getUid());
+			myPS.setString(2, project.getProjectDescription());
+			myPS.setBlob(3, blob);
+			myPS.setLong(4, user.getUid());
 			myPS.executeUpdate();
 
 			ResultSet rs = myPS.getGeneratedKeys();

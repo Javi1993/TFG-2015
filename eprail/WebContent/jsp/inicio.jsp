@@ -27,7 +27,7 @@
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder.png" alt="project" width="30" height="30"></td>
-						<td><%=project.getProjectName().replaceAll(".ongf", "") %></td>
+						<td><%=project.getProjectName()%></td>
 						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getStatuscategory().getStatusDescription()%>">
 						<%=project.getStatuscategory().getStatusName()%>
 						</span></td>
@@ -58,7 +58,7 @@
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
-						<td><%=project.getProject().getProjectName().replaceAll(".ongf", "") %></td>
+						<td><%=project.getProject().getProjectName()%></td>
 						<td style="color: #C0C0C0;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
 						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
 						<%=project.getProject().getStatuscategory().getStatusName()%>
