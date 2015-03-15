@@ -96,9 +96,11 @@ public class UploadServlet extends HttpServlet {
 				if(p.getProjectName()!=null&&p.getProjectDescription()!=null)
 				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
 					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));	
+				}else{
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Aimportant_parameter needed");
 				}
-			}else{
-				//redirigir a pagina diciendo que no hay amnifest o este es invalido!
+			}else{//no hay manifest o este es invalido
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
 			}
 		}
 	}
@@ -115,13 +117,13 @@ public class UploadServlet extends HttpServlet {
 		project.setProjectName(fileName);
 		project.setONGFile(path.getBytes());
 		project.setUser(user);
-		
+
 		ManagementProject.subirJPAProyecto(project);
 		System.out.println("----------a "+project.getIdProject());
 		//terminarss
 		return project.getIdProject();*/
 		long id = 0;
-		
+
 		try {
 
 			Connection conexion = myDS.getConnection();

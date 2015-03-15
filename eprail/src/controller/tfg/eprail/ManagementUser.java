@@ -3,6 +3,7 @@ package controller.tfg.eprail;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import modeldata.tfg.eprail.User;
@@ -44,7 +45,7 @@ public class ManagementUser {
 		manager.setEntityManagerFactory(factory);
 		try {
 			return manager.findUserByEmail(email);//Buscamos al proveedor con ese eamil		
-		} catch (Exception e) {
+		} catch (NoResultException e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
 		return null;
@@ -61,7 +62,7 @@ public class ManagementUser {
 			user.setLoggedIn(true);
 			return user;
 		}
-		catch (Exception e) {
+		catch (NoResultException e) {
 			System.out.println("Descripción: " + e.getMessage());
 			user.setLoggedIn(false);
 			return user;

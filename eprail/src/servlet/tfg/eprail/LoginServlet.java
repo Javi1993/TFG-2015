@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.tfg.eprail.ManagementProject;
+import funciones.tfg.eprail.Funciones;
 
 /**
  * Servlet implementation class LoginServlet
@@ -40,11 +41,11 @@ public class LoginServlet extends HttpServlet {
 		User userBean = (User) session.getAttribute("userBean");
 
 		List<Project> list = ManagementProject.buscarJPAProyectosPropios(userBean);
-		request.getSession().setAttribute("projectList", list);
+		request.getSession().setAttribute("projectList", list);//buscamos en la BBDD los archivos propios
 
 		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
-		request.getSession().setAttribute("projectListShared", listSh);
-
+		request.getSession().setAttribute("projectListShared", listSh);//buscamos en la BBDD los archivos compartidos
+		
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}
 
@@ -57,10 +58,14 @@ public class LoginServlet extends HttpServlet {
 		User userBean = (User) session.getAttribute("userBean");
 
 		List<Project> list = ManagementProject.buscarJPAProyectosPropios(userBean);
-		request.getSession().setAttribute("projectList", list);
+		request.getSession().setAttribute("projectList", list);//buscamos en la BBDD los archivos propios
 
 		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
-		request.getSession().setAttribute("projectListShared", listSh);
+		request.getSession().setAttribute("projectListShared", listSh);//buscamos en la BBDD los archivos compartidos
+		
+		//Extraemos los archivos html [FALTA EXTRAER LOS ARCHIVOS COMPARTIDOS
+		String applicationPath = request.getServletContext().getRealPath("");
+		Funciones.extraerHTML(applicationPath, userBean.getUid());
 
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}

@@ -1,6 +1,8 @@
 package funciones.tfg.eprail;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -10,7 +12,6 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -32,16 +33,15 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
 import controller.tfg.eprail.ManagementProject;
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.Sharing;
 
 public class Funciones {
 
+	private static final String SAVE_DIR = "ONGFiles";
 	private static final String TEMP_DIR = "temp";
 
 	/**
@@ -286,5 +286,68 @@ public class Funciones {
 			e.printStackTrace();
 		}
 		return foundManifest;
+	}
+
+	/**
+	 * Extrae en carpetas temporales el contenido HTML de los proyectos
+	 * @param applicationPath
+	 * @param uid
+	 */
+	public static void extraerHTML(String applicationPath, long uid) {
+		try {
+			File dir = new File(applicationPath + File.separator + SAVE_DIR + File.separator + uid);//directorio donde estan los proyectos del usuario
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			//creamos el directorio temporal del usuario
+			String path = applicationPath + File.separator + TEMP_DIR + File.separator + uid;
+			File tempDir = new File(path);
+			if (!tempDir.exists()) {
+				tempDir.mkdirs();
+			}
+
+			String[] files = dir.list();
+			for(String s: files){//descomprimimos el htmlde cada proyecto
+				//creamos el directorio del proyecto y sus hijos
+				String pathHTML = path + File.separator + s;
+				File HTMLDir = new File(pathHTML);
+				if (!HTMLDir.exists()) {
+					HTMLDir.mkdirs();
+				}
+
+				ZipInputStream zis = new ZipInputStream(new FileInputStream(dir.getPath() + File.separator + s));
+				ZipEntry entrada;
+				while (null != (entrada=zis.getNextEntry()) )
+				{
+					if(entrada.getName().startsWith("html/"))
+					{
+						File fileToWrite = new File(HTMLDir, entrada.getName());
+						File folder = fileToWrite.getParentFile();
+						if(!folder.mkdirs() && !folder.exists()) {
+							fileToWrite.mkdirs();
+							folder.mkdirs();
+						}
+
+						if(!entrada.isDirectory())
+						{
+							FileOutputStream fos = new FileOutputStream(fileToWrite);
+							int leido;
+							byte [] buffer = new byte[1024];
+							while (0<(leido=zis.read(buffer))){
+								fos.write(buffer,0,leido);
+							}
+							fos.close();
+						}
+					}
+				}
+				zis.close();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
