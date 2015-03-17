@@ -36,7 +36,7 @@
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
 						<%=sdf.format(project.getDateModified())%>
 						</td>
-						<td><img src="/eprail/img/eye.png" alt="see"></td>
+						<td><a href="/eprail/controller/see?id=<%=project.getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
 						<td><img src="/eprail/img/gear.png" alt="run"></td>
 						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>

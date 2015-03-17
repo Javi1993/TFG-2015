@@ -5,13 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.regex.Matcher;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -33,11 +38,17 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 import controller.tfg.eprail.ManagementProject;
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.Sharing;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
 
 public class Funciones {
 
@@ -338,6 +349,12 @@ public class Funciones {
 							}
 							fos.close();
 						}
+
+						if(fileToWrite.getName().startsWith("content"))
+						{
+							String ruta = TEMP_DIR + File.separator + uid + File.separator + s;
+							modificarRutasContent(applicationPath, ruta, fileToWrite.getName());
+						}
 					}
 				}
 				zis.close();
@@ -345,6 +362,49 @@ public class Funciones {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param applicationPath - ruta de la app
+	 * @param ruta - ruta del proyecto en la carpeta temp del usuario
+	 * @param name - nombre del archivo HTML
+	 */
+	public static void modificarRutasContent(String applicationPath, String ruta, String name)
+	{
+		try 
+		{//modificamos las rutas relativas para que se muestren bien los enlaces e hipervinculos del html
+			File input = new File(applicationPath + File.separator + ruta + File.separator + "html" + File.separator + name);
+			org.jsoup.nodes.Document doc = Jsoup.parse(input, "UTF-8");
+			Elements aTag = doc.select("a[href]");
+			Elements imgTag = doc.select("img[src]");
+			for(Element link : aTag)
+			{//editamos las rutas de la etiqueta <a>
+				String relative = link.attr("href");
+				relative = relative.replaceAll("/", Matcher.quoteReplacement(File.separator));
+				link.removeAttr("href");
+				link.attr("href", File.separator + "eprail" + File.separator + ruta + File.separator + "html" + File.separator + relative);
+			}
+			for(Element link : imgTag)
+			{//editamos las rutas de la etiqueta img
+				String relative = link.attr("src");
+				relative = relative.replaceAll("/", Matcher.quoteReplacement(File.separator));
+				link.removeAttr("src");
+				link.attr("src", File.separator + "eprail" + File.separator + ruta + File.separator + "html" + File.separator + relative);
+			}
+
+			Writer writer = new PrintWriter(input, "UTF-8");
+			writer.write(doc.outerHtml());
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

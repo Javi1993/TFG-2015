@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 		//Extraemos los archivos html [FALTA EXTRAER LOS ARCHIVOS COMPARTIDOS
 		String applicationPath = request.getServletContext().getRealPath("");
 		Funciones.extraerHTML(applicationPath, userBean.getUid());
-
+		System.out.println("HOLLLLLLLLLLLLAAAAAA");
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}
 }

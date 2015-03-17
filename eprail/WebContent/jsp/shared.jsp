@@ -11,7 +11,6 @@
 <link href="/eprail/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/center.js"></script>
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/jquery-ui.min.js"></script>
 <script>
 $(function() {
@@ -29,13 +28,11 @@ $(function() {
       minLength: 0,
       source: projects,
       focus: function( event, ui ) {
-        $( "#tags" ).val( ui.item.value );
         $( "#tags" ).val( ui.item.desc );
         return false;
       },
       select: function( event, ui ) {
         $( "#tags" ).val( ui.item.desc );
- 
         return false;
       }
     })
@@ -44,7 +41,7 @@ $(function() {
         .append( "<a>" + item.value + "<br>" + item.desc + "</a>" )
         .appendTo( ul );
     };
-  });
+  }); 
 </script>
 </head>
 <body>
@@ -59,6 +56,7 @@ $(function() {
 		<form action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
 			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
 		</form>
+		<sub style="font-size: 10px; color:#C0C0C0">Si no recuerdas el email puedes bucar por el nombre</sub>
 		<br><br><br><br>
 		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>
