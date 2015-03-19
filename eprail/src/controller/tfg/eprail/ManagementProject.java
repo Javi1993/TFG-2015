@@ -178,4 +178,46 @@ public class ManagementProject {
 			System.out.println("Descripción: " + e.getMessage());						
 		}
 	}
+	
+	/**
+	 * Metodo usado tras borrar permisos a un usuario, sebusca si este usuario dio permisos a otros para revocarlos
+	 * @param uid - uid del compartido
+	 * @param id - id del proyecto
+	 * @return
+	 */
+	public static Sharing buscarJPAReferido(long uid, long id)
+	{
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+
+		try {
+			return manager.findSharingByIdandUID(uid, id);//realizamos la busqueda
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+		return null;
+	}
+	
+	/**
+	 * Busca la entrada en sharings de quien le compartio este proyecto al usuario
+	 * @param uid - uid del compartido
+	 * @param id - id del proyecto
+	 * @return Entrada sharings | null en caso de que el usuario sea el dueño
+	 */
+	public static Sharing buscarJPAPadre(long uid, long id)
+	{
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+
+		try {
+			return manager.findSharedByIdandUID(uid, id);//realizamos la busqueda
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+		return null;
+	}
 }

@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 
 		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
 		request.getSession().setAttribute("projectListShared", listSh);//buscamos en la BBDD los archivos compartidos
-		
+
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}
 
@@ -62,11 +62,14 @@ public class LoginServlet extends HttpServlet {
 
 		List<Sharing> listSh = ManagementProject.buscarJPAProyectosCompartidos(userBean);
 		request.getSession().setAttribute("projectListShared", listSh);//buscamos en la BBDD los archivos compartidos
-		
+
 		//Extraemos los archivos html [FALTA EXTRAER LOS ARCHIVOS COMPARTIDOS
-		String applicationPath = request.getServletContext().getRealPath("");
-		Funciones.extraerHTML(applicationPath, userBean.getUid());
-		System.out.println("HOLLLLLLLLLLLLAAAAAA");
+		if(list!=null)
+		{
+			String applicationPath = request.getServletContext().getRealPath("");
+			Funciones.extraerHTML(applicationPath, userBean.getUid());
+		}
+
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}
 }

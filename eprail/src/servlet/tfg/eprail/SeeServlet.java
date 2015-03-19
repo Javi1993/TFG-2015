@@ -2,15 +2,18 @@ package servlet.tfg.eprail;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.User;
 import controller.tfg.eprail.ManagementProject;
+import funciones.tfg.eprail.Funciones;
 
 /**
  * Servlet implementation class SeeServlet
@@ -53,7 +56,7 @@ public class SeeServlet extends HttpServlet {
 		String content="";
 		for(String j : f.list())
 		{
-			if(j.startsWith("content"))
+			if(Funciones.validarResultadoHtml(j))
 			{
 				content = j;
 				break;

@@ -187,6 +187,24 @@ public class ProxyManager {
 						.setParameter("custId", id)
 						.getSingleResult();
 	}
+	
+	public Sharing findSharingByIdandUID(long uid, long id) {
+		return (Sharing) getEntityManager()
+				.createQuery(
+						"SELECT c FROM Sharing c WHERE c.user2.uid LIKE :custUID AND c.project.idProject LIKE :custId")
+						.setParameter("custUID", uid)
+						.setParameter("custId", id)
+						.getSingleResult();
+	}
+	
+	public Sharing findSharedByIdandUID(long uid, long id) {
+		return (Sharing) getEntityManager()
+				.createQuery(
+						"SELECT c FROM Sharing c WHERE c.user1.uid LIKE :custUID AND c.project.idProject LIKE :custId")
+						.setParameter("custUID", uid)
+						.setParameter("custId", id)
+						.getSingleResult();
+	}
 
 	public List<Project> findProjectsByUserUID (User user)
 	{
@@ -210,7 +228,7 @@ public class ProxyManager {
 	{
 		return 	(List<Sharing>) getEntityManager()
 				.createQuery(
-						"SELECT c FROM Sharing c WHERE c.user1.uid <> :custUID AND c.project.idProject LIKE :custID")
+						"SELECT c FROM Sharing c WHERE c.user1.uid <> :custUID AND c.project.idProject LIKE :custID AND c.user2.uid = :custUID")
 						.setParameter("custUID", user.getUid())
 						.setParameter("custID", id)
 						.getResultList();

@@ -7,6 +7,7 @@ import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.List;
 
+import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.Sharing;
 import modeldata.tfg.eprail.User;
 
@@ -51,11 +52,20 @@ public class ShareServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		if(request.getParameter("op").equals("1"))
 		{//borramos a un usuario de la comparticion
-			ManagementProject.borrarJPAObject(ManagementProject.buscarJPACompartidoId(Long.parseLong(request.getParameter("i"))));
+			Sharing sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(request.getParameter("i")));
+			long compartido = sh.getUser1().getUid();
+			ManagementProject.borrarJPAObject(sh);
+			Sharing aux = null;
+			while(null!=(aux=ManagementProject.buscarJPAReferido(compartido, Long.parseLong(request.getParameter("id")))))
+			{//borramos los usuarios con los que haya compartido el proyecto el usuario al que vamos a eliminar de la lista
+				System.out.println("+++++++++++++ "+aux.getUser1().getUid());
+				compartido = aux.getUser1().getUid();
+				ManagementProject.borrarJPAObject(aux);
+			}
 			loadProjects(request, response);
 		}
 		else if(request.getParameter("op").equals("2"))
-		{//mostramos la lista de usuarios con acceso a ese documento
+		{//mostramos la lista de usuarios con acceso a ese documento y de los cuales el usuario les dio acceso
 			loadProjects(request, response);
 		}	
 	}
@@ -104,7 +114,7 @@ public class ShareServlet extends HttpServlet {
 							{//el id de ahora es del mismo usuario que antes
 								Funciones.asignarPermiso(sh, j[i].charAt(0));
 							}else{
-								sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+								sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(j[i].substring(1)));
 								sh.setAllowDelete((byte)0);
 								sh.setAllowDownload((byte)0);
 								sh.setAllowRecalculate((byte)0);
@@ -112,7 +122,7 @@ public class ShareServlet extends HttpServlet {
 								Funciones.asignarPermiso(sh, j[i].charAt(0));
 							}
 						}else{
-							sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(String.valueOf(j[i].charAt(1))));
+							sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(j[i].substring(1)));
 							sh.setAllowDelete((byte)0);
 							sh.setAllowDownload((byte)0);
 							sh.setAllowRecalculate((byte)0);
@@ -145,37 +155,49 @@ public class ShareServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
 
-		List<Sharing> list = ManagementProject.buscarJPAUsuariosCompartidos(userBean, Long.parseLong(request.getParameter("id")));
+		List<Sharing> list = ManagementProject.buscarJPAUsuariosCompartidos(userBean, Long.parseLong(request.getParameter("id")));//lista con usuarios con los que hemos compartido
 		List<User> listU = ManagementUser.buscarJPAUserCompartir(userBean);
 		List<User> aux = new ArrayList<User>();
-		if(list!=null && listU!=null)
+		if(listU!=null)
 		{
-			int cnt;
-			for(Sharing userSh : list)
-			{//borramos de la lista de Sharings usuarios a los que ya ha sido compartido y a usuarios que compartieron ese proyecto
-				cnt = 0;
-				for(User user : listU)
-				{
-					if((userSh.getUser1().getUid()==user.getUid())||(userSh.getUser2().getUid()==user.getUid()))
+			Project p = ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
+			if(list!=null)
+			{//Esta compartiendo ya el proyecto a otras personas
+				for(Sharing userSh : list)
+				{//borramos de la lista de Sharings usuarios a los que ya ha sido compartido y a usuarios que compartieron ese proyecto
+					for(User user : listU)
 					{
-						cnt++;
-						if(cnt==2)
-						{//nos ahorramos recorrer todos los usuarios por cada comparticion (maximo 2 (el que hizo la comparticion y el compartido))
-							break;
+						if((userSh.getUser1().getUid()!=user.getUid())&&(userSh.getUser2().getUid()!=user.getUid())&&(user.getUid()!=p.getUser().getUid()))
+						{
+							aux.add(user);
 						}
-					}else{
-						aux.add(user);
+					}
+				}
+			}else//no comparte todavia el proyecto con otras personas
+			{//borramos de la lista al propio dueño del proyecto y a quien se lo compartio (en caso que no sea dueño)
+				Sharing shar = ManagementProject.buscarJPAPadre(userBean.getUid(), Long.parseLong(request.getParameter("id")));//si no somos dueños del proyecto nos dira quien nos lo compartio
+				if(shar!=null)
+				{//el que compartio el proyecto no es el dueño
+					for(User user : listU)
+					{
+						if(user.getUid()!=p.getUser().getUid()&&user.getUid()!=shar.getUser2().getUid())
+						{
+							aux.add(user);
+						}
+					}
+				}else{//el que compartio el proyecto es el dueño
+					for(User user : listU)
+					{
+						if(user.getUid()!=p.getUser().getUid())
+						{
+							aux.add(user);
+						}
 					}
 				}
 			}
-
-			request.getSession().setAttribute("userList", aux);
-		}else{
-			request.getSession().setAttribute("userList", listU);
 		}
-
-		request.getSession().setAttribute("userSharedList", list);
-
+		request.setAttribute("userList", aux);
+		request.setAttribute("userSharedList", list);
 		request.getRequestDispatcher("/jsp/shared.jsp?n="+ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))).getProjectName()).forward(request, response);
 	}
 }

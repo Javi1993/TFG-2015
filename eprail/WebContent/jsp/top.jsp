@@ -12,7 +12,7 @@
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprail.User"
 		scope="session" />
-	<div id="top">
+	<div id="top" style="background-color: #FFF;">
 		<img class="top" src="/eprail/img/off.png" alt="off" width="20"
 			height="20" title="El simulador OlgaNG no est&aacute; operativo"><span class="top"><jsp:getProperty
 				name="userBean" property="firstName" /></span><span class="top"><jsp:getProperty

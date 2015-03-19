@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -143,6 +144,8 @@ public class Funciones {
 			p.setProjectName((String) expr.evaluate(doc, XPathConstants.STRING));
 			expr = xpath.compile("ONGProjectManifest/@Description");
 			p.setProjectDescription((String) expr.evaluate(doc, XPathConstants.STRING));
+			File file = new File(path + File.separator + "Manifest.xml");
+			file.delete();
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,7 +353,7 @@ public class Funciones {
 							fos.close();
 						}
 
-						if(fileToWrite.getName().startsWith("content"))
+						if(validarResultadoHtml(fileToWrite.getName()))
 						{
 							String ruta = TEMP_DIR + File.separator + uid + File.separator + s;
 							modificarRutasContent(applicationPath, ruta, fileToWrite.getName());
@@ -367,7 +370,23 @@ public class Funciones {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Valida si el HTML con el resultado esta correctamente nombrado
+	 * @param name - Nombre del archivo
+	 * @return booleano con resultado
+	 */
+	public static boolean validarResultadoHtml(String name)
+	{
+		Pattern pat = Pattern.compile("^(index|content)(\\.)(html|xhtml|htm)$", Pattern.CASE_INSENSITIVE);
+		Matcher mat = pat.matcher(name);
+		if (mat.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param applicationPath - ruta de la app

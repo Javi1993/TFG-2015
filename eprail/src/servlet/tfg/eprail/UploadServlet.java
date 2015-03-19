@@ -96,8 +96,9 @@ public class UploadServlet extends HttpServlet {
 				if(p.getProjectName()!=null&&p.getProjectDescription()!=null)
 				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
 					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));	
+					Funciones.extraerHTML(applicationPath, userBean.getUid());//extraemos el html del proyecto
 				}else{
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Aimportant_parameter needed");
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
 				}
 			}else{//no hay manifest o este es invalido
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");

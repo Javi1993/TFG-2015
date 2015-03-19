@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%List<User> listUser = (List<User>) request.getSession().getAttribute("userList"); %>
+<%List<User> listUser = (List<User>) request.getAttribute("userList"); %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@ $(function() {
 		<span class="title">Compartir proyecto <%=request.getParameter("n")%></span>&nbsp;&nbsp;<a class="subtitle" style="left:28%;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<p>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto</p>
-		<form action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
+		<form id="form" action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
 			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
 		</form>
 		<sub style="font-size: 10px; color:#C0C0C0">Si no recuerdas el email puedes bucar por el nombre</sub>
@@ -73,7 +73,7 @@ $(function() {
 					</tr>
 
 					<%
-					List<Sharing> list = (List<Sharing>) request.getSession().getAttribute("userSharedList");
+					List<Sharing> list = (List<Sharing>) request.getAttribute("userSharedList");
 					if (list != null) {
 						int cnt=0;	
 						for (Sharing sh : list) {
