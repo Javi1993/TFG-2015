@@ -9,5 +9,8 @@
 		<class>modeldata.tfg.eprail.Sharing</class>
 		<class>modeldata.tfg.eprail.Statuscategory</class>
 		<class>modeldata.tfg.eprail.User</class>
+		<properties>
+			<property name="openjpa.jdbc.SynchrnozieMappings" value="buildSchema"/>
+		</properties>
 	</persistence-unit>
 </persistence>

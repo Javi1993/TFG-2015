@@ -1,4 +1,9 @@
 @CHARSET "utf-8";
+body, html{
+	height: 100%;
+	overflow: auto;
+}
+
 div.center{
 	border:2px solid #800000; 
 	-webkit-border-radius: 40px;

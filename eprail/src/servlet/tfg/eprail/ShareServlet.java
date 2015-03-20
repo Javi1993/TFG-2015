@@ -6,11 +6,9 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.List;
-
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.Sharing;
 import modeldata.tfg.eprail.User;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,9 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import controller.tfg.eprail.ManagementProject;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
@@ -97,7 +93,7 @@ public class ShareServlet extends HttpServlet {
 					myPs.close();
 					conexion.close();
 				}else{
-					System.out.println("Email no encontrado-redirigir a pagina error, usar pagina error defecto con cmabio mensaje");
+					request.setAttribute("message", "El email introducido no existe en nuestro registro");
 				}
 				loadProjects(request, response);
 			}else if(request.getParameter("op").equals("2"))

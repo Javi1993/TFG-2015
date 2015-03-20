@@ -19,7 +19,7 @@ public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idProject;
 
 	private Timestamp dateCreation;
@@ -38,7 +38,7 @@ public class Project implements Serializable {
 	private Statuscategory statuscategory;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne//(cascade=CascadeType.PERSIST)
+	@ManyToOne//(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="UID")
 	private User user;
 

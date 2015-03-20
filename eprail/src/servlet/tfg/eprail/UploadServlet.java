@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,9 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
+
 import modeldata.tfg.eprail.User;
 import modeldata.tfg.eprail.Project;
+
 import com.mysql.jdbc.PreparedStatement;
+
+import controller.tfg.eprail.ManagementProject;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -114,15 +119,14 @@ public class UploadServlet extends HttpServlet {
 	 * @return - ID del proyecto
 	 */
 	protected long insertFile(Project project, User user, String path){
-		/*Project project  = new Project();
-		project.setProjectName(fileName);
-		project.setONGFile(path.getBytes());
-		project.setUser(user);
-
-		ManagementProject.subirJPAProyecto(project);
-		System.out.println("----------a "+project.getIdProject());
-		//terminarss
-		return project.getIdProject();*/
+		//Project project  = new Project();
+//		project.setONGFile(path.getBytes());
+//		project.setUser(user);
+//		
+//		ManagementProject.subirJPAProyecto(project);
+//		System.out.println("----------a "+project.getIdProject());
+//		//terminarss
+//		return project.getIdProject();
 		long id = 0;
 
 		try {
