@@ -108,7 +108,6 @@ public class UploadServlet extends HttpServlet {
 		project.setUser(user);
 		project.setStatuscategory(ManagementProject.buscarJPAStatus((byte)0));
 		ManagementProject.subirJPAProyecto(project);
-		System.out.println("----------a "+project.getIdProject());
 		return project.getIdProject();
 	}
 }
