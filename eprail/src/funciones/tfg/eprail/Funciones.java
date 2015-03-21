@@ -370,7 +370,7 @@ public class Funciones {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Valida si el HTML con el resultado esta correctamente nombrado
 	 * @param name - Nombre del archivo
@@ -386,7 +386,7 @@ public class Funciones {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param applicationPath - ruta de la app
@@ -427,6 +427,20 @@ public class Funciones {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Funcion que recibe un directorio y borra todo su contenido
+	 * @param directorio - directorio a borrar
+	 */
+	public static void borrarDirectorio (File directorio){
+		File[] hijos = directorio.listFiles();
+		for (int x=0;x<hijos.length;x++){
+			if (hijos[x].isDirectory()) {
+				borrarDirectorio(hijos[x]);
+			}
+			hijos[x].delete();
 		}
 	}
 }

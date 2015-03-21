@@ -1,18 +1,16 @@
 package controller.tfg.eprail;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-
 import modeldata.tfg.eprail.*;
 
 @SuppressWarnings("unchecked")
 public class ProxyManager {
 
 
-	@PersistenceUnit(unitName="eprail")
+	@PersistenceUnit(unitName="eprailJPA")
 	private EntityManagerFactory emf;
 
 	public ProxyManager() {
@@ -141,6 +139,17 @@ public class ProxyManager {
 			em.close();
 		}
 		return project;
+	}
+	
+	public Statuscategory findStatuscategoryByPK(byte id) {
+		Statuscategory status = null;
+		EntityManager em = getEntityManager();
+		try {
+			status = (Statuscategory) em.find(Statuscategory.class, id);
+		} finally {
+			em.close();
+		}
+		return status;
 	}
 
 	public Sharing findSharingByPK(long id) {

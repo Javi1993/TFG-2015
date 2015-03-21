@@ -2,13 +2,11 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import modeldata.tfg.eprail.User;
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
 
@@ -18,9 +16,6 @@ import funciones.tfg.eprail.Funciones;
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	@Resource(lookup="java:app/jdbc/eprail")
-	private DataSource myDS;
 
 	/**
 	 * @see HttpServlet#HttpServlet()

@@ -1,23 +1,17 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.List;
 import modeldata.tfg.eprail.Project;
 import modeldata.tfg.eprail.Sharing;
 import modeldata.tfg.eprail.User;
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-import com.mysql.jdbc.PreparedStatement;
 import controller.tfg.eprail.ManagementProject;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
@@ -29,9 +23,6 @@ import funciones.tfg.eprail.Funciones;
 @WebServlet("/share")
 public class ShareServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	@Resource(lookup="java:app/jdbc/eprail")
-	private DataSource myDS;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -73,50 +64,33 @@ public class ShareServlet extends HttpServlet {
 		// Buscamos el userBean en la session
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
-		try {
-			if(request.getParameter("op").equals("1"))
-			{//insertamos el nuevo usuario con el que se va a compartir en la BBDD
-				User userAdd = ManagementUser.buscarJPAUserEmail(request.getParameter("email"));
-				if(userAdd!=null)
+		if(request.getParameter("op").equals("1"))
+		{//insertamos el nuevo usuario con el que se va a compartir en la BBDD
+			User userAdd = ManagementUser.buscarJPAUserEmail(request.getParameter("email"));
+			if(userAdd!=null)
+			{
+				Sharing sh = new Sharing();
+				sh.setProject(ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))));
+				sh.setUser1(userAdd);
+				sh.setUser2(userBean);
+				ManagementProject.addJPACompartido(sh);
+			}else{
+				request.setAttribute("message", "El email introducido no existe en nuestro registro");
+			}
+			loadProjects(request, response);
+		}else if(request.getParameter("op").equals("2"))
+		{//cambio de permisos
+			String[] j = request.getParameterValues("perm");
+			Sharing sh = null;
+			if(j!=null)
+			{
+				for(int i = 0; i<j.length; i++)
 				{
-					//Sharing sh = new Sharing();
-					//sh.setProject(ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))));
-					//sh.setUser1(userAdd);
-					//sh.setUser2(userBean);
-					//ManagementProject.addJPACompartido(sh);
-					Connection conexion = myDS.getConnection();
-					PreparedStatement myPs = (PreparedStatement) conexion.prepareStatement("INSERT INTO sharings (IdProject, UID, UIDsharer) values (?,?,?)");
-					myPs.setLong(1, Long.parseLong(request.getParameter("id")));
-					myPs.setLong(2, userAdd.getUid());
-					myPs.setLong(3, userBean.getUid());
-					myPs.executeUpdate();
-					myPs.close();
-					conexion.close();
-				}else{
-					request.setAttribute("message", "El email introducido no existe en nuestro registro");
-				}
-				loadProjects(request, response);
-			}else if(request.getParameter("op").equals("2"))
-			{//cambio de permisos
-				String[] j = request.getParameterValues("perm");
-				Sharing sh = null;
-				if(j!=null)
-				{
-					for(int i = 0; i<j.length; i++)
+					if(i!=0)
 					{
-						if(i!=0)
-						{
-							if(j[i].charAt(1)==j[i-1].charAt(1))
-							{//el id de ahora es del mismo usuario que antes
-								Funciones.asignarPermiso(sh, j[i].charAt(0));
-							}else{
-								sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(j[i].substring(1)));
-								sh.setAllowDelete((byte)0);
-								sh.setAllowDownload((byte)0);
-								sh.setAllowRecalculate((byte)0);
-								sh.setAllowShare((byte)0);
-								Funciones.asignarPermiso(sh, j[i].charAt(0));
-							}
+						if(j[i].charAt(1)==j[i-1].charAt(1))
+						{//el id de ahora es del mismo usuario que antes
+							Funciones.asignarPermiso(sh, j[i].charAt(0));
 						}else{
 							sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(j[i].substring(1)));
 							sh.setAllowDelete((byte)0);
@@ -125,24 +99,17 @@ public class ShareServlet extends HttpServlet {
 							sh.setAllowShare((byte)0);
 							Funciones.asignarPermiso(sh, j[i].charAt(0));
 						}
+					}else{
+						sh = ManagementProject.buscarJPACompartidoId(Long.parseLong(j[i].substring(1)));
+						sh.setAllowDelete((byte)0);
+						sh.setAllowDownload((byte)0);
+						sh.setAllowRecalculate((byte)0);
+						sh.setAllowShare((byte)0);
+						Funciones.asignarPermiso(sh, j[i].charAt(0));
 					}
 				}
-				loadProjects(request, response);
 			}
-		}catch (SQLWarning sqlWarning) {
-			while (sqlWarning != null) {
-				System.out.println("Error: " + sqlWarning.getErrorCode());
-				System.out.println("Descripción: " + sqlWarning.getMessage());
-				System.out.println("SQLstate: " + sqlWarning.getSQLState());
-				sqlWarning = sqlWarning.getNextWarning();
-			}
-		} catch (SQLException sqlException) {
-			while (sqlException != null) {
-				System.out.println("Error: " + sqlException.getErrorCode());
-				System.out.println("Descripción: " + sqlException.getMessage());
-				System.out.println("SQLstate: " + sqlException.getSQLState());
-				sqlException = sqlException.getNextException();
-			}
+			loadProjects(request, response);
 		}
 	}
 

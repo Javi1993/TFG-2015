@@ -2,7 +2,6 @@ package servlet.tfg.eprail;
 
 import java.io.IOException;
 import modeldata.tfg.eprail.User;
-import javax.annotation.sql.DataSourceDefinition;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,21 +14,10 @@ import funciones.tfg.eprail.Funciones;
 /**
  * Servlet implementation class ServletController
  */
-@DataSourceDefinition(
-		name = "java:app/jdbc/eprail",
-		className = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource",
-		url = "jdbc:mysql://localhost:3306/eprail",
-		portNumber = 3306,
-		serverName = "localhost",
-		databaseName = "eprail",
-		user = "root",
-		password = "Javi.93",
-		properties = {"JtaManaged=false","pedantic=true"}
-		)
 @WebServlet(name="ServletController", urlPatterns={"/controller/*"})
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Default constructor. 
 	 */
@@ -50,7 +38,6 @@ public class ServletController extends HttpServlet {
 
 		// String que contiene la ruta de la pagina solicitada
 		String nextPage = request.getPathInfo();
-
 		System.out.println("------------------- "+nextPage);//debug
 
 		// Buscamos el userBean en la session
@@ -69,7 +56,7 @@ public class ServletController extends HttpServlet {
 			userBean.setEmail(request.getParameter("email"));
 			userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
 			userBean = ManagementUser.realizarJPALogin(userBean);
-			
+
 			if(userBean.getLoggedIn() == false || userBean == null)
 			{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
 				nextPage = "/errors/error-login.html";
@@ -78,7 +65,7 @@ public class ServletController extends HttpServlet {
 				session.setAttribute("userBean", userBean);
 			}
 		}
-		
+
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    

@@ -1,18 +1,16 @@
 package controller.tfg.eprail;
 
 import java.util.List;
-
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-
 import modeldata.tfg.eprail.User;
 
 public class ManagementUser {
 	
 	public static void registrarJPAUser(User newUser) {
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -25,7 +23,7 @@ public class ManagementUser {
 	
 	public static User buscarJPAUser(long uid){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -39,7 +37,7 @@ public class ManagementUser {
 	
 	public static User buscarJPAUserEmail(String email){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -53,7 +51,7 @@ public class ManagementUser {
 	
 	public static User realizarJPALogin(User user){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -70,7 +68,7 @@ public class ManagementUser {
 	}
 	
 	public static void updateJPAUser(User user) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -84,7 +82,7 @@ public class ManagementUser {
 	
 	public static List<User> buscarJPAUserCompartir(User user){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);

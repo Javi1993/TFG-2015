@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- editado con XMLSpy v2013 sp1 (x64) (http://www.altova.com) por Eduardo Pilo de la Fuente (EPRail Research and Consulting) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="ONGProjectManifest" type="ONGProjectManifestType">
+		<xs:annotation>
+			<xs:documentation>Root element of the manifest</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="GlobalRepositories">
+		<xs:annotation>
+			<xs:documentation>Type used to store the filenames of the global repositories</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TransformerRepositoryFile" type="XMLFileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>XML file with the characteristics of the power transformers used in the simulations.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CatenaryRepositoryFile" type="XMLFileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>XML file with the characteristics of the catenaries used in the simulations.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElectricalLinesRepositoryFile" type="XMLFileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>XML file with the characteristics of the lectrical lines used in the simulations.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ONGProjectManifestType">
+		<xs:annotation>
+			<xs:documentation>Structure used to define a project in the OlgaNG platform</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TopologyFile" type="XMLFileType">
+				<xs:annotation>
+					<xs:documentation>XML file with the description of the topology of the railway. Always located in the root path of the ONGF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Repositories" type="GlobalRepositories">
+				<xs:annotation>
+					<xs:documentation>XML files containing the global repositories.  Always located in the path lib.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Study" type="ONGStudyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Lists of the studies defined in the OlgaNG project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="IdProject" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Identifier of the OlgaNG project</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Description" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Extended description of the OlgaNG project</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ONGStudyType">
+		<xs:annotation>
+			<xs:documentation>Structure used to define a study inside of a project</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="IdStudy" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>File name of the study file. If used, paths must be relative to the root of the ONGF file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="XMLFileType">
+		<xs:annotation>
+			<xs:documentation>Type used for XML files</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="FileName" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>File name (if used, paths must be relative to the root of the ONGF file)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

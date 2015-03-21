@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import modeldata.tfg.eprail.User;
 import modeldata.tfg.eprail.Project;
 import controller.tfg.eprail.ManagementProject;
@@ -22,9 +20,6 @@ import controller.tfg.eprail.ManagementProject;
 @WebServlet("/download")
 public class DownloadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	@Resource(lookup="java:app/jdbc/eprail")
-	private DataSource myDS;
 
 	/**
 	 * @see HttpServlet#HttpServlet()

@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 
 import modeldata.tfg.eprail.Deletedproject;
 import modeldata.tfg.eprail.Project;
+import modeldata.tfg.eprail.Statuscategory;
 import modeldata.tfg.eprail.User;
 import modeldata.tfg.eprail.Sharing;
 
@@ -14,7 +15,7 @@ public class ManagementProject {
 	
 	public static void subirJPAProyecto(Project newProject) {
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -27,7 +28,7 @@ public class ManagementProject {
 	
 	public static void addJPACompartido(Sharing newShared) {
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -40,7 +41,7 @@ public class ManagementProject {
 	
 	public static void moverJPAProyecto(Deletedproject delProject) {
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -53,7 +54,7 @@ public class ManagementProject {
 	
 	public static void borrarJPAObject(Object object) {
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -66,7 +67,7 @@ public class ManagementProject {
 	
 	public static List<Project> buscarJPAProyectosPropios(User user){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -85,7 +86,7 @@ public class ManagementProject {
 	
 	public static List<Sharing> buscarJPAProyectosCompartidos(User user){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -104,7 +105,7 @@ public class ManagementProject {
 	
 	public static List<Sharing> buscarJPAUsuariosCompartidos(User user, long id){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -121,9 +122,24 @@ public class ManagementProject {
 		return null;
 	}
 	
+	public static Statuscategory buscarJPAStatus (byte id)
+	{
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			return manager.findStatuscategoryByPK(id);//realizamos la busqueda
+		}
+		catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());
+		}
+		return null;
+	}
+	
 	public static Project buscarJPAProyectoId(long id){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -138,7 +154,7 @@ public class ManagementProject {
 	
 	public static Project buscarJPAProyectoIdUID(User user, long id){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -153,7 +169,7 @@ public class ManagementProject {
 	
 	public static Sharing buscarJPACompartidoId(long id){
 
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -167,7 +183,7 @@ public class ManagementProject {
 	}
 	
 	public static void updateJPASharing(Sharing sharing) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -187,7 +203,7 @@ public class ManagementProject {
 	 */
 	public static Sharing buscarJPAReferido(long uid, long id)
 	{
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
@@ -208,7 +224,7 @@ public class ManagementProject {
 	 */
 	public static Sharing buscarJPAPadre(long uid, long id)
 	{
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprail"); 
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);

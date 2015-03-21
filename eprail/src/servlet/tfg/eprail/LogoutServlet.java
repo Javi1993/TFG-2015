@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 
+
+import funciones.tfg.eprail.Funciones;
 import modeldata.tfg.eprail.User;
 
 /**
@@ -33,17 +34,25 @@ public class LogoutServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
 		// Buscamos el userBean en la session
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
 
 		// gets absolute path of the web application
 		String applicationPath = request.getServletContext().getRealPath("");
-		//borramos el directorio temporal del usuario
-		FileUtils.deleteDirectory(new File(applicationPath + File.separator + "temp" + File.separator + userBean.getUid()));
 
+		//borramos el directorio temporal del usuario
+		File padre = new File(applicationPath + File.separator + "temp" + File.separator + userBean.getUid());
+		if(padre!=null)
+		{
+			Funciones.borrarDirectorio(padre);
+
+			if (padre.delete()){
+				System.out.println("El directorio temporal de user-"+userBean.getUid()+" ha sido borrado correctamente");
+			}else{
+				System.out.println("El directorio temporal de user-"+userBean.getUid()+" no se ha podido borrar");
+			}
+		}
 		request.getSession(true).invalidate();
 		request.getRequestDispatcher("/index.html").forward(request, response);
 	}
