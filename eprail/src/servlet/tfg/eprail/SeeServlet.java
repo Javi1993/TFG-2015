@@ -71,7 +71,6 @@ public class SeeServlet extends HttpServlet {
 			//poner path que lleve a error
 		}
 
-		request.setAttribute("name", content);
 		request.setAttribute("path", path);
 		request.setAttribute("project", project);
 

@@ -85,7 +85,7 @@ public class UploadServlet extends HttpServlet {
 				Funciones.getFileName(urlManifest, p);
 				if(p.getProjectName()!=null&&p.getProjectDescription()!=null)
 				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
-					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));	
+					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));
 					Funciones.extraerHTML(applicationPath, userBean.getUid());//extraemos el html del proyecto
 				}else{
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
