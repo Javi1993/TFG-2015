@@ -51,8 +51,8 @@ public class DeleteServlet extends HttpServlet {
 		// Buscamos el userBean en la session
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
-
-		Project project = ManagementProject.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
 
 		if(project!=null)
 		{//borramos de la carpeta del usuario el fichero y lo movemos a la carpeta de borrados
@@ -91,8 +91,8 @@ public class DeleteServlet extends HttpServlet {
 			Date date= new Date();
 			Timestamp ts = new Timestamp(date.getTime());
 			delproj.setDateDeleted(ts);
-			ManagementProject.moverJPAProyecto(delproj);
-			ManagementProject.borrarJPAObject(project);//borramos el archivo de la tabla de proyectos del usuario
+			mp.moverJPAProyecto(delproj);
+			mp.borrarJPAObject(project);//borramos el archivo de la tabla de proyectos del usuario
 		}
 		request.getRequestDispatcher("/controller/login").forward(request, response);
 	}

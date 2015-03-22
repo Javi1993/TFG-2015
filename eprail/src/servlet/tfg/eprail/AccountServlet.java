@@ -46,7 +46,8 @@ public class AccountServlet extends HttpServlet {
 		{
 			userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
 		}
-		ManagementUser.updateJPAUser(userBean);
+		ManagementUser mu = new ManagementUser();
+		mu.updateJPAUser(userBean);
 
 		//redirigimos
 		request.getRequestDispatcher("/jsp/account.jsp").forward(request, response);

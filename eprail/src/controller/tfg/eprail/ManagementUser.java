@@ -8,7 +8,7 @@ import modeldata.tfg.eprail.User;
 
 public class ManagementUser {
 	
-	public static void registrarJPAUser(User newUser) {
+	public void registrarJPAUser(User newUser) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -21,7 +21,7 @@ public class ManagementUser {
 		}
 	}
 	
-	public static User buscarJPAUser(long uid){
+	public User buscarJPAUser(long uid){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -35,7 +35,7 @@ public class ManagementUser {
 		return null;
 	}
 	
-	public static User buscarJPAUserEmail(String email){
+	public User buscarJPAUserEmail(String email){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -49,7 +49,7 @@ public class ManagementUser {
 		return null;
 	}
 	
-	public static User realizarJPALogin(User user){
+	public User realizarJPALogin(User user){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -67,7 +67,7 @@ public class ManagementUser {
 		}
 	}
 	
-	public static void updateJPAUser(User user) {
+	public void updateJPAUser(User user) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
@@ -80,7 +80,7 @@ public class ManagementUser {
 		}
 	}
 	
-	public static List<User> buscarJPAUserCompartir(User user){
+	public List<User> buscarJPAUserCompartir(User user){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 

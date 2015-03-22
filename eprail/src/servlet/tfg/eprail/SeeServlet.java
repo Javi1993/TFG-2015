@@ -45,7 +45,8 @@ public class SeeServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
 
-		Project project = ManagementProject.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
 
 		// gets absolute path of the web application
 		String applicationPath = request.getServletContext().getRealPath("");
@@ -73,7 +74,6 @@ public class SeeServlet extends HttpServlet {
 
 		request.setAttribute("path", path);
 		request.setAttribute("project", project);
-
 		request.getRequestDispatcher("/jsp/see.jsp").forward(request, response);
 	}
 

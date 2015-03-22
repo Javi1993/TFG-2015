@@ -55,7 +55,8 @@ public class ServletController extends HttpServlet {
 			//le pasamos los parametros de la request
 			userBean.setEmail(request.getParameter("email"));
 			userBean.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
-			userBean = ManagementUser.realizarJPALogin(userBean);
+			ManagementUser mu = new ManagementUser();
+			userBean = mu.realizarJPALogin(userBean);
 
 			if(userBean.getLoggedIn() == false || userBean == null)
 			{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio

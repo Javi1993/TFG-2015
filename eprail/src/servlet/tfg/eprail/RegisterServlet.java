@@ -47,7 +47,8 @@ public class RegisterServlet extends HttpServlet {
 		user.setFamilyName(request.getParameter("apellidos"));
 		user.setEmail(request.getParameter("email"));
 		user.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
-		ManagementUser.registrarJPAUser(user);
+		ManagementUser mu = new ManagementUser();
+		mu.registrarJPAUser(user);
 
 		Funciones.sendEmail("Eprail: Confirmación de registro","<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
 				+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Hola "

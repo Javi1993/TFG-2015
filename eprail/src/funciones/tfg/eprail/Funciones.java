@@ -169,6 +169,7 @@ public class Funciones {
 	public static void asignarPermiso(Sharing sharing, char perm)
 	{
 		Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+		ManagementProject mp = new ManagementProject();
 		switch(perm)
 		{
 		case 'R':
@@ -176,7 +177,7 @@ public class Funciones {
 			{
 				sharing.setAllowRecalculate((byte)1);
 				sharing.setDateChanged(currentTimestamp);
-				ManagementProject.updateJPASharing(sharing);
+				mp.updateJPASharing(sharing);
 			}
 			break;
 		case 'D':
@@ -184,7 +185,7 @@ public class Funciones {
 			{
 				sharing.setAllowDownload((byte)1);
 				sharing.setDateChanged(currentTimestamp);
-				ManagementProject.updateJPASharing(sharing);	
+				mp.updateJPASharing(sharing);	
 			}
 			break;
 		case 'S':
@@ -192,7 +193,7 @@ public class Funciones {
 			{
 				sharing.setAllowShare((byte)1);
 				sharing.setDateChanged(currentTimestamp);
-				ManagementProject.updateJPASharing(sharing);	
+				mp.updateJPASharing(sharing);	
 			}
 			break;
 		case 'X':
@@ -200,7 +201,7 @@ public class Funciones {
 			{
 				sharing.setAllowDelete((byte)1);
 				sharing.setDateChanged(currentTimestamp);
-				ManagementProject.updateJPASharing(sharing);
+				mp.updateJPASharing(sharing);
 			}
 			break;
 		default:

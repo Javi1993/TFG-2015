@@ -32,7 +32,8 @@ public class ActivateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String nextPage = "/jsp/activate.jsp";
-		User userAux = ManagementUser.buscarJPAUser(Long.parseLong(request.getParameter("op")));
+		ManagementUser mu = new ManagementUser();
+		User userAux = mu.buscarJPAUser(Long.parseLong(request.getParameter("op")));
 
 		if(userAux!=null)
 		{
@@ -41,7 +42,7 @@ public class ActivateServlet extends HttpServlet {
 				Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 				userAux.setDateRegistration(currentTimestamp);
 				userAux.setIsValidate((byte) 1);
-				ManagementUser.updateJPAUser(userAux);
+				mu.updateJPAUser(userAux);
 				request.setAttribute("active", true);
 			}
 			else{//la cuenta ya está activada

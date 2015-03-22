@@ -13,7 +13,7 @@ import modeldata.tfg.eprail.Sharing;
 
 public class ManagementProject {
 	
-	public static void subirJPAProyecto(Project newProject) {
+	public void subirJPAProyecto(Project newProject) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -26,7 +26,7 @@ public class ManagementProject {
 		}
 	}
 	
-	public static void addJPACompartido(Sharing newShared) {
+	public void addJPACompartido(Sharing newShared) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -39,7 +39,7 @@ public class ManagementProject {
 		}
 	}
 	
-	public static void moverJPAProyecto(Deletedproject delProject) {
+	public void moverJPAProyecto(Deletedproject delProject) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -52,7 +52,7 @@ public class ManagementProject {
 		}
 	}
 	
-	public static void borrarJPAObject(Object object) {
+	public void borrarJPAObject(Object object) {
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -65,7 +65,7 @@ public class ManagementProject {
 		}
 	}
 	
-	public static List<Project> buscarJPAProyectosPropios(User user){
+	public List<Project> buscarJPAProyectosPropios(User user){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -84,7 +84,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static List<Sharing> buscarJPAProyectosCompartidos(User user){
+	public List<Sharing> buscarJPAProyectosCompartidos(User user){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -103,7 +103,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static List<Sharing> buscarJPAUsuariosCompartidos(User user, long id){
+	public List<Sharing> buscarJPAUsuariosCompartidos(User user, long id){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -122,7 +122,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static Statuscategory buscarJPAStatus (byte id)
+	public Statuscategory buscarJPAStatus (byte id)
 	{
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -137,7 +137,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static Project buscarJPAProyectoId(long id){
+	public Project buscarJPAProyectoId(long id){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -152,7 +152,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static Project buscarJPAProyectoIdUID(User user, long id){
+	public Project buscarJPAProyectoIdUID(User user, long id){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -167,7 +167,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static Sharing buscarJPACompartidoId(long id){
+	public Sharing buscarJPACompartidoId(long id){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -182,7 +182,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public static void updateJPASharing(Sharing sharing) {
+	public void updateJPASharing(Sharing sharing) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
 		ProxyManager manager = new ProxyManager();
@@ -201,7 +201,7 @@ public class ManagementProject {
 	 * @param id - id del proyecto
 	 * @return
 	 */
-	public static Sharing buscarJPAReferido(long uid, long id)
+	public Sharing buscarJPAReferido(long uid, long id)
 	{
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 
@@ -222,7 +222,7 @@ public class ManagementProject {
 	 * @param id - id del proyecto
 	 * @return Entrada sharings | null en caso de que el usuario sea el dueño
 	 */
-	public static Sharing buscarJPAPadre(long uid, long id)
+	public Sharing buscarJPAPadre(long uid, long id)
 	{
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 

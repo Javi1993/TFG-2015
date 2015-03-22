@@ -104,10 +104,11 @@ public class UploadServlet extends HttpServlet {
 	 * @return - ID del proyecto
 	 */
 	protected long insertFile(Project project, User user, String path){
+		ManagementProject mp = new ManagementProject();
 		project.setONGFile(path.getBytes());
 		project.setUser(user);
-		project.setStatuscategory(ManagementProject.buscarJPAStatus((byte)0));
-		ManagementProject.subirJPAProyecto(project);
+		project.setStatuscategory(mp.buscarJPAStatus((byte)0));
+		mp.subirJPAProyecto(project);
 		return project.getIdProject();
 	}
 }

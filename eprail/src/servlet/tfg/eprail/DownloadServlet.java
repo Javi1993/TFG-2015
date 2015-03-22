@@ -40,7 +40,8 @@ public class DownloadServlet extends HttpServlet {
 		User userBean = (User) session.getAttribute("userBean");
 
 		//buscamos los metadatos del archivo en la bbdd
-		Project project = ManagementProject.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
 		if(project!=null)
 		{
 			response.setContentType("application/ongf");//indicamos el tipo de archivo

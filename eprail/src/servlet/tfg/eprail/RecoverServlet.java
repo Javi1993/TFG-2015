@@ -36,7 +36,8 @@ public class RecoverServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		User user = ManagementUser.buscarJPAUser(Long.parseLong(request.getParameter("op")));
+		ManagementUser mu = new ManagementUser();
+		User user = mu.buscarJPAUser(Long.parseLong(request.getParameter("op")));
 
 		if(user!=null)
 		{
@@ -59,11 +60,13 @@ public class RecoverServlet extends HttpServlet {
 
 		String nextPage = "/errors/404.html";
 		int modo = Integer.parseInt(request.getParameter("cd"));
+		ManagementUser mu = new ManagementUser();
 
 		if(modo==0)
 		{//mandamos email para recuperar cuenta
 			nextPage = "/jsp/recuperar.jsp";
-			User user = ManagementUser.buscarJPAUserEmail(request.getParameter("email"));
+
+			User user = mu.buscarJPAUserEmail(request.getParameter("email"));
 			if(user!=null)
 			{//existe el usuario
 				Funciones.sendEmail("Eprail: Restablecer contraseña","<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
@@ -80,9 +83,9 @@ public class RecoverServlet extends HttpServlet {
 			}
 		}else if(modo==1)
 		{//reseteo de contraseña
-			User user = ManagementUser.buscarJPAUser(Long.parseLong(request.getParameter("uid")));
+			User user = mu.buscarJPAUser(Long.parseLong(request.getParameter("uid")));
 			user.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
-			ManagementUser.updateJPAUser(user);
+			mu.updateJPAUser(user);
 			nextPage = "/index.html";
 		}
 

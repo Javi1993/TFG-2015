@@ -35,23 +35,29 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Buscamos el userBean en la session
+
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
 
-		// gets absolute path of the web application
-		String applicationPath = request.getServletContext().getRealPath("");
+		try{
+			// gets absolute path of the web application
+			String applicationPath = request.getServletContext().getRealPath("");
 
-		//borramos el directorio temporal del usuario
-		File padre = new File(applicationPath + File.separator + "temp" + File.separator + userBean.getUid());
-		if(padre!=null)
-		{
-			Funciones.borrarDirectorio(padre);
+			//borramos el directorio temporal del usuario
+			File padre = new File(applicationPath + File.separator + "temp" + File.separator + userBean.getUid());
+			if(padre!=null)
+			{
+				Funciones.borrarDirectorio(padre);
 
-			if (padre.delete()){
-				System.out.println("El directorio temporal de user-"+userBean.getUid()+" ha sido borrado correctamente");
-			}else{
-				System.out.println("El directorio temporal de user-"+userBean.getUid()+" no se ha podido borrar");
+				if (padre.delete()){
+					System.out.println("El directorio temporal de user-"+userBean.getUid()+" ha sido borrado correctamente");
+				}else{
+					System.out.println("El directorio temporal de user-"+userBean.getUid()+" no se ha podido borrar");
+				}
 			}
+		}catch(NullPointerException e)
+		{//caso de que el usuario no tenga ningun proyecto
+			System.out.println(e.getMessage());
 		}
 		request.getSession(true).invalidate();
 		request.getRequestDispatcher("/index.html").forward(request, response);
@@ -62,7 +68,5 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
 	}
-
 }
