@@ -1,10 +1,12 @@
-package controller.tfg.eprail;
+package controller.tfg.eprailJPA;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import modeldata.tfg.eprail.*;
+
+import modeldata.tfg.eprailJPA.*;
 
 @SuppressWarnings("unchecked")
 public class ProxyManager {

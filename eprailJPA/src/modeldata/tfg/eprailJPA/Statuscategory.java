@@ -1,4 +1,4 @@
-package modeldata.tfg.eprail;
+package modeldata.tfg.eprailJPA;
 
 import java.io.Serializable;
 import javax.persistence.*;

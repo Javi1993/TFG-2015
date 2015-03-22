@@ -12,7 +12,7 @@
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="modeldata.tfg.eprail.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:230px; width:400px;">

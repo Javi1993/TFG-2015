@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import controller.tfg.eprail.ManagementUser;
-import modeldata.tfg.eprail.User;
+import modeldata.tfg.eprailJPA.User;
 import funciones.tfg.eprail.Funciones;
 
 /**

@@ -4,7 +4,8 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import modeldata.tfg.eprail.User;
+import controller.tfg.eprailJPA.ProxyManager;
+import modeldata.tfg.eprailJPA.User;
 
 public class ManagementUser {
 	

@@ -2,16 +2,14 @@ package servlet.tfg.eprail;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import modeldata.tfg.eprail.Project;
-import modeldata.tfg.eprail.User;
+import modeldata.tfg.eprailJPA.Project;
+import modeldata.tfg.eprailJPA.User;
 import controller.tfg.eprail.ManagementProject;
 import funciones.tfg.eprail.Funciones;
 

@@ -1,15 +1,14 @@
 package controller.tfg.eprail;
 
 import java.util.List;
-
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import modeldata.tfg.eprail.Deletedproject;
-import modeldata.tfg.eprail.Project;
-import modeldata.tfg.eprail.Statuscategory;
-import modeldata.tfg.eprail.User;
-import modeldata.tfg.eprail.Sharing;
+import controller.tfg.eprailJPA.ProxyManager;
+import modeldata.tfg.eprailJPA.Deletedproject;
+import modeldata.tfg.eprailJPA.Project;
+import modeldata.tfg.eprailJPA.Sharing;
+import modeldata.tfg.eprailJPA.Statuscategory;
+import modeldata.tfg.eprailJPA.User;
 
 public class ManagementProject {
 	

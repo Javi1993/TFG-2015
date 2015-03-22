@@ -1,7 +1,7 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-import modeldata.tfg.eprail.User;
+import modeldata.tfg.eprailJPA.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

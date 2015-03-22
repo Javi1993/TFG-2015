@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.*, modeldata.tfg.eprail.Sharing, modeldata.tfg.eprail.User"%>
+<%@page import="java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%List<User> listUser = (List<User>) request.getAttribute("userList"); %>
+<%
+	List<User> listUser = (List<User>) request.getAttribute("userList");
+%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
@@ -16,9 +18,9 @@
 $(function(){
     var projects = [
 	<%if(listUser!=null && listUser.size()!=0){ 
-		for(User us : listUser){ %>
+		for(User us : listUser){%>
       {
-        value: "<%= us.getFirstName().toUpperCase()%> <%=us.getFamilyName().toUpperCase()%>",
+        value: "<%=us.getFirstName().toUpperCase()%> <%=us.getFamilyName().toUpperCase()%>",
         desc: "<%=us.getEmail()%>"
       },
       <%}}%>
@@ -46,7 +48,7 @@ $(function(){
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="modeldata.tfg.eprail.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
