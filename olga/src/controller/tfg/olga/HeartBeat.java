@@ -7,13 +7,17 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import json.tfg.olga.*;
 
-@Path("/test")
-public class Test {
-	
+@Path("/heartbeat")
+public class HeartBeat {
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public MessageRS test (MessageRQ message) {
-		return new MessageRS("007", "OK");
+		if(message.getParameter().equals("FRONTEND")){
+			return new MessageRS(message.getNumSeq(), "OK");
+		}else{//no reconoce quien le envia el mensaje
+			return null;
+		}
 	}
 }

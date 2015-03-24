@@ -1,6 +1,7 @@
 package filter.tfg.eprail;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebFilter("/CacheFilter")
 public class CacheFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public CacheFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor. 
+	 */
+	public CacheFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -35,11 +36,12 @@ public class CacheFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		//limpiamos la cache
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
 		httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0
 		httpResponse.setDateHeader("Expires", 0); // Proxies.
-		
+
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

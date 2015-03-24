@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import controller.tfg.eprail.ManagementProject;
-import funciones.tfg.eprail.Comunicacion;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -67,8 +66,7 @@ public class LoginServlet extends HttpServlet {
 			String applicationPath = request.getServletContext().getRealPath("");
 			Funciones.extraerHTML(applicationPath, userBean.getUid());
 		}
-
-		System.out.println("TEST WEB-SERVICES "+Comunicacion.testRest());
+		
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}
 }

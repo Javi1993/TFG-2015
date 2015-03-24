@@ -1,14 +1,18 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
+
 import modeldata.tfg.eprailJPA.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import controller.tfg.eprail.ManagementUser;
+import funciones.tfg.eprail.ComunicacionFront;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -66,7 +70,18 @@ public class ServletController extends HttpServlet {
 				session.setAttribute("userBean", userBean);
 			}
 		}
-
+		
+		//comprobamos el estado del servidor olga
+		HttpServletRequest req = (HttpServletRequest) request;
+		if(ComunicacionFront.heartBeat()!=null){
+			req.getSession().setAttribute("olga", "on");
+		}else{
+			req.getSession().setAttribute("olga", "off");
+		}
+		
+		//USAR CONTADOR EN SESSION QUE SE AUMENTE CUANDO SEA OFF!; AL LLEGAR A X VECES MANDA EMAIL AVISANDO DE FALLO
+		
+		
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    

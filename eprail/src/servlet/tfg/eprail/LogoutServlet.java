@@ -53,7 +53,7 @@ public class LogoutServlet extends HttpServlet {
 			}
 		}catch(NullPointerException e)
 		{//caso de que el usuario no tenga ningun proyecto
-			System.out.println(e.getMessage());
+			System.out.println("El directorio temporal de user-"+userBean.getUid()+" es: "+e.getMessage());
 		}
 		request.getSession(true).invalidate();
 		request.getRequestDispatcher("/index.html").forward(request, response);
