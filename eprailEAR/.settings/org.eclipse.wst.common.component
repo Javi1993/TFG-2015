@@ -4,5 +4,8 @@
         <dependent-module archiveName="eprail.war" deploy-path="/" handle="module:/resource/eprail/eprail">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="eprailJPA.jar" deploy-path="/lib" handle="module:/resource/eprailJPA/eprailJPA">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>
