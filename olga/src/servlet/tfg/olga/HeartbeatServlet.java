@@ -1,7 +1,6 @@
 package servlet.tfg.olga;
 
 import java.io.IOException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,22 +16,21 @@ import controller.tfg.olga.ComunicacionOlga;
 @WebServlet("/heartbeat")
 public class HeartbeatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public HeartbeatServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public HeartbeatServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		ComunicacionOlga comun = new ComunicacionOlga();
-		comun.comprobarFrontEnd();
+		new ComunicacionOlga();
 	}
 
 	/**

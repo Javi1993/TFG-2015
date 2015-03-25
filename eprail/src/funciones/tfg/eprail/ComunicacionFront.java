@@ -7,13 +7,22 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 import json.tfg.eprail.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public class ComunicacionFront {
 
-	private static final String targetURL = "http://localhost:8080/olga/rest/heartbeat";
-
+	private static final String targetURL = "http://localhost:8180/olga/rest/heartbeat";
+	private Timer timer;
+	private boolean olga;
+	
+	public ComunicacionFront(){
+		timer = new Timer();
+		timer.schedule(new RemindTask(), 1000, 10000);
+	}
+	
 	public static String heartBeat ()
 	{
 		try {
@@ -26,7 +35,6 @@ public class ComunicacionFront {
 			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), "IAMALIVE", "FRONTEND");
 			ObjectMapper objectMapper = new ObjectMapper();
 			String authRQString = objectMapper.writeValueAsString(messageRQ);
-			//System.out.println("AuthorizationRQ: "+authRQString);
 
 			OutputStream outputStream = httpConnection.getOutputStream();
 			outputStream.write(authRQString.getBytes());
@@ -40,13 +48,10 @@ public class ComunicacionFront {
 					(httpConnection.getInputStream())));
 			String output;
 			MessageRS messageRS = null;
-			//System.out.println("***************************");
 
 			while ((output = responseBuffer.readLine()) != null) {
-				//System.out.println("AuthorizationRS JSON:" +output);
 				ObjectMapper mapper = new ObjectMapper();
 				messageRS = mapper.readValue(output, MessageRS.class);
-				//System.out.println("AuthorizationRS Object:" +authRS);
 			}
 
 			httpConnection.disconnect();
@@ -65,5 +70,34 @@ public class ComunicacionFront {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * @return the cnt
+	 */
+	public boolean getOlga() {
+		return olga;
+	}
+
+	/**
+	 * @param cnt the cnt to set
+	 */
+	public void setOlga(boolean olga) {
+		this.olga = olga;
+	}
+	
+	class RemindTask extends TimerTask {
+		public void run() {
+			if(ComunicacionFront.heartBeat()!=null)
+			{
+				//resetear contador
+				setOlga(true);
+			}else{
+				//no recibio respuesta de OLGA
+				
+				//hacerse CONTADOR Y MANDAR EMAIL A LOS X FALLOS SEGUIDOS //resetear contador
+				setOlga(false);
+			}
+		}
 	}
 }

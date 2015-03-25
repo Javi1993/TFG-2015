@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 import json.tfg.olga.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -14,6 +16,12 @@ public class ComunicacionOlga {
 
 	private static final String targetURL = "http://localhost:8080/eprail/rest/heartbeat";
 	private static int cnt = 0;
+	Timer timer;
+
+	public ComunicacionOlga(){
+		timer = new Timer();
+		timer.schedule(new RemindTask(), 5000, 15000);
+	}
 
 	public static String heartBeat ()
 	{
@@ -41,7 +49,6 @@ public class ComunicacionOlga {
 					(httpConnection.getInputStream())));
 			String output;
 			MessageRS messageRS = null;
-			//System.out.println("***************************");
 
 			while ((output = responseBuffer.readLine()) != null) {
 				//System.out.println("AuthorizationRS JSON:" +output);
@@ -64,28 +71,8 @@ public class ComunicacionOlga {
 			e.printStackTrace();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
-		}
+		} 
 		return null;
-	}
-
-	public void comprobarFrontEnd()
-	{
-
-			try{
-				Thread.sleep(10000);
-				if(heartBeat()==null)
-				{//no recibio respuesta del FRONT-END
-					setCnt(getCnt()+1);
-					if(getCnt()>=10)
-					{
-						//mandar correo
-						setCnt(0);
-					}
-				}	
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-
 	}
 
 	/**
@@ -100,5 +87,21 @@ public class ComunicacionOlga {
 	 */
 	public static void setCnt(int cnt) {
 		ComunicacionOlga.cnt = cnt;
+	}
+
+	class RemindTask extends TimerTask {
+		public void run() {
+			if(heartBeat()==null)
+			{//no recibio respuesta del FRONT-END
+				setCnt(getCnt()+1);
+				if(getCnt()>=10)
+				{
+					//mandar correo
+					setCnt(0);
+				}
+			}else{
+				setCnt(0);
+			}
+		}
 	}
 }

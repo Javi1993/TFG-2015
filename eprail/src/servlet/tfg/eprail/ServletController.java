@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import modeldata.tfg.eprailJPA.User;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,11 +23,18 @@ import funciones.tfg.eprail.Funciones;
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ComunicacionFront comunicacion;
+
 	/**
 	 * Default constructor. 
 	 */
 	public ServletController() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public void init(ServletConfig config) throws ServletException {
+		// TODO Auto-generated method stub
+		comunicacion = new ComunicacionFront();
 	}
 
 	/** Processes requests for both HTTP  
@@ -70,18 +78,17 @@ public class ServletController extends HttpServlet {
 				session.setAttribute("userBean", userBean);
 			}
 		}
-		
+
 		//comprobamos el estado del servidor olga
-		HttpServletRequest req = (HttpServletRequest) request;
-		if(ComunicacionFront.heartBeat()!=null){
-			req.getSession().setAttribute("olga", "on");
+		if(comunicacion.getOlga()){
+			request.getSession().setAttribute("olga", "on");
 		}else{
-			req.getSession().setAttribute("olga", "off");
+			request.getSession().setAttribute("olga", "off");
 		}
-		
+
 		//USAR CONTADOR EN SESSION QUE SE AUMENTE CUANDO SEA OFF!; AL LLEGAR A X VECES MANDA EMAIL AVISANDO DE FALLO
-		
-		
+
+
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    
