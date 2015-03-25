@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.tfg.eprail.ManagementUser;
-import funciones.tfg.eprail.ComunicacionFront;
+import funciones.tfg.eprail.Comunicacion;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -23,7 +23,7 @@ import funciones.tfg.eprail.Funciones;
 public class ServletController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ComunicacionFront comunicacion;
+	private Comunicacion comunicacion;
 
 	/**
 	 * Default constructor. 
@@ -34,7 +34,7 @@ public class ServletController extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		comunicacion = new ComunicacionFront();
+		comunicacion = new Comunicacion();
 	}
 
 	/** Processes requests for both HTTP  

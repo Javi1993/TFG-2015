@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.tfg.olga.ComunicacionOlga;
+import controller.tfg.olga.Comunicacion;
 
 /**
  * Servlet implementation class HeartbeatServlet
@@ -30,7 +30,7 @@ public class HeartbeatServlet extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		new ComunicacionOlga();
+		new Comunicacion();
 	}
 
 	/**

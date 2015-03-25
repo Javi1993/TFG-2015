@@ -14,7 +14,8 @@ public class HeartBeat {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public MessageRS test (MessageRQ message) {
-		if(message.getParameter().equals("FRONTEND")){
+		if(message.getParameter().equals("FRONTEND"))
+		{//mesanje del fornt end avisando de que esta vivo
 			return new MessageRS(message.getNumSeq(), "OK");
 		}else{//no reconoce quien le envia el mensaje
 			return null;

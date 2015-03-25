@@ -12,17 +12,23 @@ import java.util.TimerTask;
 import json.tfg.eprail.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class ComunicacionFront {
+
+public class Comunicacion {
 
 	private static final String targetURL = "http://localhost:8180/olga/rest/heartbeat";
 	private Timer timer;
 	private boolean olga;
-	
-	public ComunicacionFront(){
+	private int cnt;
+	private boolean sendEmail;
+
+	public Comunicacion(){
+		sendEmail = false;
+		cnt = 0;
+		olga = false;
 		timer = new Timer();
 		timer.schedule(new RemindTask(), 1000, 10000);
 	}
-	
+
 	public static String heartBeat ()
 	{
 		try {
@@ -71,7 +77,7 @@ public class ComunicacionFront {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return the cnt
 	 */
@@ -85,18 +91,53 @@ public class ComunicacionFront {
 	public void setOlga(boolean olga) {
 		this.olga = olga;
 	}
-	
+
+	/**
+	 * @return the cnt
+	 */
+	public int getCnt() {
+		return cnt;
+	}
+
+	/**
+	 * @param cnt the cnt to set
+	 */
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	/**
+	 * @return the sendEmail
+	 */
+	public boolean isSendEmail() {
+		return sendEmail;
+	}
+
+	/**
+	 * @param sendEmail the sendEmail to set
+	 */
+	public void setSendEmail(boolean sendEmail) {
+		this.sendEmail = sendEmail;
+	}
+
 	class RemindTask extends TimerTask {
 		public void run() {
-			if(ComunicacionFront.heartBeat()!=null)
-			{
-				//resetear contador
+			if(heartBeat()!=null)
+			{//hubo respuesta de OlgaNG o esta fue erronea
+				setCnt(0);
 				setOlga(true);
-			}else{
-				//no recibio respuesta de OLGA
-				
-				//hacerse CONTADOR Y MANDAR EMAIL A LOS X FALLOS SEGUIDOS //resetear contador
-				setOlga(false);
+			}else
+			{//no hubo respuesta de OlgaNG o esta fue erronea
+				setCnt(getCnt()+1);
+				if(getCnt()>=10 && !isSendEmail())
+				{//mandamos email notificando del comportamiento del receptor
+					Funciones.sendEmail("Eprail: OlgaNG no responde", "<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+							+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>OlgaNG no responde</h2><br>"
+							+ "<p>La aplicaci&oacute;n web intenta comunicarse el servidor OlgaNG pero no recibe respuesta o esta no es correcta. Revise su estado con urgencia.</p>"
+							+"</div></body></html>", "100290698@alumnos.uc3m.es");
+					setSendEmail(true);
+					setOlga(false);
+				}
 			}
 		}
 	}

@@ -11,14 +11,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import json.tfg.olga.*;
 import org.codehaus.jackson.map.ObjectMapper;
+import funciones.tfg.olga.Funciones;
 
-public class ComunicacionOlga {
+public class Comunicacion {
 
 	private static final String targetURL = "http://localhost:8080/eprail/rest/heartbeat";
-	private static int cnt = 0;
-	Timer timer;
+	private int cnt;
+	private Timer timer;
+	private boolean sendEmail;
 
-	public ComunicacionOlga(){
+	public Comunicacion(){
+		sendEmail = false;
+		cnt = 0;
 		timer = new Timer();
 		timer.schedule(new RemindTask(), 5000, 15000);
 	}
@@ -35,7 +39,6 @@ public class ComunicacionOlga {
 			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), "IAMALIVE", "OLGANG");
 			ObjectMapper objectMapper = new ObjectMapper();
 			String authRQString = objectMapper.writeValueAsString(messageRQ);
-			//System.out.println("AuthorizationRQ: "+authRQString);
 
 			OutputStream outputStream = httpConnection.getOutputStream();
 			outputStream.write(authRQString.getBytes());
@@ -51,10 +54,8 @@ public class ComunicacionOlga {
 			MessageRS messageRS = null;
 
 			while ((output = responseBuffer.readLine()) != null) {
-				//System.out.println("AuthorizationRS JSON:" +output);
 				ObjectMapper mapper = new ObjectMapper();
 				messageRS = mapper.readValue(output, MessageRS.class);
-				//System.out.println("AuthorizationRS Object:" +authRS);
 			}
 
 			httpConnection.disconnect();
@@ -78,29 +79,47 @@ public class ComunicacionOlga {
 	/**
 	 * @return the cnt
 	 */
-	public static int getCnt() {
+	public int getCnt() {
 		return cnt;
 	}
 
 	/**
 	 * @param cnt the cnt to set
 	 */
-	public static void setCnt(int cnt) {
-		ComunicacionOlga.cnt = cnt;
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	/**
+	 * @return the sendEmail
+	 */
+	public boolean isSendEmail() {
+		return sendEmail;
+	}
+
+	/**
+	 * @param cnt the sendEmail to set
+	 */
+	public void setSendEmail(boolean sendEmail) {
+		this.sendEmail = sendEmail;
 	}
 
 	class RemindTask extends TimerTask {
 		public void run() {
-			if(heartBeat()==null)
-			{//no recibio respuesta del FRONT-END
-				setCnt(getCnt()+1);
-				if(getCnt()>=10)
-				{
-					//mandar correo
-					setCnt(0);
-				}
-			}else{
+			if(heartBeat()!=null)
+			{//hubo respuesta correcta del front-end
 				setCnt(0);
+			}else
+			{//no recibio respuesta del FRONT-END o esta fue erronea
+				setCnt(getCnt()+1);
+				if(getCnt()>=10 && !isSendEmail())
+				{//mandamos email notificando del comportamiento del receptor
+					Funciones.sendEmail("Eprail: Aplicación web no responde", "<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+							+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>La aplicaci&oacute;n web no responde</h2><br>"
+							+ "<p>El servidor OlgaNG intenta comunicarse con la aplicaci&oacute;n web pero no recibe respuesta o esta no es correcta. Revise su estado con urgencia.</p>"
+							+"</div></body></html>", "100290698@alumnos.uc3m.es");
+					setSendEmail(true);
+				}
 			}
 		}
 	}
