@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class Comunicacion {
 
-	private static final String targetURL = "http://localhost:8180/olga/rest/heartbeat";
+	private static final String targetURL = "http://localhost:8080/olga/rest/heartbeat";
 	private Timer timer;
 	private boolean olga;
 	private int cnt;

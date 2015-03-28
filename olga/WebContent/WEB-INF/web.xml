@@ -11,21 +11,31 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>javax.ws.rs.core.Application</servlet-name>
-  </servlet><servlet-mapping>
+  </servlet>
+  <servlet-mapping>
     <servlet-name>javax.ws.rs.core.Application</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
-	<servlet>
-		<description></description>
-		<display-name>HeartbeatServlet</display-name>
-		<servlet-name>HeartbeatServlet</servlet-name>
-		<servlet-class>servlet.tfg.olga.HeartbeatServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>HeartbeatServlet</servlet-name>
-		<url-pattern>/heartbeat</url-pattern>
-	</servlet-mapping>
-
-
+  <servlet>
+    <description></description>
+    <display-name>HeartbeatServlet</display-name>
+    <servlet-name>HeartbeatServlet</servlet-name>
+    <servlet-class>servlet.tfg.olga.HeartbeatServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HeartbeatServlet</servlet-name>
+    <url-pattern>/heartbeat</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>LecturaAsincronaServlet</display-name>
+    <servlet-name>LecturaAsincronaServlet</servlet-name>
+    <servlet-class>servlet.tfg.olga.LecturaAsincronaServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LecturaAsincronaServlet</servlet-name>
+    <url-pattern>/lecturaasincrona</url-pattern>
+  </servlet-mapping>
 </web-app>

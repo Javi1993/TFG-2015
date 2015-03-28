@@ -44,7 +44,7 @@ function alertDelete (id, name) {
 						<%=sdf.format(project.getDateModified())%>
 						</td>
 						<td><a href="/eprail/controller/see?id=<%=project.getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
-						<td><img src="/eprail/img/gear.png" alt="run"></td>
+						<td><a href="/eprail/controller/run?id=<%=project.getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a></td>
 						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
 						<td><a onclick="alertDelete(<%=project.getIdProject()%>, '<%=project.getProjectName()%>');" title="Borrar" style="cursor: pointer;"><img src="/eprail/img/delete.png" alt="delete"></a></td>
@@ -76,7 +76,7 @@ function alertDelete (id, name) {
 						<%=sdf.format(project.getProject().getDateModified()) %>
 						</td>
 						<td><a href="#" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
-						<td><%if(project.getAllowRecalculate()!=0){ %><img src="/eprail/img/gear.png" alt="run"><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
+						<td><%if(project.getAllowRecalculate()!=0){ %><a href="/eprail/controller/run?id=<%=project.getProject().getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
 						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
 						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/share?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>
 						<td><%if(project.getAllowDelete()!=0){ %><a href="/eprail/controller/delete?id=<%=project.getProject().getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>

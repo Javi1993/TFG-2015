@@ -27,6 +27,10 @@ public class Comunicacion {
 		timer.schedule(new RemindTask(), 5000, 15000);
 	}
 
+	/**
+	 * Manda un mensaje al front-end avisando de que esta operativo
+	 * @return numero de sequencia o nulo en caso de no recibir respuesta o de ser erronea esta
+	 */
 	public static String heartBeat ()
 	{
 		try {

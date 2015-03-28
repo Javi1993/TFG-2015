@@ -86,6 +86,10 @@ table.project{
 	border-collapse: collapse;
 }
 
+tr.row > td{
+	padding-bottom: 1em;
+}
+
 th{
 	color: #800000;
 	border-bottom: 1px solid #000;

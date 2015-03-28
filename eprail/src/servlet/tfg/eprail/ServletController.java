@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jms.tfg.eprail.InteraccionJMS;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Comunicacion;
 import funciones.tfg.eprail.Funciones;
@@ -86,9 +87,9 @@ public class ServletController extends HttpServlet {
 			request.getSession().setAttribute("olga", "off");
 		}
 
-		//USAR CONTADOR EN SESSION QUE SE AUMENTE CUANDO SEA OFF!; AL LLEGAR A X VECES MANDA EMAIL AVISANDO DE FALLO
-
-
+		InteraccionJMS mq=new InteraccionJMS();//mandamos el pedido al admin
+		mq.escrituraJMS("Mensaje enviado a cola");
+		
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    
