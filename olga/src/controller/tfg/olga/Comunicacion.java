@@ -9,13 +9,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import json.tfg.olga.*;
+import modeldata.tfg.eprailJPA.Project;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
 import funciones.tfg.olga.Funciones;
 
 public class Comunicacion {
 
 	private static final String targetURL = "http://localhost:8080/eprail/rest/heartbeat";
+	private static final String targetURLB = "http://localhost:8080/eprail/rest/run";
 	private int cnt;
 	private Timer timer;
 	private boolean sendEmail;
@@ -79,7 +84,47 @@ public class Comunicacion {
 		} 
 		return null;
 	}
+	
+	public static void simular (Project object) {
+		try {
+			URL targetUrl = new URL(targetURLB);
+			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
+			httpConnection.setDoOutput(true);
+			httpConnection.setRequestMethod("POST");
+			httpConnection.setRequestProperty("Content-Type", "application/json");
 
+			ObjectMapper objectMapper = new ObjectMapper();
+			String proyect = objectMapper.writeValueAsString(object);
+
+			OutputStream outputStream = httpConnection.getOutputStream();
+			outputStream.write(proyect.getBytes());
+			outputStream.flush();
+
+			if (httpConnection.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ httpConnection.getResponseCode());
+			}
+//			BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+//					(httpConnection.getInputStream())));
+//			String output;
+//			String messageRS = null;
+//
+//			while ((output = responseBuffer.readLine()) != null) {
+//				ObjectMapper mapper = new ObjectMapper();
+//				messageRS = output;
+//			}
+
+			httpConnection.disconnect();
+//			return messageRS;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} 
+//		return null;
+	}
 	/**
 	 * @return the cnt
 	 */
