@@ -22,7 +22,6 @@ public class AsynchConsumer {
 	public void lecturaAsynch() {
 
 		try {
-
 			contextoInicial = new InitialContext();
 			factory = (javax.jms.ConnectionFactory) 
 					contextoInicial.lookup(InformacionProperties.getQCF());
@@ -33,7 +32,6 @@ public class AsynchConsumer {
 			consumer = session.createConsumer(cola);
 			listener = new TextListener();
 			consumer.setMessageListener(listener);
-			System.out.println("LecturaAsincronaServlet -->Listener levantado");
 			connection.start();
 		} catch (NamingException ne) {
 			System.out

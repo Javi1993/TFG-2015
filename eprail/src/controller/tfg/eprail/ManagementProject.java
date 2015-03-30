@@ -194,6 +194,19 @@ public class ManagementProject {
 		}
 	}
 	
+	public void updateJPAProject(Project project) {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+
+		try {
+			manager.updateObject(project);//objeto a actualizar se pasa a funcion JPA
+		} catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());						
+		}
+	}
+	
 	/**
 	 * Metodo usado tras borrar permisos a un usuario, sebusca si este usuario dio permisos a otros para revocarlos
 	 * @param uid - uid del compartido

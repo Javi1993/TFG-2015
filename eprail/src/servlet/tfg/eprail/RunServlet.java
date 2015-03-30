@@ -1,33 +1,45 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import modeldata.tfg.eprailJPA.Project;
+import controller.tfg.eprail.ManagementProject;
+import webservices.tfg.eprail.Simulate;
+
 /**
  * Servlet implementation class RunServlet
  */
 @WebServlet("/run")
+@SuppressWarnings("unused")
 public class RunServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RunServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private Simulate sm;
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public RunServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("----------A");
+		//actualizamos el estado del proyecto
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
+		project.setStatuscategory(mp.buscarJPAStatus((byte)0));
+		mp.updateJPAProject(project);
+		sm = new Simulate(request.getParameter("id"));
+		request.getRequestDispatcher("/controller/login").forward(request, response);
 	}
 
 	/**
@@ -35,6 +47,7 @@ public class RunServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
 	}
 
 }

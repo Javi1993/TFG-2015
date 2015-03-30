@@ -53,6 +53,15 @@ fieldset{
 	font-size: 14px;
 }
 
+#reload{
+	top:-15px; 
+	position: absolute; 
+	color: #FFF;
+	padding:5px;
+	font-size: 14px;
+	right: 3%;
+}
+
 fieldset input[type="email"], fieldset input[type="password"],
 fieldset input[type="text"]{
 	width:200px;

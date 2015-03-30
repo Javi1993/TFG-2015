@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import jms.tfg.eprail.InteraccionJMS;
+import webservices.tfg.eprail.Comunicacion;
 import controller.tfg.eprail.ManagementUser;
-import funciones.tfg.eprail.Comunicacion;
 import funciones.tfg.eprail.Funciones;
 
 /**
@@ -44,7 +43,6 @@ public class ServletController extends HttpServlet {
 	 * @param response servlet response
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		//nos protegemos ante caracteres especiales 
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
@@ -86,9 +84,6 @@ public class ServletController extends HttpServlet {
 		}else{
 			request.getSession().setAttribute("olga", "off");
 		}
-
-		InteraccionJMS mq=new InteraccionJMS();//mandamos el pedido al admin
-		mq.escrituraJMS("Mensaje enviado a cola");
 		
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);

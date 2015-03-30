@@ -2,30 +2,29 @@ package jms.tfg.olga;
 
 import javax.jms.MessageListener;
 import javax.jms.Message;
-import javax.jms.ObjectMessage;
+import javax.jms.TextMessage;
 
-import modeldata.tfg.eprailJPA.Project;
-import controller.tfg.olga.Comunicacion;
-
+import webservices.tfg.olga.Simulate;
 
 public class TextListener implements MessageListener {
 
 
 	public void onMessage(Message message) {
-		ObjectMessage msg = null;
-
+		TextMessage msg = null;
 		try {
-			if (message instanceof ObjectMessage) {
-				msg = (ObjectMessage) message;    
-				System.out.println("A");
-				Project mensaje = (Project)msg.getObject();
-				System.out.println("B");
-				Comunicacion.simular(mensaje);
+			if (message instanceof TextMessage) {
+				msg = (TextMessage) message;
+				String id = msg.getText();
+				Simulate sm = new Simulate();
+				Thread.sleep((long) (Math.random()*6000+1000));//espera en cola
+				sm.processCase("CASELAUNCHED", id);
+				Thread.sleep((long) (Math.random()*20000+8000));//espera por calculo
+				sm.finishedCase(id);
 			} else {
 				System.err.println("Message is not a ObjectMessage");
 			}
 		} catch (Throwable t) {
-        	System.err.println("Exception in onMessage():" + t.getMessage());
-        }
+			System.err.println("Exception in onMessage():" + t.getMessage());
+		}
 	}
 }

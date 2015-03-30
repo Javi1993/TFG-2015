@@ -1,4 +1,4 @@
-package funciones.tfg.eprail;
+package webservices.tfg.eprail;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,13 +9,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import json.tfg.eprail.*;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
+import funciones.tfg.eprail.Funciones;
 
 
 public class Comunicacion {
 
-	private static final String targetURL = "http://localhost:8080/olga/rest/heartbeat";
+	private static final String targetURL = "http://localhost:8180/olga/rest/heartbeat";
 	private Timer timer;
 	private boolean olga;
 	private int cnt;
@@ -71,7 +75,7 @@ public class Comunicacion {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("No se pudo comunicar con OlgaNG. Error: "+e.getMessage());
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}

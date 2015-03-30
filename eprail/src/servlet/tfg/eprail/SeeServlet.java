@@ -69,7 +69,7 @@ public class SeeServlet extends HttpServlet {
 		}else{
 			//poner path que lleve a error
 		}
-
+		
 		request.setAttribute("path", path);
 		request.setAttribute("project", project);
 		request.getRequestDispatcher("/jsp/see.jsp").forward(request, response);

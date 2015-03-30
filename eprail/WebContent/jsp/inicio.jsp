@@ -25,6 +25,7 @@ function alertDelete (id, name) {
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
 		<span class="title">Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
+		<a id="reload" href="/eprail/controller/login" title="Recargar"><img src="/eprail/img/reload.png" alt="reload" width="20" height="20"></a>
 					<table class="project" style="width: 100%">
 					<%
 						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");

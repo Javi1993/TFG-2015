@@ -1,6 +1,6 @@
-package jms.tfg.eprail;
+package jms.tfg.olga;
 
-import java.io.Serializable;
+import webservices.tfg.olga.Simulate;
 
 public class InteraccionJMS {
 	private javax.jms.ConnectionFactory factory = null;
@@ -9,10 +9,8 @@ public class InteraccionJMS {
 	private javax.jms.Connection Qcon = null;
 	private javax.jms.Session QSes = null;
 	private javax.jms.MessageProducer Mpro = null;
-	//private javax.jms.MessageConsumer Mcon = null;
 
-	public void escrituraJMS(/*Object objeto, String codOP, int precio, String prodList, String unidades*/String mensaje) {
-
+	public void escrituraJMS(String mensaje) {
 		try {
 
 			contextoInicial = new javax.naming.InitialContext();
@@ -27,21 +25,16 @@ public class InteraccionJMS {
 			Mpro = QSes.createProducer(cola);
 
 			javax.jms.TextMessage men = QSes.createTextMessage();
-//			javax.jms.ObjectMessage men = QSes.createObjectMessage();
-			men.setStringProperty("mensaje", mensaje);
-//			men.setStringProperty("cod_OP", codOP);//aniadimos el codigo de operacion
-//			men.setIntProperty("precio", precio);//aniadimos el precio final 
-//			men.setStringProperty("prodList", prodList);//añadimos la lista de IDs de los productos
-//			men.setStringProperty("unidades", unidades);//añadimos la lista de unidades de los productos
-//			men.setObject((Serializable) objeto);//añadimos el objeto pedido
-			//men.setJMSCorrelationID(selector);
+			men.setText(mensaje);
 			Qcon.start();
 			Mpro.send(men);
-
+			
 			this.Mpro.close();
 			this.QSes.close();
 			this.Qcon.close();
-
+			
+			Simulate sm = new Simulate();//notificamos al front-end que el proyecto se añadio a la cola
+			sm.processCase("CASEINQUEUE",mensaje);
 		} catch (javax.jms.JMSException e) {
 			System.out
 					.println(".....JHC *************************************** Error de JMS: "

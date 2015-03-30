@@ -31,7 +31,6 @@ public class LecturaAsincronaServlet extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		System.out.println(config.getServletName()+" -->levantando Servlet....");
 		AsynchConsumer miAc=new AsynchConsumer();
 		miAc.lecturaAsynch();
 	}
