@@ -75,7 +75,7 @@ public class Comunicacion {
 		} catch (IOException e) {
 			System.err.println("No se pudo comunicar con el front-end. Error: "+e.getMessage());
 		} catch (RuntimeException e) {
-			e.printStackTrace();
+			System.err.println("No se pudo comunicar con el front-end. Error: "+e.getMessage());
 		} 
 		return null;
 	}

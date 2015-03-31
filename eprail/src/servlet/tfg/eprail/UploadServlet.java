@@ -2,6 +2,7 @@ package servlet.tfg.eprail;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import webservices.tfg.eprail.Simulate;
 import modeldata.tfg.eprailJPA.Project;
 import modeldata.tfg.eprailJPA.User;
 import controller.tfg.eprail.ManagementProject;
@@ -23,6 +26,7 @@ import funciones.tfg.eprail.Funciones;
 		fileSizeThreshold=1024*1024*2, // 2MB
 		maxFileSize=1024*1024*10,      // 10MB
 		maxRequestSize=1024*1024*50)   // 50MB
+@SuppressWarnings("unused")
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -85,8 +89,11 @@ public class UploadServlet extends HttpServlet {
 				Funciones.getFileName(urlManifest, p);
 				if(p.getProjectName()!=null&&p.getProjectDescription()!=null)
 				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
-					part.write(uploadFilePath + File.separator + insertFile(p, userBean, uploadFilePath));
-					Funciones.extraerHTML(applicationPath, userBean.getUid());//extraemos el html del proyecto
+					long id = insertFile(p, userBean, uploadFilePath);
+					part.write(uploadFilePath + File.separator + id);//guardamos en el servidor el archivo
+					Simulate sm = new Simulate(String.valueOf(id));//lanzamos la simulacion
+					ManagementProject mp = new ManagementProject();
+					Funciones.extraerHTMLunico(applicationPath, userBean.getUid(), mp.buscarJPAProyectoId(id));//extraemos el html del proyecto
 				}else{
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
 				}

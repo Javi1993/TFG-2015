@@ -300,6 +300,75 @@ public class Funciones {
 	}
 
 	/**
+	 * Extrae en una carpeta temporal el contenido html de un proyecto
+	 * @param applicationPath - ruta de la app
+	 * @param uid - uid del usuario (no necesariamente el propietario del proyecto)
+	 * @param Project - metadatos del proyecto
+	 */
+	public static void extraerHTMLunico(String applicationPath, long uid, Project project) {
+		try {
+			File dir = new File(applicationPath + File.separator + SAVE_DIR + File.separator + project.getUser().getUid() + File.separator);//directorio de proyecto a extrar
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
+			//creamos el directorio temporal del usuario que va a extrar el html
+			String path = applicationPath + File.separator + TEMP_DIR + File.separator + uid;
+			File tempDir = new File(path);
+			if (!tempDir.exists()) {
+				tempDir.mkdirs();
+			}
+
+			//descomprimimos el html del proyecto
+			//creamos el directorio del proyecto y sus hijos
+			String pathHTML = path + File.separator + project.getIdProject();
+			File HTMLDir = new File(pathHTML);
+			if (!HTMLDir.exists()) {
+				HTMLDir.mkdirs();
+			}
+
+			ZipInputStream zis = new ZipInputStream(new FileInputStream(dir.getPath() + File.separator + project.getIdProject()));
+			ZipEntry entrada;
+			while (null != (entrada=zis.getNextEntry()) )
+			{
+				if(entrada.getName().startsWith("html/"))
+				{
+					File fileToWrite = new File(HTMLDir, entrada.getName());
+					File folder = fileToWrite.getParentFile();
+					if(!folder.mkdirs() && !folder.exists()) {
+						fileToWrite.mkdirs();
+						folder.mkdirs();
+					}
+
+					if(!entrada.isDirectory())
+					{
+						FileOutputStream fos = new FileOutputStream(fileToWrite);
+						int leido;
+						byte [] buffer = new byte[1024];
+						while (0<(leido=zis.read(buffer))){
+							fos.write(buffer,0,leido);
+						}
+						fos.close();
+					}
+
+					if(validarResultadoHtml(fileToWrite.getName()))
+					{
+						String ruta = TEMP_DIR + File.separator + uid + File.separator + project.getIdProject();
+						modificarRutasContent(applicationPath, ruta, fileToWrite.getName());
+					}
+				}
+			}
+			zis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Extrae en carpetas temporales el contenido HTML de los proyectos
 	 * @param applicationPath
 	 * @param uid
@@ -318,6 +387,7 @@ public class Funciones {
 			}
 
 			String[] files = dir.list();
+			if(files!=null){
 			for(String s: files){//descomprimimos el htmlde cada proyecto
 				//creamos el directorio del proyecto y sus hijos
 				String pathHTML = path + File.separator + s;
@@ -358,6 +428,7 @@ public class Funciones {
 					}
 				}
 				zis.close();
+			}
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

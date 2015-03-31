@@ -1,6 +1,8 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,9 +38,12 @@ public class RunServlet extends HttpServlet {
 		//actualizamos el estado del proyecto
 		ManagementProject mp = new ManagementProject();
 		Project project = mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
-		project.setStatuscategory(mp.buscarJPAStatus((byte)0));
+		project.setStatuscategory(mp.buscarJPAStatus((byte)0));//actualizamos estado
+		Date date= new Date();
+		Timestamp ts = new Timestamp(date.getTime());
+		project.setDateModified(ts);//actualizamos fecha de modificacion
 		mp.updateJPAProject(project);
-		sm = new Simulate(request.getParameter("id"));
+		sm = new Simulate(request.getParameter("id"));//lanzamos simulacion
 		request.getRequestDispatcher("/controller/login").forward(request, response);
 	}
 

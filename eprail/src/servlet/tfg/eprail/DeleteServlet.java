@@ -46,7 +46,7 @@ public class DeleteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 
-		//CONTROLAR PARA CUANDO SEA COMPARTIDO EL ARCHIVO!!!!
+		//CONTROLAR PARA CUANDO SEA COMPARTIDO EL ARCHIVO!!!! PONER PARAMETRO EN URL PARA DISTINGUIR Y USAR IF/ELSE
 
 
 		// Buscamos el userBean en la session

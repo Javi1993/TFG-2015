@@ -27,16 +27,35 @@ function alertDelete (id, name) {
 		<span class="title">Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
 		<a id="reload" href="/eprail/controller/login" title="Recargar"><img src="/eprail/img/reload.png" alt="reload" width="20" height="20"></a>
 					<table class="project" style="width: 100%">
-					<%
+					<%//tabla con documentos propios
 						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");
 						if (list != null) {
 							for (Project project : list) {
-								//tabla con documentos propios
+								boolean botones = false;
+								String style = "";
+								switch(project.getStatuscategory().getIdProjectStatus())
+								{
+								case 0:
+									style = "border:2px solid #800000; padding: 10px; color:#800000; background-color:#DB9595;";
+									botones = false;
+									break;
+								case 1:
+									style = "border:2px solid #800000; padding: 10px; color: #800000; background-color: #EEDBDD;";
+									botones = false;
+									break;
+								case 2:
+									style = "border:2px solid #800000; padding: 10px;";
+									botones = true;
+									break;
+								default:
+									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #800000;";
+									botones = false;
+								}			
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder.png" alt="project" width="30" height="30"></td>
 						<td><%=project.getProjectName()%></td>
-						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getStatuscategory().getStatusDescription()%>">
+						<td><span style="<%=style %>" title="<%=project.getStatuscategory().getStatusDescription()%>">
 						<%=project.getStatuscategory().getStatusName()%>
 						</span></td>
 						<td style="color: #C0C0C0;">
@@ -44,11 +63,21 @@ function alertDelete (id, name) {
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
 						<%=sdf.format(project.getDateModified())%>
 						</td>
+						<%if(botones){ %>
 						<td><a href="/eprail/controller/see?id=<%=project.getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
 						<td><a href="/eprail/controller/run?id=<%=project.getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a></td>
 						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
+						<%}else{ %>
+						<td><img src="/eprail/img/eye-d.png" alt="see"></td>
+						<td><img src="/eprail/img/gear-d.png" alt="run"></td>
+						<td><img src="/eprail/img/download-d.png" alt="download"></td>
+						<td><img src="/eprail/img/share-d.png" alt="share"></td>
+						<%}if(project.getStatuscategory().getIdProjectStatus()!=0&&project.getStatuscategory().getIdProjectStatus()!=1){ %>
 						<td><a onclick="alertDelete(<%=project.getIdProject()%>, '<%=project.getProjectName()%>');" title="Borrar" style="cursor: pointer;"><img src="/eprail/img/delete.png" alt="delete"></a></td>
+						<%}else{ %>
+						<td><img src="/eprail/img/delete-d.png" alt="delete"></td>
+						<%} %>
 					</tr>
 					<%
 							}
@@ -62,13 +91,33 @@ function alertDelete (id, name) {
 						List<Sharing> listSh = (List<Sharing>) request.getSession().getAttribute("projectListShared");
 						if (listSh != null) {
 							for (Sharing project : listSh) {
-								//tabla con documentos propios
+								//tabla con documentos compartidos
+								boolean botones = false;
+								String style = "";
+								switch(project.getProject().getStatuscategory().getIdProjectStatus())
+								{
+								case 0:
+									style = "border:2px solid #800000; padding: 10px; color:#800000; background-color:#DB9595;";
+									botones = false;
+									break;
+								case 1:
+									style = "border:2px solid #800000; padding: 10px; color: #800000; background-color: #EEDBDD;";
+									botones = false;
+									break;
+								case 2:
+									style = "border:2px solid #800000; padding: 10px;";
+									botones = true;
+									break;
+								default:
+									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #800000;";
+									botones = false;
+								}			
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
 						<td><%=project.getProject().getProjectName()%></td>
 						<td style="color: #C0C0C0;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
-						<td><span style="border:2px solid #800000; padding: 10px;" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
+						<td><span style="<%=style %>" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
 						<%=project.getProject().getStatuscategory().getStatusName()%>
 						</span></td>
 						<td style="color: #C0C0C0;">
@@ -76,11 +125,21 @@ function alertDelete (id, name) {
 						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
 						<%=sdf.format(project.getProject().getDateModified()) %>
 						</td>
-						<td><a href="#" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
+						<%if(botones){ %>
+						<td><a href="/eprail/controller/see?id=<%=project.getProject().getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
 						<td><%if(project.getAllowRecalculate()!=0){ %><a href="/eprail/controller/run?id=<%=project.getProject().getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
 						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
-						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/share?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>
-						<td><%if(project.getAllowDelete()!=0){ %><a href="/eprail/controller/delete?id=<%=project.getProject().getIdProject()%>" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>
+						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/share?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>	
+						<%}else{ %>
+						<td><img src="/eprail/img/eye-d.png" alt="see"></td>
+						<td><img src="/eprail/img/gear-d.png" alt="run"></td>
+						<td><img src="/eprail/img/download-d.png" alt="download"></td>
+						<td><img src="/eprail/img/share-d.png" alt="share"></td>
+						<%}if(project.getProject().getStatuscategory().getIdProjectStatus()!=0&&project.getProject().getStatuscategory().getIdProjectStatus()!=1){ %>
+							<td><%if(project.getAllowDelete()!=0){ %><a onclick="alertDelete(<%=project.getProject().getIdProject()%>, '<%=project.getProject().getProjectName()%>');"title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>
+						<%}else{ %>
+						<td><img src="/eprail/img/delete-d.png" alt="delete"></td>
+							<%} %>
 					</tr>
 					<%
 							}
