@@ -91,7 +91,7 @@ public class UploadServlet extends HttpServlet {
 				{//subimos el archivo al servidor y registramos sus metadatos en la BBDD
 					long id = insertFile(p, userBean, uploadFilePath);
 					part.write(uploadFilePath + File.separator + id);//guardamos en el servidor el archivo
-					Simulate sm = new Simulate(String.valueOf(id));//lanzamos la simulacion
+					Simulate sm = new Simulate(String.valueOf(id),applicationPath);//lanzamos la simulacion
 					ManagementProject mp = new ManagementProject();
 					Funciones.extraerHTMLunico(applicationPath, userBean.getUid(), mp.buscarJPAProyectoId(id));//extraemos el html del proyecto
 				}else{

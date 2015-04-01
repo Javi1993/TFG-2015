@@ -46,7 +46,6 @@ public class ShareServlet extends HttpServlet {
 			Sharing aux = null;
 			while(null!=(aux=mp.buscarJPAReferido(compartido, Long.parseLong(request.getParameter("id")))))
 			{//borramos los usuarios con los que haya compartido el proyecto el usuario al que vamos a eliminar de la lista
-				System.out.println("+++++++++++++ "+aux.getUser1().getUid());
 				compartido = aux.getUser1().getUid();
 				mp.borrarJPAObject(aux);
 			}

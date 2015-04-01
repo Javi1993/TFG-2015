@@ -42,7 +42,7 @@ public class Comunicacion {
 			httpConnection.setRequestMethod("POST");
 			httpConnection.setRequestProperty("Content-Type", "application/json");
 
-			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), "IAMALIVE", "FRONTEND");
+			MessageRQ messageRQ = new MessageRQ(Long.toString((long)Math.random()*999999999+100000000), "IAMALIVE", "FRONTEND");
 			ObjectMapper objectMapper = new ObjectMapper();
 			String authRQString = objectMapper.writeValueAsString(messageRQ);
 

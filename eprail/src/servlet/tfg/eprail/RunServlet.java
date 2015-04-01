@@ -43,7 +43,7 @@ public class RunServlet extends HttpServlet {
 		Timestamp ts = new Timestamp(date.getTime());
 		project.setDateModified(ts);//actualizamos fecha de modificacion
 		mp.updateJPAProject(project);
-		sm = new Simulate(request.getParameter("id"));//lanzamos simulacion
+		sm = new Simulate(request.getParameter("id"), request.getServletContext().getRealPath(""));//lanzamos simulacion
 		request.getRequestDispatcher("/controller/login").forward(request, response);
 	}
 

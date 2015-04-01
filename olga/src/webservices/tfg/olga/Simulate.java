@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -24,14 +25,15 @@ import json.tfg.olga.MessageRS;
 public class Simulate {
 
 	private static final String targetURL = "http://localhost:8080/eprail/rest/simulate";
-	private static final String targetURLb = "http://localhost:8080/eprail/rest/finish";
-	
+	Logger logger = Logger.getLogger("Log-OlgaNG");//log del proceso de simulacion
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public MessageRS launchCase (MessageRQ message) {
 		if(message.getCommand().equals("LAUNCHCASE"))
 		{//mesanje del fornt end pidiendo simular un projecto, lo añadimos a la cola de espera
+			logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]");  
 			InteraccionJMS jms = new InteraccionJMS();
 			jms.escrituraJMS(message.getParameter());
 			return new MessageRS(message.getNumSeq(), "OK");
@@ -45,7 +47,7 @@ public class Simulate {
 			URL targetUrl = new URL(targetURL);
 			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
 			httpConnection.setDoOutput(true);
-			httpConnection.setRequestMethod("POST");
+			httpConnection.setRequestMethod("PUT");
 			httpConnection.setRequestProperty("Content-Type", "application/json");
 
 			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), comand, projectId);
@@ -55,10 +57,12 @@ public class Simulate {
 			OutputStream outputStream = httpConnection.getOutputStream();
 			outputStream.write(authRQString.getBytes());
 			outputStream.close();
-			
+
+			logger.info("["+messageRQ.getNumSeq()+" - "+messageRQ.getCommand()+" - "+messageRQ.getParameter()+"]");  
+
 			if (httpConnection.getResponseCode() != 200) {
-							throw new RuntimeException("Failed : HTTP error code : "
-									+ httpConnection.getResponseCode());
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ httpConnection.getResponseCode());
 			}
 
 			httpConnection.disconnect();
@@ -74,7 +78,7 @@ public class Simulate {
 
 	public String finishedCase (String projectId){
 		try {
-			URL targetUrl = new URL(targetURLb);
+			URL targetUrl = new URL(targetURL);
 			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
 			httpConnection.setDoOutput(true);
 			httpConnection.setRequestMethod("POST");
@@ -88,7 +92,8 @@ public class Simulate {
 			outputStream.write(authRQString.getBytes());
 			outputStream.flush();
 
-			httpConnection.getResponseCode();
+			logger.info("["+messageRQ.getNumSeq()+" - "+messageRQ.getCommand()+" - "+messageRQ.getParameter()+"]");
+
 			if (httpConnection.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ httpConnection.getResponseCode());
@@ -105,8 +110,10 @@ public class Simulate {
 
 			httpConnection.disconnect();
 
+			logger.info("["+messageRS.getNumSeq()+" - "+messageRS.getParameter()+"]");
 			if(messageRS.getNumSeq().equals(messageRQ.getNumSeq()) && messageRS.getParameter().equals("OK"))
 			{
+
 				return messageRS.getNumSeq();
 			}
 

@@ -9,8 +9,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import json.tfg.olga.*;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
 import funciones.tfg.olga.Funciones;
 
 public class Comunicacion {
@@ -40,7 +43,7 @@ public class Comunicacion {
 			httpConnection.setRequestMethod("POST");
 			httpConnection.setRequestProperty("Content-Type", "application/json");
 
-			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), "IAMALIVE", "OLGANG");
+			MessageRQ messageRQ = new MessageRQ(Long.toString((long) Math.random()*999999999+100000000), "IAMALIVE", "OLGANG");
 			ObjectMapper objectMapper = new ObjectMapper();
 			String authRQString = objectMapper.writeValueAsString(messageRQ);
 
