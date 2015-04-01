@@ -229,10 +229,10 @@ public class ManagementProject {
 	}
 	
 	/**
-	 * Busca la entrada en sharings de quien le compartio este proyecto al usuario
+	 * Busca una entrada en sharing que coincida con el UID (compartido) y el id del proyecto
 	 * @param uid - uid del compartido
 	 * @param id - id del proyecto
-	 * @return Entrada sharings | null en caso de que el usuario sea el dueño
+	 * @return Entrada sharings | null en caso de que el usuario sea el dueño o no le hyan compartido ese proyecto
 	 */
 	public Sharing buscarJPAPadre(long uid, long id)
 	{

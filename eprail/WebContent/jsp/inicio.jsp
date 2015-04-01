@@ -12,9 +12,9 @@
 <script type="text/javascript" src="/eprail/script/center.js"></script>
 </head>
 <script>
-function alertDelete (id, name) {
+function alertDelete (id, name, sh) {
 	if (confirm("¿Est\u00e1 seguro de borrar el proyecto "+name+"? No podr\u00e1 deshacer esta acci\u00F3n.")) {
-		window.location.assign("/eprail/controller/delete?id="+id);
+		window.location.assign("/eprail/controller/delete?id="+id+"&sh="+sh);
 	}
 }
 </script>
@@ -66,7 +66,7 @@ function alertDelete (id, name) {
 						<%if(botones){ %>
 						<td><a href="/eprail/controller/see?id=<%=project.getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
 						<td><a href="/eprail/controller/run?id=<%=project.getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a></td>
-						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
+						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>&sh=0" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a></td>
 						<%}else{ %>
 						<td><img src="/eprail/img/eye-d.png" alt="see"></td>
@@ -74,7 +74,7 @@ function alertDelete (id, name) {
 						<td><img src="/eprail/img/download-d.png" alt="download"></td>
 						<td><img src="/eprail/img/share-d.png" alt="share"></td>
 						<%}if(project.getStatuscategory().getIdProjectStatus()!=0&&project.getStatuscategory().getIdProjectStatus()!=1){ %>
-						<td><a onclick="alertDelete(<%=project.getIdProject()%>, '<%=project.getProjectName()%>');" title="Borrar" style="cursor: pointer;"><img src="/eprail/img/delete.png" alt="delete"></a></td>
+						<td><a onclick="alertDelete(<%=project.getIdProject()%>, '<%=project.getProjectName()%>', '0');" title="Borrar" style="cursor: pointer;"><img src="/eprail/img/delete.png" alt="delete"></a></td>
 						<%}else{ %>
 						<td><img src="/eprail/img/delete-d.png" alt="delete"></td>
 						<%} %>
@@ -128,7 +128,7 @@ function alertDelete (id, name) {
 						<%if(botones){ %>
 						<td><a href="/eprail/controller/see?id=<%=project.getProject().getIdProject()%>" title="Ver"><img src="/eprail/img/eye.png" alt="see"></a></td>
 						<td><%if(project.getAllowRecalculate()!=0){ %><a href="/eprail/controller/run?id=<%=project.getProject().getIdProject()%>" title="Simular"><img src="/eprail/img/gear.png" alt="run"></a><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
-						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
+						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>&sh=1" title="Descargar"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
 						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/share?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="Compartir"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>	
 						<%}else{ %>
 						<td><img src="/eprail/img/eye-d.png" alt="see"></td>
@@ -136,7 +136,7 @@ function alertDelete (id, name) {
 						<td><img src="/eprail/img/download-d.png" alt="download"></td>
 						<td><img src="/eprail/img/share-d.png" alt="share"></td>
 						<%}if(project.getProject().getStatuscategory().getIdProjectStatus()!=0&&project.getProject().getStatuscategory().getIdProjectStatus()!=1){ %>
-							<td><%if(project.getAllowDelete()!=0){ %><a onclick="alertDelete(<%=project.getProject().getIdProject()%>, '<%=project.getProject().getProjectName()%>');"title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>
+							<td><%if(project.getAllowDelete()!=0){ %><a onclick="alertDelete(<%=project.getProject().getIdProject()%>, '<%=project.getProject().getProjectName()%>', '1');" style="cursor: pointer;" title="Borrar"><img src="/eprail/img/delete.png" alt="delete"></a><%}else{ %><img src="/eprail/img/delete-d.png" alt="share"><%} %></td>
 						<%}else{ %>
 						<td><img src="/eprail/img/delete-d.png" alt="delete"></td>
 							<%} %>

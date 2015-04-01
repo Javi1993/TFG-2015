@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import modeldata.tfg.eprailJPA.Project;
+import modeldata.tfg.eprailJPA.Sharing;
 import modeldata.tfg.eprailJPA.User;
 import controller.tfg.eprail.ManagementProject;
 
@@ -34,33 +37,27 @@ public class DownloadServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-		//CASO DE QUE SEA COMPARITIDO (HACER!!!)
-		
 		// Buscamos el userBean en la session
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
-
-		//buscamos los metadatos del archivo en la bbdd
 		ManagementProject mp = new ManagementProject();
-		Project project = mp.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
-		if(project!=null)
-		{
-			response.setContentType("application/ongf");//indicamos el tipo de archivo
-			response.setHeader("Content-disposition","attachment; filename="+project.getProjectName());//dialogo de descarga
-			String path = new String(project.getONGFile());
-			File my_file = new File(path+File.separator+project.getIdProject());
-
-			//Realizamos la descarga
-			OutputStream out = response.getOutputStream();
-			FileInputStream in = new FileInputStream(my_file);
-			byte[] buffer = new byte[4096];
-			int length;
-			while ((length = in.read(buffer)) > 0){
-				out.write(buffer, 0, length);
+		Project project = null;
+		if(request.getParameter("sh").equals("0"))
+		{//el proyecto a descargar es propio
+			//buscamos los metadatos del archivo en la bbdd
+			project = mp.buscarJPAProyectoIdUID(userBean, Long.parseLong(request.getParameter("id")));
+		}else if(request.getParameter("sh").equals("1"))
+		{//el proyecto a descargar es compartido
+			Sharing sharing = mp.buscarJPAPadre(userBean.getUid(), Long.parseLong(request.getParameter("id")));
+			if(sharing.getAllowDownload()!=0){//tiene permisos
+				project = sharing.getProject();
 			}
-			in.close();
-			out.flush();
+		}
+		if(project!=null)
+		{//todo correcto
+			descargar(request, response, project);
+		}else{//el usuario no puede realizar esta tarea
+			request.getRequestDispatcher("/errors/error-allowed.html").forward(request, response);
 		}
 	}
 
@@ -71,4 +68,22 @@ public class DownloadServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
+	protected void descargar(HttpServletRequest request, HttpServletResponse response, Project project) throws ServletException, IOException {
+		
+		response.setContentType("application/ongf");//indicamos el tipo de archivo
+		response.setHeader("Content-disposition","attachment; filename="+project.getProjectName());//dialogo de descarga
+		String path = new String(project.getONGFile());
+		File my_file = new File(path+File.separator+project.getIdProject());
+
+		//Realizamos la descarga
+		OutputStream out = response.getOutputStream();
+		FileInputStream in = new FileInputStream(my_file);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0){
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+	}
 }
