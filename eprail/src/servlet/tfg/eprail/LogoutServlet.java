@@ -56,7 +56,7 @@ public class LogoutServlet extends HttpServlet {
 			System.out.println("El directorio temporal de user-"+userBean.getUid()+" es: "+e.getMessage());
 		}
 		request.getSession(true).invalidate();
-		request.getRequestDispatcher("/index.html").forward(request, response);
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	/**

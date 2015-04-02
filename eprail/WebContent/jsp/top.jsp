@@ -12,10 +12,11 @@
 <%
 	String olga = (String) request.getSession().getAttribute("olga");
 %>
+	<jsp:include page="./lenguage.jsp" flush="true" />
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />
-	<div id="top" style="background-color: #FFF;">
+	<span id="top" style="background-color: #FFF;">
 		<%if(olga.equals("on")){ %>
 		<img class="top" src="/eprail/img/on.png" alt="on" width="20"
 			height="20" title="El simulador OlgaNG est&aacute; operativo">
@@ -25,6 +26,6 @@
 				name="userBean" property="familyName" /></span> <span class="top"><a
 			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
 			href="/eprail/controller/jsp/account.jsp">Cuenta</a></span>
-	</div>
+	</span>
 </body>
 </html>

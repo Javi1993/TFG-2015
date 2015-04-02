@@ -19,7 +19,7 @@ public class TextListener implements MessageListener {
 				Thread.sleep((long) (Math.random()*6000+1000));//espera en cola
 				sm.processCase("CASELAUNCHED", id);
 				Thread.sleep((long) (Math.random()*20000+8000));//espera por calculo
-				sm.finishedCase(id);
+				sm.finish(id);
 			} else {
 				System.err.println("Message is not a ObjectMessage");
 			}

@@ -7,16 +7,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 import org.codehaus.jackson.map.ObjectMapper;
-
+import funciones.tfg.olga.Funciones;
 import jms.tfg.olga.InteraccionJMS;
 import json.tfg.olga.MessageRQ;
 import json.tfg.olga.MessageRS;
@@ -26,6 +26,10 @@ public class Simulate {
 
 	private static final String targetURL = "http://localhost:8080/eprail/rest/simulate";
 	Logger logger = Logger.getLogger("Log-OlgaNG");//log del proceso de simulacion
+	private Timer timer;
+	private int cnt;
+	private boolean sendEmail;
+	private String projectId;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -76,6 +80,15 @@ public class Simulate {
 		}
 	}
 
+	public void finish (String projectId)
+	{
+		sendEmail = false;
+		cnt = 0;
+		this.setProjectId(projectId);
+		timer = new Timer();
+		timer.schedule(new RemindTask(), 0, 2000);
+	}
+
 	public String finishedCase (String projectId){
 		try {
 			URL targetUrl = new URL(targetURL);
@@ -120,10 +133,74 @@ public class Simulate {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("No hubo respuesta por parte del Front-End para el comando CASEFINISHED. ERROR: "+e.getMessage());
 		} catch (RuntimeException e) {
-			e.printStackTrace();
+			System.err.println("No hubo respuesta por parte del Front-End para el comando CASEFINISHED. ERROR: "+e.getMessage());
 		}
 		return null;
+	}
+
+	/**
+	 * @return the cnt
+	 */
+	public int getCnt() {
+		return cnt;
+	}
+
+	/**
+	 * @param cnt the cnt to set
+	 */
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	/**
+	 * @return the sendEmail
+	 */
+	public boolean isSendEmail() {
+		return sendEmail;
+	}
+
+	/**
+	 * @param sendEmail the sendEmail to set
+	 */
+	public void setSendEmail(boolean sendEmail) {
+		this.sendEmail = sendEmail;
+	}
+
+	/**
+	 * @return the projectId
+	 */
+	public String getProjectId() {
+		return projectId;
+	}
+
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	class RemindTask extends TimerTask {
+		public void run() {
+			if(finishedCase(getProjectId())!=null)
+			{//el servidor olga metio a la cola el proyecto
+				timer.cancel();
+				timer.purge();
+				return;
+			}else
+			{//no hubo respuesta de OlgaNG o esta fue erronea
+				setCnt(getCnt()+1);
+				if(getCnt()>=10 && !isSendEmail())
+				{//mandamos email notificando del comportamiento del receptor
+					Funciones.sendEmail("Eprail: Aplicación web no recibe simulación", "<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>"
+							+"<div style='border: 2px solid #800000; border-radius: 20px; box-shadow: 2px 2px 2px #888888; padding:20px;'><h2>Aplicación web no recibe resultado</h2><br>"
+							+ "<p>OlgaNG ha terminado de simular el proyecto-"+getProjectId()+", pero la aplicaci&oacute;n web no recibe el resultado o no avisa de haberlo recibido. Revise su estado con urgencia.</p>"
+							+"</div></body></html>", "100290698@alumnos.uc3m.es");
+					setSendEmail(true);
+				}
+			}
+		}
 	}
 }

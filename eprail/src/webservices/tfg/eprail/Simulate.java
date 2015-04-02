@@ -46,11 +46,11 @@ public class Simulate {
 
 	}
 
-	public Simulate(String ptojectId, String logPath){
+	public Simulate(String projectId, String logPath){
 		try {
 			sendEmail = false;
 			cnt = 0;
-			this.setProjectId(ptojectId);
+			this.setProjectId(projectId);
 			fh = new FileHandler(logPath+File.separator+"logs"+File.separator+this.getProjectId()+".log");
 			logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();  

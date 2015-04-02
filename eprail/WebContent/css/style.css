@@ -17,13 +17,26 @@ a{
 	outline: 0;
 }
 
-div#top{
+span#top{
 	position: fixed;
 	top: 0;
 	left: 60%;
 	z-index: 999;
 	width: 100%;
 	height: 23px;
+}
+
+span#idiom{
+	position: fixed;
+	top: 0.5;
+	left: 17%;
+	z-index: 999;
+	width: 100%;
+	height: 23px;
+}
+
+*:focus{
+    outline: none;
 }
 
 .top{
