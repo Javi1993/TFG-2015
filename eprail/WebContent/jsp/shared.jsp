@@ -47,31 +47,34 @@ $(function(){
 </script>
 </head>
 <body>
+<%
+	String leng = (String) request.getSession().getAttribute("lenguage");
+%>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
-		<span class="title" style="text-align:center; width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">Compartir proyecto <%=request.getParameter("n")%></span>&nbsp;&nbsp;<a class="subtitle" style="left:270px;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title" style="text-align:center; width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"><%if(leng.equals("SP")){%>Compartir proyecto <%=request.getParameter("n")%><%}else{ %>Share <%=request.getParameter("n")%> project<%} %></span>&nbsp;&nbsp;<a class="subtitle" style="left:270px;" href="/eprail/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
-		<p>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto</p>
+		<p><%if(leng.equals("SP")){%>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto<%}else{%>Enter the email address of the registered user with whom you want to share the project<%}%></p>
 		<form id="form" action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
-			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="A&ntilde;adir">
+			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
 		</form>
-		<%if(request.getAttribute("message")==null){ %><sub style="font-size: 10px; color:#C0C0C0">Si no recuerdas el email puedes bucar por el nombre</sub><%}else{ %>
+		<%if(request.getAttribute("message")==null){ %><sub style="font-size: 10px; color:#C0C0C0"><%if(leng.equals("SP")){%>Si no recuerdas el email puedes buscar por el nombre<%}else{ %>If you do not remember the email, you can search by username<%}%></sub><%}else{ %>
 		<sub style="font-size: 10px; color:#800000"><%=request.getAttribute("message") %></sub><%} %>
 		<br><br><br><br>
 		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>
 			<table class="project" style="width: 100%">
 					<tr>
-						<th>Usuario</th>
+						<th><%if(leng.equals("SP")){%>Usuario<%}else{ %>User<%}%></th>
 						<th>Email</th>
-						<th><img src="/eprail/img/eye.png" alt="see"><br>Ver</th>
-						<th><img src="/eprail/img/gear.png" alt="run"><br>Recalcular</th>
-						<th><img src="/eprail/img/download.png" alt="download"><br>Descargar</th>
-						<th><img src="/eprail/img/share.png" alt="share"><br>Compartir</th>
-						<th><img src="/eprail/img/delete.png" alt="delete"><br>Borrar</th>
+						<th><img src="/eprail/img/eye.png" alt="see"><br><%if(leng.equals("SP")){%>Ver<%}else{ %>See<%}%></th>
+						<th><img src="/eprail/img/gear.png" alt="run"><br><%if(leng.equals("SP")){%>Recalcular<%}else{ %>Recalculate<%}%></th>
+						<th><img src="/eprail/img/download.png" alt="download"><br><%if(leng.equals("SP")){%>Descargar<%}else{ %>Download<%}%></th>
+						<th><img src="/eprail/img/share.png" alt="share"><br><%if(leng.equals("SP")){%>Compartir<%}else{ %>Share<%}%></th>
+						<th><img src="/eprail/img/delete.png" alt="delete"><br><%if(leng.equals("SP")){%>Borrar<%}else{ %>Delete<%}%></th>
 						<th class="delete">&nbsp;&nbsp;</th>
 					</tr>
 
@@ -90,20 +93,20 @@ $(function(){
 						<td><input type="checkbox" value="<%="D"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} %>></td>
 						<td><input type="checkbox" value="<%="S"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowShare()!=0){ %>checked="checked"<%} %>></td>
 						<td><input type="checkbox" value="<%="X"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} %>></td>
-						<td class="delete"><a href="/eprail/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="Quitar"><img src="/eprail/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
+						<td class="delete"><a href="/eprail/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){%>Quitar<%}else{ %>Remove<%}%>"><img src="/eprail/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
 					</tr>
 					<%
 						cnt++;
 							}
 					%>
-					<caption>ACCIONES AUTORIZADAS</caption>
+					<caption><%if(leng.equals("SP")){%>ACCIONES AUTORIZADAS<%}else{ %>AUTHORIZED SHARES<%}%></caption>
 					<%
 						}else{
 					%>
-					<caption>ARCHIVO NO COMPARTIDO</caption>
+					<caption><%if(leng.equals("SP")){%>ARCHIVO NO COMPARTIDO<%}else{ %>FILE NOT SHARED<%}%></caption>
 					<%} %>
 					</table>
-				<input type="submit" value="Guardar" id="edit-s" />
+				<input type="submit" value="<%if(leng.equals("SP")){%>Guardar<%}else{ %>Save<%}%>" id="edit-s" />
 			</fieldset>
 		</form>
 	</div>

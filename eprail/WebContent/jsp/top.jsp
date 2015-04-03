@@ -19,13 +19,13 @@
 	<span id="top" style="background-color: #FFF;">
 		<%if(olga.equals("on")){ %>
 		<img class="top" src="/eprail/img/on.png" alt="on" width="20"
-			height="20" title="El simulador OlgaNG est&aacute; operativo">
+			height="20" title="<%if(request.getSession().getAttribute("lenguage").equals("SP")){ %>El simulador OlgaNG est&aacute; operativo<%}else{%>OlgaNG is operative<%}%>">
 		<%}else{ %><img class="top" src="/eprail/img/off.png" alt="off" width="20"
-			height="20" title="El simulador OlgaNG no est&aacute; operativo"><%} %><span class="top"><jsp:getProperty
+			height="20" title="<%if(request.getSession().getAttribute("lenguage").equals("SP")){ %>El simulador OlgaNG no est&aacute; operativo<%}else{%>OlgaNG is inoperative<%}%>"><%} %><span class="top"><jsp:getProperty
 				name="userBean" property="firstName" /></span><span class="top"><jsp:getProperty
 				name="userBean" property="familyName" /></span> <span class="top"><a
 			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
-			href="/eprail/controller/jsp/account.jsp">Cuenta</a></span>
+			href="/eprail/controller/jsp/account.jsp"><%if(request.getSession().getAttribute("lenguage").equals("SP")){%>Cuenta<%}else{ %>Account<%} %></a></span>
 	</span>
 </body>
 </html>

@@ -21,7 +21,7 @@
 		Project project =  (Project) request.getAttribute("project");
 		String path = (String) request.getAttribute("path");
 	%>
-		<span class="title" class="title" style="text-align:center; width:160px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">Ver proyecto <%=project.getProjectName() %></span>&nbsp;&nbsp;<a class="subtitle" style="left:230px;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title" class="title" style="text-align:center; width:160px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"><%=project.getProjectName() %></span>&nbsp;&nbsp;<a class="subtitle" style="left:230px;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<jsp:include page="<%=path %>" flush="true" />		
 	</div>

@@ -12,16 +12,20 @@
 <script type="text/javascript" src="/eprail/script/dropzone.js"></script>
 </head>
 <body>
+<%
+	String leng = (String) request.getSession().getAttribute("lenguage");
+%>
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height: 500px; width: 1000px;">
-		<span class="title">A&ntilde;adir proyectos</span>&nbsp;&nbsp;&nbsp;&nbsp;<a
-			class="subtitle" style="left:16%;" href="/eprail/controller/login" title="Volver"><img src="/eprail/img/back.png" alt="back" width="30" height="30"></a>
+		<span class="title"><%if(leng.equals("SP")){%>A&ntilde;adir proyectos<%}else{%>Add projects<%}%></span>&nbsp;&nbsp;&nbsp;&nbsp;<a
+			class="subtitle" style="left:16%;" href="/eprail/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/eprail/img/back.png" alt="back" width="30" height="30"></a>
 		<form action="/eprail/controller/upload" class="dropzone">
 			<div class="fallback">
 				<input name="file" type="file" multiple />
 			</div>
 		</form>
-		<p>Arrastre o haga clic en el cuadro de arriba para a&ntilde;adir archivos. Tras completar la subida vuelva a la p&aacute;gina de incio para ver el resultado.</p>
+		<p><%if(leng.equals("SP")){%>Arrastre o haga clic en el cuadro de arriba para a&ntilde;adir archivos. Tras completar la subida vuelva a la p&aacute;gina de incio para ver el resultado.<%}else{%>
+		Drag & put or click in the window to add files. After completing the upload back to see the result.<%}%></p>
 	</div>
 </body>
 </html>

@@ -86,7 +86,7 @@ public class RecoverServlet extends HttpServlet {
 			User user = mu.buscarJPAUser(Long.parseLong(request.getParameter("uid")));
 			user.setPassword(Funciones.cryptMD5("0351"+request.getParameter("pass")));
 			mu.updateJPAUser(user);
-			nextPage = "/index.html";
+			nextPage = "/index.jsp";
 		}
 
 		//redirigimos

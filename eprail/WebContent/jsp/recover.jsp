@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.Locale"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,30 +11,47 @@
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<%
+	String leng = (String) request.getSession().getAttribute("lenguage");
+	if(leng == null)
+	{
+		switch (Locale.getDefault().getDisplayLanguage()) {//obtenemos el idioma del usuario
+		case "spanish":
+			request.getSession().setAttribute("lenguage", "SP");
+			break;
+		case "español":
+			request.getSession().setAttribute("lenguage", "SP");
+			break;
+		default:
+			request.getSession().setAttribute("lenguage", "EN");	
+		}		
+		leng = (String) request.getSession().getAttribute("lenguage");
+	}
+%>
+	<jsp:include page="./lenguage.jsp" flush="true" />
 	<div class="center" style="height:155px; width:400px;">
-		<div class="title">Restablecer contrase&ntilde;a</div>
+		<div class="title"><%if(leng.equals("SP")){ %>Restablecer contrase&ntilde;a<%}else{%>Restore password<%} %></div>
 		<%
 			if ((Boolean) request.getAttribute("valido")) {
 		%>
-		<p>A continuaci&oacute;n rellene los siguientes campos con su
-			nueva contrase&ntilde;a.</p>
+		<p><%if(leng.equals("SP")){ %>A continuaci&oacute;n rellene los siguientes campos con su
+			nueva contrase&ntilde;a.<%}else{ %>Complete the following fields with your new password.<%} %></p>
 		<form action="/eprail/recover?cd=1" method="post">
 			<fieldset>
 				<input type="hidden" name="uid"
 					value="<%=request.getParameter("op")%>"><span
-					class="campo"><label class="log-i">Contrase&ntilde;a</label><input
+					class="campo"><label class="log-i"><%if(leng.equals("SP")){ %>Contrase&ntilde;a<%}else{ %>Password<%} %></label><input
 					type="password" id="pass" name="pass" minlength="6" required /></span><br> <span
-					class="campo"><label class="log-i">Repetir
-						contrase&ntilde;a</label><input type="password" id="newpass" minlength="6" required /></span><br>
+					class="campo"><label class="log-i"><%if(leng.equals("SP")){ %>Repetir
+						contrase&ntilde;a<%}else{ %>Repeat password<%} %></label><input type="password" id="newpass" minlength="6" required /></span><br>
 				<span class="campo"><input id="edit-s" type="submit"
-					value="Guardar" /></span>
+					value="<%if(leng.equals("SP")){ %>Guardar<%}else{ %>Save<%} %>" /></span>
 			</fieldset>
 		</form>
 		<%
 			} else {
 		%>
-		<p>Hubo un problema, vuelva a acceder a la url que se le mando al
-			correo.</p>
+		<p>There was a problem. Re-enter the email link or repeat the process.</p>
 		<%
 			}
 		%>
@@ -44,7 +62,12 @@
 		function comparePass() {
 			if ($("#pass").val() != $("#newpass").val()) {
 				$("#edit-s").attr("disabled", "disabled");
-				alert("Las contrase\u00f1a no coinciden");
+				idioma = "<%=leng%>";
+				if(idioma =="SP"){
+					alert("Las contrase\u00f1a no coinciden");
+				}else{
+					alert("Passwords don't match");
+				}
 			} else {
 				$("#edit-s").removeAttr("disabled");
 			}

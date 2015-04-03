@@ -31,9 +31,9 @@ public class LenguageServlet extends HttpServlet {
 		try{
 			String [] a = request.getHeader("Referer").split("eprail/");
 			request.getSession().setAttribute("lenguage", request.getParameter("ln"));
-			request.getRequestDispatcher(a[1]).forward(request, response);
+			response.sendRedirect(a[1]);
 		}catch (ArrayIndexOutOfBoundsException e){
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
+			response.sendRedirect("/eprail/");
 		}
 	}
 
