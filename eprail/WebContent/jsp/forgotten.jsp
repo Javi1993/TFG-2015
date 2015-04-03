@@ -21,7 +21,7 @@
         <form action="/eprail/recover?cd=0" method="post" name="recuperar">
         	<fieldset>
             <span class="campo"><label class="log-i">E-mail</label><input type="email" name="email" maxlength="60" required="required" /></span><br>
-            <span class="campo"><a class="but" href="/eprail/" style="width:50%;"><%if(leng.equals("SP")){ %>Volver<%}else{%>Back<%} %></a><input type="submit" value="<%if(leng.equals("SP")){ %>Restablecer contrase&ntilde;a<%}else{%>Reset password<%}%>" /></span>
+            <span class="campo"><a class="but" href="/eprail/" style="margin-right:45%;"><%if(leng.equals("SP")){ %>Volver<%}else{%>Back<%} %></a><input type="submit" value="<%if(leng.equals("SP")){ %>Restablecer contrase&ntilde;a<%}else{%>Reset password<%}%>" /></span>
             </fieldset>
         </form>
     </div>

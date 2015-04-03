@@ -30,7 +30,7 @@ public class RecoverServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String nextPage = "/errors/404.html";
+		String nextPage = "/errors/404.jsp";
 
 		//nos protegemos ante caracteres especiales 
 		response.setContentType("text/html;charset=UTF-8");
@@ -58,7 +58,7 @@ public class RecoverServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		String nextPage = "/errors/404.html";
+		String nextPage = "/errors/404.jsp";
 		int modo = Integer.parseInt(request.getParameter("cd"));
 		ManagementUser mu = new ManagementUser();
 

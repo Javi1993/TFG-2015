@@ -3,15 +3,18 @@ package servlet.tfg.eprail;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import modeldata.tfg.eprailJPA.Project;
 import modeldata.tfg.eprailJPA.Sharing;
 import modeldata.tfg.eprailJPA.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import controller.tfg.eprail.ManagementProject;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
@@ -79,7 +82,13 @@ public class ShareServlet extends HttpServlet {
 				sh.setUser2(userBean);
 				mp.addJPACompartido(sh);
 			}else{
-				request.setAttribute("message", "El email introducido no existe en nuestro registro");
+				String idiom = (String) request.getSession().getAttribute("lenguage");
+				if(idiom.equals("SP"))
+				{
+					request.setAttribute("message", "El email introducido no existe en nuestro registro");
+				}else{
+					request.setAttribute("message", "This email does not exist in our records");
+				}	
 			}
 			loadProjects(request, response);
 		}else if(request.getParameter("op").equals("2"))

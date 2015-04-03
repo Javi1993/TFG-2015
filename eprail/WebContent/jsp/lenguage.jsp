@@ -10,7 +10,7 @@
 <body>
 	<span id="idiom" style="background-color: #FFF;">
 		<select id="lenguage" name="lenguage" style="width: 120px; font-size: 12px;">
-			<%if(request.getSession().getAttribute("lenguage").equals("SP")){ %>
+			<%if(request.getSession(false).getAttribute("lenguage")!=null && request.getSession().getAttribute("lenguage").equals("SP")){ %>
 				<option value='SP' data-image="/eprail/img/es.png" selected>Espa&ntilde;ol</option>
 				<option value='EN' data-image="/eprail/img/uk.png">English</option>
 			<%}else{ %>

@@ -59,7 +59,7 @@ public class DeleteServlet extends HttpServlet {
 			delete(request, response, project, userBean);
 			request.getRequestDispatcher("/controller/login").forward(request, response);
 		}else{//el usuario no puede realizar esta tarea
-			request.getRequestDispatcher("/errors/error-allowed.html").forward(request, response);
+			request.getRequestDispatcher("/errors/error-allowed.jsp").forward(request, response);
 		}	
 	}
 

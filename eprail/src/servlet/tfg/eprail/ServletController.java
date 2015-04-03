@@ -71,7 +71,7 @@ public class ServletController extends HttpServlet {
 
 			if(userBean.getLoggedIn() == false || userBean == null)
 			{//No hay userBean en session o los datos son incorrectos, redirigimos a inicio
-				nextPage = "/errors/error-login.html";
+				nextPage = "/errors/error-login.jsp";
 			}else{
 				userBean.setLoggedIn(true);
 				session.setAttribute("userBean", userBean);

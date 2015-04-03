@@ -30,7 +30,6 @@ public class ActivateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String nextPage = "/jsp/activate.jsp";
 		ManagementUser mu = new ManagementUser();
 		User userAux = mu.buscarJPAUser(Long.parseLong(request.getParameter("op")));
@@ -51,7 +50,7 @@ public class ActivateServlet extends HttpServlet {
 			}
 		}else
 		{//no se encuentra ningun usuario con esa UID
-			nextPage = "/errors/404.html";
+			nextPage = "/errors/404.jsp";
 		}
 
 		//redirigimos

@@ -49,7 +49,7 @@ public class DownloadServlet extends HttpServlet {
 		}else if(request.getParameter("sh").equals("1"))
 		{//el proyecto a descargar es compartido
 			Sharing sharing = mp.buscarJPAPadre(userBean.getUid(), Long.parseLong(request.getParameter("id")));
-			if(sharing.getAllowDownload()!=0){//tiene permisos
+			if(sharing != null && sharing.getAllowDownload()!=0){//tiene permisos
 				project = sharing.getProject();
 			}
 		}
@@ -57,7 +57,7 @@ public class DownloadServlet extends HttpServlet {
 		{//todo correcto
 			descargar(request, response, project);
 		}else{//el usuario no puede realizar esta tarea
-			request.getRequestDispatcher("/errors/error-allowed.html").forward(request, response);
+			request.getRequestDispatcher("/errors/error-allowed.jsp").forward(request, response);
 		}
 	}
 
@@ -69,7 +69,6 @@ public class DownloadServlet extends HttpServlet {
 	}
 
 	protected void descargar(HttpServletRequest request, HttpServletResponse response, Project project) throws ServletException, IOException {
-		
 		response.setContentType("application/ongf");//indicamos el tipo de archivo
 		response.setHeader("Content-disposition","attachment; filename="+project.getProjectName());//dialogo de descarga
 		String path = new String(project.getONGFile());

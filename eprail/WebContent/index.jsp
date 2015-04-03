@@ -41,7 +41,7 @@
         	<br><a id="remem" href="/eprail/jsp/forgotten.jsp"><%if(leng.equals("SP")){ %>&iquest;No recuerdas t&uacute; contrase&ntilde;a?<%}else{ %>Forgotten your password?<%} %></a>
         </span>
 		<br><br>
-        <span class="campo"><a class="but" href="/eprail/html/registro.html" style="width:70%;"><%if(leng.equals("SP")){ %>Registrarse<%}else{ %>Sign Up<%} %></a><input type="submit" value="Login" /></span>
+        <span class="campo"><a class="but" href="/eprail/jsp/signup.jsp" style="margin-right:70%;"><%if(leng.equals("SP")){ %>Registrarse<%}else{ %>Sign Up<%} %></a><input type="submit" value="Login" /></span>
     </fieldset>
     </form>
 </div>
