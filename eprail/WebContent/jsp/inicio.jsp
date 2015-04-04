@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.text.SimpleDateFormat, java.util.List,modeldata.tfg.eprailJPA.Project,modeldata.tfg.eprailJPA.Sharing"%>
+<%@page import="java.util.Locale, java.text.SimpleDateFormat, java.util.List,modeldata.tfg.eprailJPA.Project,modeldata.tfg.eprailJPA.Sharing"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -41,34 +41,53 @@ function alertDelete (id, name, sh, idiom) {
 							for (Project project : list) {
 								boolean botones = false;
 								String style = "";
+								String status = "";
+								String desc = "";
 								switch(project.getStatuscategory().getIdProjectStatus())
 								{
 								case 0:
 									style = "border:2px solid #800000; padding: 10px; color:#800000; background-color:#DB9595;";
 									botones = false;
+									status = "Pending";
+									desc = "The case was uploaded but not yet started the simulation";
 									break;
 								case 1:
 									style = "border:2px solid #800000; padding: 10px; color: #800000; background-color: #EEDBDD;";
 									botones = false;
+									status = "Calculating...";
+									desc = "Simulation has been launched but not yet concluded";
 									break;
 								case 2:
 									style = "border:2px solid #800000; padding: 10px;";
 									botones = true;
+									status = "Simulated";
+									desc = "Simulation was successful";
 									break;
 								default:
 									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #800000;";
+									status = "Errors";
+									desc = "Error during simulation";
 									botones = false;
-								}			
+								}		
+								if(leng.equals("SP")){
+									status = project.getStatuscategory().getStatusName();
+									desc = project.getStatuscategory().getStatusDescription();
+								}
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder.png" alt="project" width="30" height="30"></td>
 						<td><%=project.getProjectName()%></td>
-						<td><span style="<%=style %>" title="<%=project.getStatuscategory().getStatusDescription()%>">
-						<%=project.getStatuscategory().getStatusName()%>
+						<td><span style="<%=style %>" title="<%=desc%>">
+						<%=status%>
 						</span></td>
 						<td style="color: #C0C0C0;">
 						<%
-						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
+						 SimpleDateFormat sdf = null;
+						 if(leng.equals("SP")){
+							 sdf = new SimpleDateFormat("dd-MMM-yyyy");
+						 }else{
+							 sdf = new SimpleDateFormat("MMM-dd-yyyy", Locale.UK);
+						 }%>
 						<%=sdf.format(project.getDateModified())%>
 						</td>
 						<%if(botones){ %>
