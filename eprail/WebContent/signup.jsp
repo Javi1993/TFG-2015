@@ -19,7 +19,7 @@
 		leng = (String) request.getSession().getAttribute("lenguage");
 	}
 %>
-<jsp:include page="./lenguage.jsp" flush="true" />
+<jsp:include page="./jsp/lenguage.jsp" flush="true" />
     <div class="center" style="height:200px; width:400px;">
     <div class="title"><%if(leng.equals("SP")){ %>Formulario de registro<%}else{%>Sign up form<%}%></div>
         <form action="/eprail/register" method="post" name="recuperar">

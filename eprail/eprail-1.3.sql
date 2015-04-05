@@ -1,6 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `eprail` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `eprail`;
--- MySQL dump 10.13  Distrib 5.6.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eprail
 -- ------------------------------------------------------
@@ -51,6 +49,30 @@ LOCK TABLES `deletedprojects` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `openjpa_sequence_table`
+--
+
+DROP TABLE IF EXISTS `openjpa_sequence_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `openjpa_sequence_table` (
+  `ID` tinyint(4) NOT NULL,
+  `SEQUENCE_VALUE` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `openjpa_sequence_table`
+--
+
+LOCK TABLES `openjpa_sequence_table` WRITE;
+/*!40000 ALTER TABLE `openjpa_sequence_table` DISABLE KEYS */;
+INSERT INTO `openjpa_sequence_table` VALUES (0,151);
+/*!40000 ALTER TABLE `openjpa_sequence_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `projects`
 --
 
@@ -71,7 +93,7 @@ CREATE TABLE `projects` (
   KEY `FK_STATUS_idx` (`IdProjectStatus`),
   CONSTRAINT `FK_STATUS` FOREIGN KEY (`IdProjectStatus`) REFERENCES `statuscategories` (`IdProjectStatus`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `FK_USER` FOREIGN KEY (`UID`) REFERENCES `users` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='Tabla con la información de los poryectos';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Tabla con la información de los poryectos';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +102,6 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (10,'Madrid - Barcelona.ongf',NULL,'C:\\Users\\Javier\\Desktop\\UC3M\\Curso 4\\Segundo Cuatrimestre\\TFG\\TFG\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\eprail\\ONGFiles\\33',33,0,'2015-03-08 11:41:22','2015-03-08 11:41:22'),(11,'Madrid - Sevilla.ongf',NULL,'C:\\Users\\Javier\\Desktop\\UC3M\\Curso 4\\Segundo Cuatrimestre\\TFG\\TFG\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\eprail\\ONGFiles\\33',33,0,'2015-03-08 11:47:18','2015-03-08 11:47:18');
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +130,7 @@ CREATE TABLE `sharings` (
   CONSTRAINT `FK_PROJECTSH` FOREIGN KEY (`IdProject`) REFERENCES `projects` (`IdProject`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_USERGIV` FOREIGN KEY (`UID`) REFERENCES `users` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_USERSH` FOREIGN KEY (`UIDsharer`) REFERENCES `users` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +150,7 @@ DROP TABLE IF EXISTS `statuscategories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `statuscategories` (
-  `IdProjectStatus` tinyint(4) NOT NULL COMMENT 'ID of the status (0 - pending, 1- calculated, 2- simulated, 3- errors.)',
+  `IdProjectStatus` tinyint(4) NOT NULL COMMENT 'ID of the status (0 - pending, 1- calculating, 2- simulated, 3- errors.)',
   `StatusName` varchar(45) NOT NULL COMMENT 'Name of this status',
   `StatusDescription` varchar(150) NOT NULL COMMENT 'Text describing the meaning of this status',
   PRIMARY KEY (`IdProjectStatus`)
@@ -142,7 +163,7 @@ CREATE TABLE `statuscategories` (
 
 LOCK TABLES `statuscategories` WRITE;
 /*!40000 ALTER TABLE `statuscategories` DISABLE KEYS */;
-INSERT INTO `statuscategories` VALUES (0,'Pendiente','El caso está subido pero todavía no hubo simulación'),(1,'Calculando','Se ha lanzado a simulación, pero todavía no concluyó'),(2,'Simulado','Simulación concluida con éxito'),(3,'Errores','Error durante la simulación');
+INSERT INTO `statuscategories` VALUES (0,'Pendiente','El caso está subido pero todavía no hubo simulación'),(1,'Calculando...','Se ha lanzado la simulación, pero todavía no concluyó'),(2,'Simulado','Simulación concluida con éxito'),(3,'Errores','Error durante la simulación');
 /*!40000 ALTER TABLE `statuscategories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +184,7 @@ CREATE TABLE `users` (
   `password` varchar(32) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +193,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (33,'Javier','García Pérez','javierdavid93@gmail.com',1,'2015-03-08 11:16:08','7eaebeeccb821546a4a82efb14c7d896'),(34,'Javiero','García Pérezo','pepe93@gmail.com',1,'2015-03-08 12:16:08','7eaebeeccb821546a4a82efb14c7d896');
+INSERT INTO `users` VALUES (2,'Pepe','Martínez Lopetegui','javierdavid93@gemail.com',1,'2015-03-12 11:16:08','7eaebeeccb821546a4a82efb14c7d896'),(3,'Andrés','Román Tobijo','antail@a.com',1,'2015-03-12 11:16:08','7eaebeeccb821546a4a82efb14c7d896'),(4,'Facundo','Romero Pérez','facundo@gmail.com',1,'2015-03-12 11:16:08','7eaebeeccb821546a4a82efb14c7d896'),(5,'Hola','Hasta Luego','hola@gmail.com',1,'2015-03-12 11:16:08','7eaebeeccb821546a4a82efb14c7d896'),(6,'Javier','García Pérez','javierdavid93@gmail.com',1,'2015-04-03 17:29:58','7eaebeeccb821546a4a82efb14c7d896');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -185,4 +206,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-08 13:47:09
+-- Dump completed on 2015-04-05 20:11:30

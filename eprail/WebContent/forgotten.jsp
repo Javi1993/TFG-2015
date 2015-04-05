@@ -18,7 +18,7 @@
 		leng = (String) request.getSession().getAttribute("lenguage");
 	}
 %>
-<jsp:include page="./lenguage.jsp" flush="true" />
+<jsp:include page="./jsp/lenguage.jsp" flush="true" />
     <div class="center" style="height:155px; width:400px;">
     <div class="title"><%if(leng.equals("SP")){ %>Recuperaci&oacute;n de contraseña<%}else{%>Recover password<%}%></div>
     <p><%if(leng.equals("SP")){ %>Por favor, introduce tu direcci&oacute;n de e-mail. En breve, recibir&aacute;s un 

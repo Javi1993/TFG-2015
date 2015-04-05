@@ -19,7 +19,7 @@
 		leng = (String) request.getSession().getAttribute("lenguage");
 	}
 %>
-	<jsp:include page="./lenguage.jsp" flush="true" />
+	<jsp:include page="../jsp/lenguage.jsp" flush="true" />
 	<div class="center" style="height:100px; width:400px;">
 		<%
 			if ((Boolean) request.getAttribute("active")) {

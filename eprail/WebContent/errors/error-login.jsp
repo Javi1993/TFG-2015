@@ -24,11 +24,11 @@
     <%if(leng.equals("SP")){%>
     <p>El email y/o contrase&ntilde;a no coinciden o la cuenta no fue activada.</p>
     <p>Comprueba que has introducido bien los datos. Si no has activado tu cuenta revisa la bandeja del correo.</p>
-    <p>Si olvidastes tu contrase&ntilde;a reseteala <a href="/eprail/jsp/forgotten.jsp">aqu&iacute;</a>.</p>
+    <p>Si olvidastes tu contrase&ntilde;a reseteala <a href="/eprail/forgotten.jsp">aqu&iacute;</a>.</p>
     <%}else{%>
     <p>The email and/or password do not match or your account was not activated yet.</p>
     <p>Verify that you entered data well. If you haven't activated your account yet check your inbox.</p>
-    <p>If you forgot your password you can reset it <a href="/eprail/jsp/forgotten.jsp">here</a>.</p>
+    <p>If you forgot your password you can reset it <a href="/eprail/forgotten.jsp">here</a>.</p>
     <%}%>
      <span class="campo"><a class="but" href="/eprail/" style="margin-right:70%;"><%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%></a></span>
     </div>
