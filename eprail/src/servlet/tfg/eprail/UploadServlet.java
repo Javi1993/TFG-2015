@@ -60,8 +60,8 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		//nos protegemos ante caracteres especiales 
-		response.setContentType("text/html;charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
+//		response.setContentType("text/html;charset=UTF-8");
+//		request.setCharacterEncoding("UTF-8");
 
 		// Buscamos el userBean en la session
 		HttpSession session = request.getSession(true);

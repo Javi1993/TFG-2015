@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@page import="java.util.Locale, java.text.SimpleDateFormat, java.util.List,modeldata.tfg.eprailJPA.Project,modeldata.tfg.eprailJPA.Sharing"%>
+	pageEncoding="UTF-8" import="java.util.Locale, java.text.SimpleDateFormat, funciones.tfg.eprail.Funciones, java.util.List,modeldata.tfg.eprailJPA.Project,modeldata.tfg.eprailJPA.Sharing"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Eprail: repositorio de casos</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="/eprail/script/center.js"></script>
@@ -26,6 +25,11 @@ function alertDelete (id, name, sh, idiom) {
 <body>
 <%
 	String leng = (String) request.getSession().getAttribute("lenguage");
+	if(leng == null)
+	{
+		Funciones.setLenaguage(request.getSession());
+		leng = (String) request.getSession().getAttribute("lenguage");
+	}
 %>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"

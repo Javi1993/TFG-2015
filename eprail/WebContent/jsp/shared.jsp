@@ -1,14 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@page import="java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
+    pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones, java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <%
 	List<User> listUser = (List<User>) request.getAttribute("userList");
+	String leng = (String) request.getSession().getAttribute("lenguage");
+	if(leng == null)
+	{
+		Funciones.setLenaguage(request.getSession());
+		leng = (String) request.getSession().getAttribute("lenguage");
+	}
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Eprail: repositorio de casos</title>
 <link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
 <link href="/eprail/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
@@ -47,9 +52,6 @@ $(function(){
 </script>
 </head>
 <body>
-<%
-	String leng = (String) request.getSession().getAttribute("lenguage");
-%>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />

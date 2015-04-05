@@ -11,6 +11,10 @@
 <body>
 <%
 	String olga = (String) request.getSession().getAttribute("olga");
+	if(olga == null)
+	{
+		olga = "off";
+	}
 %>
 	<jsp:include page="./lenguage.jsp" flush="true" />
 	<%-- Cogemos el JavaBean del usuario de la session --%>

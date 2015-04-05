@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +25,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -388,47 +390,47 @@ public class Funciones {
 
 			String[] files = dir.list();
 			if(files!=null){
-			for(String s: files){//descomprimimos el htmlde cada proyecto
-				//creamos el directorio del proyecto y sus hijos
-				String pathHTML = path + File.separator + s;
-				File HTMLDir = new File(pathHTML);
-				if (!HTMLDir.exists()) {
-					HTMLDir.mkdirs();
-				}
+				for(String s: files){//descomprimimos el htmlde cada proyecto
+					//creamos el directorio del proyecto y sus hijos
+					String pathHTML = path + File.separator + s;
+					File HTMLDir = new File(pathHTML);
+					if (!HTMLDir.exists()) {
+						HTMLDir.mkdirs();
+					}
 
-				ZipInputStream zis = new ZipInputStream(new FileInputStream(dir.getPath() + File.separator + s));
-				ZipEntry entrada;
-				while (null != (entrada=zis.getNextEntry()) )
-				{
-					if(entrada.getName().startsWith("html/"))
+					ZipInputStream zis = new ZipInputStream(new FileInputStream(dir.getPath() + File.separator + s));
+					ZipEntry entrada;
+					while (null != (entrada=zis.getNextEntry()) )
 					{
-						File fileToWrite = new File(HTMLDir, entrada.getName());
-						File folder = fileToWrite.getParentFile();
-						if(!folder.mkdirs() && !folder.exists()) {
-							fileToWrite.mkdirs();
-							folder.mkdirs();
-						}
-
-						if(!entrada.isDirectory())
+						if(entrada.getName().startsWith("html/"))
 						{
-							FileOutputStream fos = new FileOutputStream(fileToWrite);
-							int leido;
-							byte [] buffer = new byte[1024];
-							while (0<(leido=zis.read(buffer))){
-								fos.write(buffer,0,leido);
+							File fileToWrite = new File(HTMLDir, entrada.getName());
+							File folder = fileToWrite.getParentFile();
+							if(!folder.mkdirs() && !folder.exists()) {
+								fileToWrite.mkdirs();
+								folder.mkdirs();
 							}
-							fos.close();
-						}
 
-						if(validarResultadoHtml(fileToWrite.getName()))
-						{
-							String ruta = TEMP_DIR + File.separator + uid + File.separator + s;
-							modificarRutasContent(applicationPath, ruta, fileToWrite.getName());
+							if(!entrada.isDirectory())
+							{
+								FileOutputStream fos = new FileOutputStream(fileToWrite);
+								int leido;
+								byte [] buffer = new byte[1024];
+								while (0<(leido=zis.read(buffer))){
+									fos.write(buffer,0,leido);
+								}
+								fos.close();
+							}
+
+							if(validarResultadoHtml(fileToWrite.getName()))
+							{
+								String ruta = TEMP_DIR + File.separator + uid + File.separator + s;
+								modificarRutasContent(applicationPath, ruta, fileToWrite.getName());
+							}
 						}
 					}
+					zis.close();
 				}
-				zis.close();
-			}
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -509,6 +511,24 @@ public class Funciones {
 				borrarDirectorio(hijos[x]);
 			}
 			hijos[x].delete();
+		}
+	}
+
+	/**
+	 * En caso de no haber un lenguaje establecido en la session lo asigna automaticamnete
+	 * @param session del usuario
+	 */
+	public static void setLenaguage (HttpSession session)
+	{
+		switch (Locale.getDefault().getDisplayLanguage()) {//obtenemos el idioma del usuario
+		case "spanish":
+			session.setAttribute("lenguage", "SP");
+			break;
+		case "español":
+			session.setAttribute("lenguage", "SP");
+			break;
+		default:
+			session.setAttribute("lenguage", "EN");	
 		}
 	}
 }
