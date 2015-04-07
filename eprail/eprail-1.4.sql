@@ -1,3 +1,6 @@
+CREATE DATABASE  IF NOT EXISTS `eprail` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `eprail`;
+
 -- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eprail
@@ -93,7 +96,7 @@ CREATE TABLE `projects` (
   KEY `FK_STATUS_idx` (`IdProjectStatus`),
   CONSTRAINT `FK_STATUS` FOREIGN KEY (`IdProjectStatus`) REFERENCES `statuscategories` (`IdProjectStatus`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `FK_USER` FOREIGN KEY (`UID`) REFERENCES `users` (`UID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Tabla con la información de los poryectos';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Tabla con la información de los poryectos';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,6 +107,25 @@ LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER DELETE_PROJECT AFTER DELETE ON PROJECTS 
+FOR EACH ROW 
+BEGIN 
+INSERT INTO DELETEDPROJECTS VALUES (OLD.IdProject, OLD.ProjectName, OLD.ProjectDescription, OLD.ONGFile, OLD.UID, OLD.IdProjectStatus, OLD.DateCreation, CURRENT_TIMESTAMP);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `sharings`
@@ -206,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-05 20:11:30
+-- Dump completed on 2015-04-07 15:19:41

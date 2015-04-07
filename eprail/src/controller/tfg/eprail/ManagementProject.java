@@ -4,7 +4,6 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import controller.tfg.eprailJPA.ProxyManager;
-import modeldata.tfg.eprailJPA.Deletedproject;
 import modeldata.tfg.eprailJPA.Project;
 import modeldata.tfg.eprailJPA.Sharing;
 import modeldata.tfg.eprailJPA.Statuscategory;
@@ -33,19 +32,6 @@ public class ManagementProject {
 		manager.setEntityManagerFactory(factory);
 		try {
 			manager.createObject(newShared);//mandamos el objeto cliente al JPA para que lo inserte en la BBDD
-		} catch (Exception e) {
-			System.out.println("Descripción: " + e.getMessage());						
-		}
-	}
-	
-	public void moverJPAProyecto(Deletedproject delProject) {
-
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
-
-		ProxyManager manager = new ProxyManager();
-		manager.setEntityManagerFactory(factory);
-		try {
-			manager.createObject(delProject);//mandamos el objeto cliente al JPA para que lo inserte en la BBDD
 		} catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());						
 		}

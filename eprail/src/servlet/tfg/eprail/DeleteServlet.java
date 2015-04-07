@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
-import modeldata.tfg.eprailJPA.Deletedproject;
 import modeldata.tfg.eprailJPA.Project;
 import modeldata.tfg.eprailJPA.Sharing;
 import modeldata.tfg.eprailJPA.User;
@@ -92,18 +89,6 @@ public class DeleteServlet extends HttpServlet {
 		file.delete();
 		//insertamos en la tabla de borrados y borramos de la tabla del usuario ese proyecto
 		ManagementProject mp = new ManagementProject();
-		Deletedproject delproj = new Deletedproject();
-		delproj.setIdProject(project.getIdProject());
-		delproj.setProjectName(project.getProjectName());
-		delproj.setProjectDescription(project.getProjectDescription());
-		delproj.setONGFile(project.getONGFile());
-		delproj.setUser(project.getUser());
-		delproj.setStatuscategory(project.getStatuscategory());
-		delproj.setDateCreation(project.getDateCreation());
-		Date date= new Date();
-		Timestamp ts = new Timestamp(date.getTime());
-		delproj.setDateDeleted(ts);
-		mp.moverJPAProyecto(delproj);
 		mp.borrarJPAObject(project);//borramos el archivo de la tabla de proyectos del usuario
 	}
 }
