@@ -1,9 +1,7 @@
 package servlet.tfg.eprail;
 
 import java.io.IOException;
-
 import modeldata.tfg.eprailJPA.User;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import webservices.tfg.eprail.Comunicacion;
 import controller.tfg.eprail.ManagementUser;
 import funciones.tfg.eprail.Funciones;
@@ -84,7 +81,7 @@ public class ServletController extends HttpServlet {
 		}else{
 			request.getSession().setAttribute("olga", "off");
 		}
-		
+
 		//Redirigimos a la pagina que va a tramitar su peticion
 		request.getRequestDispatcher(nextPage).forward(request, response);
 	}    

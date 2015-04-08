@@ -20,7 +20,7 @@
 %>
 <jsp:include page="./jsp/lenguage.jsp" flush="true" />
 <div class="center" style="height:130px; width:400px;">
-	<form method="post" action="/eprail/controller/login" name="login">
+	<form method="post" action="/eprail/controller/login" id="login" name="login">
     <fieldset>
     	<span class="campo">
         	<label class="log-i">E&#45;mail</label><input type="email" name="email" maxlength="60" required="required" />
@@ -35,5 +35,11 @@
     </fieldset>
     </form>
 </div>
+<div class="modal"></div>
+<script>
+$('#login').submit(function() {
+    $('.modal').show();
+});
+</script>
 </body>
 </html>

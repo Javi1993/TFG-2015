@@ -1,9 +1,7 @@
 /**
  * JQuery para centrar contenido
  */
-
 $(document).ready(function(){
-
 	jQuery.fn.center = function(parent) {
 	    if (parent) {
 	        parent = this.parent();
@@ -18,5 +16,4 @@ $(document).ready(function(){
 	return this;
 	}
 	$("div.center").center();
-
 });

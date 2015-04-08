@@ -28,8 +28,14 @@
 			height="20" title="<%if(request.getSession().getAttribute("lenguage").equals("SP")){ %>El simulador OlgaNG no est&aacute; operativo<%}else{%>OlgaNG is inoperative<%}%>"><%} %><span class="top"><jsp:getProperty
 				name="userBean" property="firstName" /></span><span class="top"><jsp:getProperty
 				name="userBean" property="familyName" /></span> <span class="top"><a
-			href="/eprail/controller/logout">Logout</a></span><span class="top"><a
+			href="/eprail/controller/logout" id="logout">Logout</a></span><span class="top"><a
 			href="/eprail/controller/jsp/account.jsp"><%if(request.getSession().getAttribute("lenguage").equals("SP")){%>Cuenta<%}else{ %>Account<%} %></a></span>
 	</span>
 </body>
+<div class="modal"></div>
+<script>
+$('#logout').click(function() {
+    $('.modal').show();
+});
+</script>
 </html>
