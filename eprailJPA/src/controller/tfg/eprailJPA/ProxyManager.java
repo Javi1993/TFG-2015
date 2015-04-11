@@ -142,7 +142,7 @@ public class ProxyManager {
 		}
 		return project;
 	}
-	
+
 	public Statuscategory findStatuscategoryByPK(byte id) {
 		Statuscategory status = null;
 		EntityManager em = getEntityManager();
@@ -198,7 +198,7 @@ public class ProxyManager {
 						.setParameter("custId", id)
 						.getSingleResult();
 	}
-	
+
 	public Sharing findSharingByIdandUID(long uid, long id) {
 		return (Sharing) getEntityManager()
 				.createQuery(
@@ -207,7 +207,7 @@ public class ProxyManager {
 						.setParameter("custId", id)
 						.getSingleResult();
 	}
-	
+
 	public Sharing findSharedByIdandUID(long uid, long id) {
 		return (Sharing) getEntityManager()
 				.createQuery(
@@ -215,6 +215,24 @@ public class ProxyManager {
 						.setParameter("custUID", uid)
 						.setParameter("custId", id)
 						.getSingleResult();
+	}
+
+	public List<Project> findAllProjectsIterable(int offset, int max, User userBean)
+	{
+		return getEntityManager().createQuery("SELECT c FROM Project c WHERE c.user.uid LIKE :custUID")
+				.setParameter("custUID", userBean.getUid())
+				.setFirstResult(offset)
+				.setMaxResults(max)
+				.getResultList();
+	}
+
+	public List<Sharing> findAllProjectsShIterable(int offset, int max, User userBean)
+	{
+		return getEntityManager().createQuery("SELECT c FROM Sharing c WHERE c.user1.uid LIKE :custUID")
+				.setParameter("custUID", userBean.getUid())
+				.setFirstResult(offset)
+				.setMaxResults(max)
+				.getResultList();
 	}
 
 	public List<Project> findProjectsByUserUID (User user)

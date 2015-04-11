@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -31,11 +31,11 @@
 			href="/eprail/controller/logout" id="logout">Logout</a></span><span class="top"><a
 			href="/eprail/controller/jsp/account.jsp"><%if(request.getSession().getAttribute("lenguage").equals("SP")){%>Cuenta<%}else{ %>Account<%} %></a></span>
 	</span>
-</body>
 <div class="modal"></div>
 <script>
 $('#logout').click(function() {
     $('.modal').show();
 });
 </script>
+</body>
 </html>

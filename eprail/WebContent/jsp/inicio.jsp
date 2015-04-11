@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.Locale, java.text.SimpleDateFormat, funciones.tfg.eprail.Funciones, java.util.List,modeldata.tfg.eprailJPA.Project,modeldata.tfg.eprailJPA.Sharing"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -38,10 +38,17 @@ function alertDelete (id, name, sh, idiom) {
 	<div class="center" style="height:500px; width:1000px;">
 		<span class="title"><%if(leng.equals("SP")){ %>Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><%}else{ %>My projects</span>&nbsp;&nbsp;<a class="subtitle" style="left:13%;" href="/eprail/jsp/upload.jsp" title="Add project"><%} %><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
 		<a id="reload" href="/eprail/controller/login" title="<%if(leng.equals("SP")){ %>Recargar<%}else{%>Reload<%}%>"><img src="/eprail/img/reload.png" alt="reload" width="20" height="20"></a>
-					<table class="project" style="width: 100%">
+					<div style="height: 240px;">
+					<table class="project" style="width: 100%;">
 					<%//tabla con documentos propios
 						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");
+						int back = 0;
+						int next = 0;
+						int max = 0;
 						if (list != null) {
+							back = (int)request.getSession().getAttribute("offsetBack");
+							next = (int)request.getSession().getAttribute("offsetNext");
+							max = (int)request.getSession().getAttribute("max");
 							for (Project project : list) {
 								boolean botones = false;
 								String style = "";
@@ -117,10 +124,15 @@ function alertDelete (id, name, sh, idiom) {
 					<p><%if(leng.equals("SP")){ %>No hay ning&uacute;n proyecto propio.<%}else{ %>No own project.<%} %></p>
 					<%} %>
 					</table>
-					<table class="project" style="width: 100%">
+					</div>
+					<div style="height: 240px;">
+					<table class="project" style="width: 100%;">
 					<%
 						List<Sharing> listSh = (List<Sharing>) request.getSession().getAttribute("projectListShared");
 						if (listSh != null) {
+							back = (int)request.getSession().getAttribute("offsetBack");
+							next = (int)request.getSession().getAttribute("offsetNext");
+							max = (int)request.getSession().getAttribute("max");
 							for (Sharing project : listSh) {
 								//tabla con documentos compartidos
 								boolean botones = false;
@@ -146,8 +158,8 @@ function alertDelete (id, name, sh, idiom) {
 					%>
 					<tr class="row">
 						<td><img src="/eprail/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
-						<td><%=project.getProject().getProjectName()%></td>
-						<td style="color: #C0C0C0;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
+						<td style="width: 150px;">&nbsp;&nbsp;&nbsp;<%=project.getProject().getProjectName()%></td>
+						<td style="color: #C0C0C0; width: 200px;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
 						<td><span style="<%=style %>" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
 						<%=project.getProject().getStatuscategory().getStatusName()%>
 						</span></td>
@@ -177,6 +189,21 @@ function alertDelete (id, name, sh, idiom) {
 						}
 					%>
 					</table>
+					</div>
+					<div style="bottom: 0; position: absolute; text-align: right;">
+					<%if(back>=0 && (next-4)>0){ %>
+						<a href="/eprail/controller/page?op=0" title="<%if(leng.equals("SP")){ %>Atr&aacute;s<%}else{%>Back<%}%>"><img src="/eprail/img/backp.png" alt="back-page"></a>
+						&nbsp;<%}
+					if(next<max){
+					%><a href="/eprail/controller/page?op=1" title="<%if(leng.equals("SP")){ %>Siguiente<%}else{%>Next<%}%>"><img src="/eprail/img/next.png" alt="next-page"></a>
+					<%} %>
+					</div>
 	</div>
+<div class="modal"></div>
+<script>
+$('#reload').click(function() {
+    $('.modal').show();
+});
+</script>
 </body>
 </html>

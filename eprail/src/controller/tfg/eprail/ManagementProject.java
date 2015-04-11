@@ -69,6 +69,36 @@ public class ManagementProject {
 		return null;
 	}
 	
+	public List<Project> buscarAllProjectsIterableJPA(int offset, int max, User userBean){
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			return manager.findAllProjectsIterable(offset, max, userBean);//realizamos la busqueda
+		}
+		catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Sharing> buscarAllProjectsShIterableJPA(int offset, int max, User userBean){
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			return manager.findAllProjectsShIterable(offset, max, userBean);//realizamos la busqueda
+		}
+		catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());
+		}
+		return null;
+	}
+	
 	public List<Sharing> buscarJPAProyectosCompartidos(User user){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 

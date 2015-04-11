@@ -19,12 +19,12 @@
     <url-pattern>/controller/*</url-pattern>
   </servlet-mapping>
   <filter>
-  	<filter-name>NoLogFilter</filter-name>
-  	<filter-class>filter.tfg.eprail.NoLogFilter</filter-class>
+    <filter-name>NoLogFilter</filter-name>
+    <filter-class>filter.tfg.eprail.NoLogFilter</filter-class>
   </filter>
   <filter-mapping>
-  	<filter-name>NoLogFilter</filter-name>
-  	<url-pattern>/jsp/*</url-pattern>
+    <filter-name>NoLogFilter</filter-name>
+    <url-pattern>/jsp/*</url-pattern>
   </filter-mapping>
   <filter>
     <filter-name>CacheFilter</filter-name>
