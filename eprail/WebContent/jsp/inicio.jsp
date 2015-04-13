@@ -45,7 +45,7 @@ function alertDelete (id, name, sh, idiom) {
 						int back = 0;
 						int next = 0;
 						int max = 0;
-						if (list != null) {
+						if (list != null && list.size()>0) {
 							back = (int)request.getSession().getAttribute("offsetBack");
 							next = (int)request.getSession().getAttribute("offsetNext");
 							max = (int)request.getSession().getAttribute("max");
@@ -129,7 +129,7 @@ function alertDelete (id, name, sh, idiom) {
 					<table class="project" style="width: 100%;">
 					<%
 						List<Sharing> listSh = (List<Sharing>) request.getSession().getAttribute("projectListShared");
-						if (listSh != null) {
+						if (listSh != null && listSh.size()>0) {
 							back = (int)request.getSession().getAttribute("offsetBack");
 							next = (int)request.getSession().getAttribute("offsetNext");
 							max = (int)request.getSession().getAttribute("max");

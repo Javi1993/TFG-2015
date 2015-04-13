@@ -39,25 +39,30 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);//cogemos los datos del usuario
 		User userBean = (User) session.getAttribute("userBean");
+
 		ManagementProject mp = new ManagementProject();
+		List<Project> list = mp.buscarJPAProyectosPropios(userBean);
+		List<Sharing> listSh = mp.buscarJPAProyectosCompartidos(userBean);
 
-		int offset = 0;
-		List<Project> projects = mp.buscarAllProjectsIterableJPA(offset, 4, userBean);//buscamos en la BBDD los archivos propios
-		List<Sharing> projectsSh = mp.buscarAllProjectsShIterableJPA(offset, 4, userBean);//buscamos en la BBDD los archivos compartidos
-		if(projects.size()>=projectsSh.size())
-		{
-			request.getSession().setAttribute("offsetBack", offset);
-			offset += projects.size();
-		}else{
-			request.getSession().setAttribute("offsetBack", offset);
-			offset += projectsSh.size();
-		}
+		if(list!=null&&listSh!=null)
+		{			
+			//iteramos
+			int offset = 0;
+			List<Project> projects = mp.buscarAllProjectsIterableJPA(offset, 4, userBean);
+			List<Sharing> projectsSh = mp.buscarAllProjectsShIterableJPA(offset, 4, userBean);
+			if(projects.size()>=projectsSh.size())
+			{
+				request.getSession().setAttribute("max", list.size());
+				request.getSession().setAttribute("offsetBack", offset);
+				offset += projects.size();
+			}else{
+				request.getSession().setAttribute("max", listSh.size());
+				request.getSession().setAttribute("offsetBack", offset);
+				offset += projectsSh.size();
+			}
 
-		request.getSession().setAttribute("offsetNext", offset);
-		if(projects.size()>0){
+			request.getSession().setAttribute("offsetNext", offset);
 			request.getSession().setAttribute("projectList", projects);
-		}
-		if(projectsSh.size()>0){
 			request.getSession().setAttribute("projectListShared", projectsSh);
 		}
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
@@ -75,20 +80,21 @@ public class LoginServlet extends HttpServlet {
 		List<Project> list = mp.buscarJPAProyectosPropios(userBean);
 		List<Sharing> listSh = mp.buscarJPAProyectosCompartidos(userBean);
 
-		//Extraemos el html
-		String applicationPath = request.getServletContext().getRealPath("");
-		if(list!=null){//proyectos propios
-			Funciones.extraerHTML(applicationPath, userBean.getUid());
-		}
+		if(list!=null&&listSh!=null)
+		{
+			//Extraemos el html
+			String applicationPath = request.getServletContext().getRealPath("");
+			if(!list.isEmpty()){//proyectos propios
+				Funciones.extraerHTML(applicationPath, userBean.getUid());
+			}
 
-		if(listSh!=null){//proyectos compartidos
-			for(Sharing proyecto : listSh){
-				Funciones.extraerHTMLunico(applicationPath, userBean.getUid(), proyecto.getProject());
-			}	
-		}
+			if(!listSh.isEmpty()){//proyectos compartidos
+				for(Sharing proyecto : listSh){
+					Funciones.extraerHTMLunico(applicationPath, userBean.getUid(), proyecto.getProject());
+				}	
+			}
 
-		if(list!=null || listSh!=null)
-		{//si hay contenido iteramos
+			//iteramos
 			int offset = 0;
 			List<Project> projects = mp.buscarAllProjectsIterableJPA(offset, 4, userBean);
 			List<Sharing> projectsSh = mp.buscarAllProjectsShIterableJPA(offset, 4, userBean);
@@ -104,12 +110,8 @@ public class LoginServlet extends HttpServlet {
 			}
 
 			request.getSession().setAttribute("offsetNext", offset);
-			if(projects.size()>0){
-				request.getSession().setAttribute("projectList", projects);
-			}
-			if(projectsSh.size()>0){
-				request.getSession().setAttribute("projectListShared", projectsSh);
-			}
+			request.getSession().setAttribute("projectList", projects);
+			request.getSession().setAttribute("projectListShared", projectsSh);
 		}
 		request.getRequestDispatcher("/jsp/inicio.jsp").forward(request, response);
 	}

@@ -28,7 +28,7 @@
 	<div class="center" style="height: 500px; width: 1000px;">
 		<span class="title"><%if(leng.equals("SP")){%>A&ntilde;adir proyectos<%}else{%>Add projects<%}%></span>&nbsp;&nbsp;&nbsp;&nbsp;<a
 			class="subtitle" style="left:16%;" href="/eprail/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/eprail/img/back.png" alt="back" width="30" height="30"></a>
-		<form action="/eprail/controller/upload" class="dropzone">
+		<form action="/eprail/controller/upload" id="upload" class="dropzone">
 			<div class="fallback">
 				<input name="file" type="file" multiple />
 			</div>

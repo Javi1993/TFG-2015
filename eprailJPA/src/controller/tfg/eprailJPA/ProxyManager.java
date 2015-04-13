@@ -198,6 +198,16 @@ public class ProxyManager {
 						.setParameter("custId", id)
 						.getSingleResult();
 	}
+	
+	public Project findProyectByNameAndIDrepeat(Project project, User user) {
+		return (Project) getEntityManager()
+				.createQuery(
+						"SELECT c FROM Project c WHERE c.user.uid LIKE :custUID AND c.projectName LIKE :custName AND c.idProject <> :custId")
+						.setParameter("custUID", user.getUid())
+						.setParameter("custName", project.getProjectName())
+						.setParameter("custId", project.getIdProject())
+						.getSingleResult();
+	}
 
 	public Sharing findSharingByIdandUID(long uid, long id) {
 		return (Sharing) getEntityManager()
@@ -240,6 +250,15 @@ public class ProxyManager {
 		return 	(List<Project>) getEntityManager()
 				.createQuery(
 						"SELECT c FROM Project c WHERE c.user.uid LIKE :custUID")
+						.setParameter("custUID", user.getUid())
+						.getResultList();
+	}
+	
+	public List<Project> findRepeatProjectsByUserUID (User user)
+	{
+		return 	(List<Project>) getEntityManager()
+				.createQuery(
+						"SELECT c FROM Project c WHERE c.user.uid LIKE :custUID GROUP BY c.projectName HAVING COUNT(*) > 1")
 						.setParameter("custUID", user.getUid())
 						.getResultList();
 	}

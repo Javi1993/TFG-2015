@@ -57,11 +57,37 @@ public class ManagementProject {
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
 		try {
-			List<Project> listProject = manager.findProjectsByUserUID(user);//realizamos la busqueda
-			if(!listProject.isEmpty())
-			{
-				return listProject;
-			}
+			return manager.findProjectsByUserUID(user);//realizamos la busqueda
+		}
+		catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Project> buscarJPAProyectosRepetidos(User user){
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			return manager.findRepeatProjectsByUserUID(user);//realizamos la busqueda
+		}
+		catch (Exception e) {
+			System.out.println("Descripción: " + e.getMessage());
+		}
+		return null;
+	}
+	
+	public Project buscarJPARepetido(Project old, User userBean){
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
+
+		ProxyManager manager = new ProxyManager();
+		manager.setEntityManagerFactory(factory);
+		try {
+			return manager.findProyectByNameAndIDrepeat(old, userBean);//realizamos la busqueda
 		}
 		catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());
@@ -106,11 +132,7 @@ public class ManagementProject {
 		ProxyManager manager = new ProxyManager();
 		manager.setEntityManagerFactory(factory);
 		try {
-			List<Sharing> listProject = manager.findProjectsSharedByUserUID(user);//realizamos la busqueda
-			if(!listProject.isEmpty())
-			{
-				return listProject;
-			}
+			return manager.findProjectsSharedByUserUID(user);//realizamos la busqueda
 		}
 		catch (Exception e) {
 			System.out.println("Descripción: " + e.getMessage());

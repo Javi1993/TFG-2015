@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -40,11 +41,15 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 import controller.tfg.eprail.ManagementProject;
 import modeldata.tfg.eprailJPA.Project;
 import modeldata.tfg.eprailJPA.Sharing;
+import modeldata.tfg.eprailJPA.User;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
@@ -511,6 +516,44 @@ public class Funciones {
 				borrarDirectorio(hijos[x]);
 			}
 			hijos[x].delete();
+		}
+	}
+
+	/**
+	 * Funcion que recibe un objeto projecto y lo borra de la BBDD y del servidor
+	 * @param directorio - projecto a borrar
+	 * @param userBean - usuario propietario
+	 */
+	public static void borrarProject (Project project, User userBean){
+		//borramos de la carpeta del usuario el fichero y lo movemos a la carpeta de borrados
+		String path = new String(project.getONGFile());
+		try{
+			File file = new File(path+File.separator+project.getIdProject());
+			// creates the save directory if it does not exists
+			File fileSaveDir = new File(path.replaceAll(String.valueOf(userBean.getUid()), File.separator+"0"));
+			if (!fileSaveDir.exists()) {
+				fileSaveDir.mkdirs();
+			}
+			//archivo que almaecenara el contenido
+			File fileD = new File(fileSaveDir.getPath()+File.separator+project.getIdProject());
+			//copiamos el contenido
+			FileInputStream in = new FileInputStream(file);
+			FileOutputStream out = new FileOutputStream(fileD);
+			int c;
+			while( (c = in.read() ) != -1)
+				out.write(c);
+			in.close();
+			out.close();
+			file.delete();
+			//insertamos en la tabla de borrados y borramos de la tabla del usuario ese proyecto
+			ManagementProject mp = new ManagementProject();
+			mp.borrarJPAObject(project);//borramos el archivo de la tabla de proyectos del usuario
+		}catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
