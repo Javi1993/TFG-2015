@@ -132,6 +132,7 @@ public class Comunicacion {
 				setOlga(true);
 			}else
 			{//no hubo respuesta de OlgaNG o esta fue erronea
+				setOlga(false);
 				setCnt(getCnt()+1);
 				if(getCnt()>=10 && !isSendEmail())
 				{//mandamos email notificando del comportamiento del receptor
@@ -140,7 +141,6 @@ public class Comunicacion {
 							+ "<p>La aplicaci&oacute;n web intenta comunicarse el servidor OlgaNG pero no recibe respuesta o esta no es correcta. Revise su estado con urgencia.</p>"
 							+"</div></body></html>", "100290698@alumnos.uc3m.es");
 					setSendEmail(true);
-					setOlga(false);
 				}
 			}
 		}

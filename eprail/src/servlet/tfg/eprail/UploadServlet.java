@@ -56,38 +56,38 @@ public class UploadServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		User userBean = (User) session.getAttribute("userBean");
 		ManagementProject mp = new ManagementProject();
-
-		if(request.getParameter("z").equals("0"))
-		{
-			List<Project> listRepetidos = mp.buscarJPAProyectosRepetidos(userBean);
-			try {
-				PrintWriter out = response.getWriter();
+		try {
+			PrintWriter out = response.getWriter();
+			if(request.getParameter("z").equals("0"))
+			{
+				List<Project> listRepetidos = mp.buscarJPAProyectosRepetidos(userBean);
 				if(!listRepetidos.isEmpty()){
 					for(Project project : listRepetidos)
 					{
 						out.println("<script type=\"text/javascript\">");
-						out.println("if(confirm('Ya existe una copia del proyecto "+project.getProjectName()+ " en el servidor ¿Desea remplazarla? Si no acepta se cancelar\u00e1 la subida de este proyecto y se mantendr\u00e1 el antiguo.')){");
+						out.println("if(confirm('Ya existe una copia del proyecto "+project.getProjectName()+ " en el servidor ¿Desea remplazarla? Si no acepta se mantendr\u00e1n las dos copias del proyecto en el servidor.')){");
 						out.println("window.location.assign('/eprail/controller/upload?z=1&id="+project.getIdProject()+"');}else{");
-						out.println("window.location.assign('/eprail/controller/upload?z=2&id="+project.getIdProject()+"');}");
+						out.println("window.location.assign('/eprail/controller/upload?z=2');}");
 						out.println("</script>");
 					}
+				}else{
+					out.println("<script type=\"text/javascript\">");
+					out.println("document.location.href='/eprail/controller/login';");
+					out.println("</script>");
 				}
-//				out.println("<script type=\"text/javascript\">");
-//				out.println("window.location.assign('/eprail/controller/login');");
-//				out.println("</script>");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			}else if(request.getParameter("z").equals("1")){//borramos el proyecto si el usuario desea sobreescribirlo
+				Funciones.borrarProject(mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))), userBean);
+				out.println("<script type=\"text/javascript\">");
+				out.println("document.location.href='/eprail/controller/login';");
+				out.println("</script>");
+			}else if(request.getParameter("z").equals("2")){
+				out.println("<script type=\"text/javascript\">");
+				out.println("document.location.href='/eprail/controller/login';");
+				out.println("</script>");
 			}
-		}else if(request.getParameter("z").equals("1")){//borramos el proyecto si el usuario desea sobreescribirlo
-			Funciones.borrarProject(mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))), userBean);
-		}else if(request.getParameter("z").equals("2")){//dejamos el antiguo
-			Project old = mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id")));
-			Project newp =  mp.buscarJPARepetido(old, userBean);
-			Funciones.borrarProject(newp, userBean);
-
-			//CONTROLAR QUE NO SE LANCE SIMULACION
-
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

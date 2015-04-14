@@ -155,7 +155,7 @@
       init: function() {
           this.on("successmultiple", function(files, response) {
               // event when files are successfully uploaded
-        	 window.location.assign("/eprail/controller/upload?z=0");
+        	  document.location.href="/eprail/controller/upload?z=0";
           });
         return noop;
       },
