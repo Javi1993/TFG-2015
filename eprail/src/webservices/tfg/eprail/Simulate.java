@@ -51,7 +51,12 @@ public class Simulate {
 			sendEmail = false;
 			cnt = 0;
 			this.setProjectId(projectId);
-			fh = new FileHandler(logPath+File.separator+"logs"+File.separator+this.getProjectId()+".log");
+			String logsFile = logPath+File.separator+"logs";
+			File fileSaveDir = new File(logsFile);
+			if (!fileSaveDir.exists()) {
+				fileSaveDir.mkdirs();
+			}
+			fh = new FileHandler(logsFile+File.separator+this.getProjectId()+".log");
 			logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();  
 			fh.setFormatter(formatter); 
@@ -65,7 +70,7 @@ public class Simulate {
 			e.printStackTrace();
 		}  
 	}
-	
+
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void processCase (MessageRQ message) {
@@ -78,7 +83,7 @@ public class Simulate {
 		}
 		logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]");  
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
