@@ -20,7 +20,7 @@
 	<%-- Cogemos el JavaBean del usuario de la session --%>
 	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
 		scope="session" />
-	<span id="top" style="background-color: #FFF;">
+	<span id="top">
 		<%if(olga.equals("on")){ %>
 		<img class="top" src="/eprail/img/on.png" alt="on" width="20"
 			height="20" title="<%if(request.getSession().getAttribute("lenguage").equals("SP")){ %>El simulador OlgaNG est&aacute; operativo<%}else{%>OlgaNG is operative<%}%>">

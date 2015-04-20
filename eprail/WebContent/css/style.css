@@ -2,15 +2,17 @@
 body, html{
 	height: 100%;
 	overflow: auto;
+	background-color: #D6EBFF
 }
 
 div.center{
-	border:2px solid #800000; 
+	border:2px solid #5C85FF; 
 	-webkit-border-radius: 40px;
 	-moz-border-radius: 40px;
 	border-radius: 20px;
 	box-shadow: 2px 2px 2px #888888;
 	padding:20px;
+	background-color: #FFF;
 }
 
 a{
@@ -38,6 +40,7 @@ span#top{
 	z-index: 999;
 	width: 100%;
 	height: 23px;
+	background-color: #D6EBFF;
 }
 
 span#idiom{
@@ -45,7 +48,6 @@ span#idiom{
 	top: 0.5;
 	left: 17%;
 	z-index: 999;
-	width: 100%;
 	height: 23px;
 }
 
@@ -66,7 +68,7 @@ fieldset{
 	top:-15px; 
 	left:5%; 
 	position: absolute; 
-	background-color: #800000;
+	background-color: #5C85FF;
 	color: #FFF;
 	padding:5px;
 	font-size: 14px;
@@ -127,7 +129,7 @@ tr.row > td{
 }
 
 th{
-	color: #800000;
+	color: #5C85FF;
 	border-bottom: 1px solid #000;
 }
 
