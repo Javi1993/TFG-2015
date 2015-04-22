@@ -64,7 +64,7 @@ $(function(){
 			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
 		</form>
 		<%if(request.getAttribute("message")==null){ %><sub style="font-size: 10px; color:#C0C0C0"><%if(leng.equals("SP")){%>Si no recuerdas el email puedes buscar por el nombre<%}else{ %>If you do not remember the email, you can search by username<%}%></sub><%}else{ %>
-		<sub style="font-size: 10px; color:#800000"><%=request.getAttribute("message") %></sub><%} %>
+		<sub style="font-size: 10px; color:#5C85FF"><%=request.getAttribute("message") %></sub><%} %>
 		<br><br><br><br>
 		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>

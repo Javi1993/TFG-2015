@@ -57,25 +57,25 @@ function alertDelete (id, name, sh, idiom) {
 								switch(project.getStatuscategory().getIdProjectStatus())
 								{
 								case 0:
-									style = "border:2px solid #800000; padding: 10px; color:#800000; background-color:#DB9595;";
+									style = "border:2px solid #5C85FF; padding: 10px; color:#FFF; background-color:#506CC1;";
 									botones = false;
 									status = "Pending";
 									desc = "The case was uploaded but not yet started the simulation";
 									break;
 								case 1:
-									style = "border:2px solid #800000; padding: 10px; color: #800000; background-color: #EEDBDD;";
+									style = "border:2px solid #5C85FF; padding: 10px; color: #5C85FF; background-color: #D6EBFF;";
 									botones = false;
 									status = "Calculating...";
 									desc = "Simulation has been launched but not yet concluded";
 									break;
 								case 2:
-									style = "border:2px solid #800000; padding: 10px;";
+									style = "border:2px solid #5C85FF; padding: 10px;";
 									botones = true;
 									status = "Simulated";
 									desc = "Simulation was successful";
 									break;
 								default:
-									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #800000;";
+									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #5C85FF;";
 									status = "Errors";
 									desc = "Error during simulation";
 									botones = false;
@@ -125,6 +125,7 @@ function alertDelete (id, name, sh, idiom) {
 					<%} %>
 					</table>
 					</div>
+					<p style="text-decoration: underline;">Proyectos compartidos:</p>
 					<div style="height: 240px;">
 					<table class="project" style="width: 100%;">
 					<%
@@ -140,19 +141,19 @@ function alertDelete (id, name, sh, idiom) {
 								switch(project.getProject().getStatuscategory().getIdProjectStatus())
 								{
 								case 0:
-									style = "border:2px solid #800000; padding: 10px; color:#800000; background-color:#DB9595;";
+									style = "border:2px solid #5C85FF; padding: 10px; color:#FFF; background-color:#506CC1;";
 									botones = false;
 									break;
 								case 1:
-									style = "border:2px solid #800000; padding: 10px; color: #800000; background-color: #EEDBDD;";
+									style = "border:2px solid #5C85FF; padding: 10px; color: #5C85FF; background-color: #D6EBFF;";
 									botones = false;
 									break;
 								case 2:
-									style = "border:2px solid #800000; padding: 10px;";
+									style = "border:2px solid #5C85FF; padding: 10px;";
 									botones = true;
 									break;
 								default:
-									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #800000;";
+									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #5C85FF;";
 									botones = false;
 								}			
 					%>

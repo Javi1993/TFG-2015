@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -67,7 +68,7 @@ public class UploadServlet extends HttpServlet {
 						out.println("<script type=\"text/javascript\">");
 						out.println("if(confirm('Ya existe una copia del proyecto "+project.getProjectName()+ " en el servidor ¿Desea remplazarla? Si no acepta se mantendr\u00e1n las dos copias del proyecto en el servidor.')){");
 						out.println("window.location.assign('/eprail/controller/upload?z=1&id="+project.getIdProject()+"');}else{");
-						out.println("window.location.assign('/eprail/controller/upload?z=2');}");
+						out.println("window.location.assign('/eprail/controller/upload?z=2&id="+project.getIdProject()+"');}");
 						out.println("</script>");
 					}
 				}else{
@@ -81,6 +82,15 @@ public class UploadServlet extends HttpServlet {
 				out.println("document.location.href='/eprail/controller/login';");
 				out.println("</script>");
 			}else if(request.getParameter("z").equals("2")){
+				List<Project> project = mp.buscarJPARepetido(mp.buscarJPAProyectoId(Long.parseLong(request.getParameter("id"))), userBean);
+				if(project.size()==1){
+					project.get(0).setProjectName(project.get(0).getProjectName()+" (1)");
+				}else{
+					String num = ((project.get(1).getProjectName().split(Pattern.quote("(")))[1].split(Pattern.quote(")")))[0];
+					int numx = Integer.parseInt(num)+1;
+					project.get(0).setProjectName(project.get(0).getProjectName()+" ("+String.valueOf(numx)+")");
+				}
+				mp.updateJPAProject(project.get(0));//actualizamos
 				out.println("<script type=\"text/javascript\">");
 				out.println("document.location.href='/eprail/controller/login';");
 				out.println("</script>");

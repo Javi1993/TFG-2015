@@ -199,14 +199,15 @@ public class ProxyManager {
 						.getSingleResult();
 	}
 	
-	public Project findProyectByNameAndIDrepeat(Project project, User user) {
-		return (Project) getEntityManager()
+	public List<Project> findProyectByNameAndIDrepeat(Project project, User user) {
+		return getEntityManager()
 				.createQuery(
-						"SELECT c FROM Project c WHERE c.user.uid LIKE :custUID AND c.projectName LIKE :custName AND c.idProject <> :custId")
+						"SELECT c FROM Project c WHERE c.user.uid LIKE :custUID AND c.projectName LIKE :custName AND c.idProject <> :custId  ORDER BY c.dateCreation DESC")
 						.setParameter("custUID", user.getUid())
-						.setParameter("custName", project.getProjectName())
+						.setParameter("custName", project.getProjectName()+"%")
 						.setParameter("custId", project.getIdProject())
-						.getSingleResult();
+						.setMaxResults(2)
+						.getResultList();
 	}
 
 	public Sharing findSharingByIdandUID(long uid, long id) {

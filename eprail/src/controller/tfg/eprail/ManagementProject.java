@@ -80,7 +80,7 @@ public class ManagementProject {
 		return null;
 	}
 	
-	public Project buscarJPARepetido(Project old, User userBean){
+	public List<Project> buscarJPARepetido(Project old, User userBean){
 
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("eprailJPA"); 
 

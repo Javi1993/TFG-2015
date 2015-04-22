@@ -2,7 +2,7 @@
 body, html{
 	height: 100%;
 	overflow: auto;
-	background-color: #D6EBFF
+	background-color: #D6EBFF;
 }
 
 div.center{
@@ -134,7 +134,7 @@ th{
 }
 
 tr.alt{
-	background-color: #ecd2d1;  
+	background-color: #D6EBFF;  
 }
 
 .delete{
