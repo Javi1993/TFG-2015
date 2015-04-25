@@ -19,6 +19,20 @@ a{
 	outline: 0;
 }
 
+a:link, a:visited { 
+    color:  #0000EE;
+    text-decoration: underline;
+    cursor: auto;
+}
+
+a:link:active, a:visited:active { 
+    color: #5C85FF;
+}
+
+input:valid {
+    border-color:#5C85FF;
+}
+
 .modal {
     display:    none;
     position:   fixed;

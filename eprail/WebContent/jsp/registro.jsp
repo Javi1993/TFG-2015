@@ -24,10 +24,10 @@
 		<%if(leng.equals("SP")){%>
 		<p>En breve recibir&aacute;s un correo electr&oacute;nico en la
 			direcci&oacute;n <%=request.getParameter("email") %> con las instrucciones para completar el proceso de registro.</p>
-		<p>Si tienes cualquier problema con el registro, puedes escribirme a eduardo.pilo@eprail.com</p>
+		<p>Si tienes cualquier problema con el registro, puedes escribir a 100290698@alumnos.uc3m.es</p>
 		<%}else{ %>
 		<p>In brief you will receive an email at the address <%=request.getParameter("email") %> with instructions to complete the sign up process.</p>
-		<p>If you have any problems with register, you can write me to eduardo.pilo@eprail.com</p>
+		<p>If you have any problems with register, you can write me to 100290698@alumnos.uc3m.es</p>
 		<%} %>
 		<br><br> <span class="campo"><a class="but" href="/eprail/"><%if(leng.equals("SP")){%>Inicio<%}else{%>Start<%}%></a></span>
 	</div>

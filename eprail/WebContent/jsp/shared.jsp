@@ -61,7 +61,7 @@ $(function(){
 			height="30"></a>
 		<p><%if(leng.equals("SP")){%>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto<%}else{%>Enter the email address of the registered user with whom you want to share the project<%}%></p>
 		<form id="form" action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
-			<input id="tags" type="email" name="email" maxlength="60" size="50"/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
+			<input id="tags" type="email" name="email" maxlength="60" size="50" required/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
 		</form>
 		<%if(request.getAttribute("message")==null){ %><sub style="font-size: 10px; color:#C0C0C0"><%if(leng.equals("SP")){%>Si no recuerdas el email puedes buscar por el nombre<%}else{ %>If you do not remember the email, you can search by username<%}%></sub><%}else{ %>
 		<sub style="font-size: 10px; color:#5C85FF"><%=request.getAttribute("message") %></sub><%} %>

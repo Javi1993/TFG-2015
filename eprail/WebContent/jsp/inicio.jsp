@@ -38,7 +38,7 @@ function alertDelete (id, name, sh, idiom) {
 	<div class="center" style="height:500px; width:1000px;">
 		<span class="title"><%if(leng.equals("SP")){ %>Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><%}else{ %>My projects</span>&nbsp;&nbsp;<a class="subtitle" style="left:13%;" href="/eprail/jsp/upload.jsp" title="Add project"><%} %><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
 		<a id="reload" href="/eprail/controller/login" title="<%if(leng.equals("SP")){ %>Recargar<%}else{%>Reload<%}%>"><img src="/eprail/img/reload.png" alt="reload" width="20" height="20"></a>
-					<div style="height: 240px;">
+					<div style="height: 220px;">
 					<table class="project" style="width: 100%;">
 					<%//tabla con documentos propios
 						List<Project> list = (List<Project>) request.getSession().getAttribute("projectList");
@@ -125,8 +125,8 @@ function alertDelete (id, name, sh, idiom) {
 					<%} %>
 					</table>
 					</div>
-					<p style="text-decoration: underline;">Proyectos compartidos:</p>
 					<div style="height: 240px;">
+					<p style="text-decoration: underline;">Proyectos compartidos:</p>
 					<table class="project" style="width: 100%;">
 					<%
 						List<Sharing> listSh = (List<Sharing>) request.getSession().getAttribute("projectListShared");
@@ -187,8 +187,10 @@ function alertDelete (id, name, sh, idiom) {
 					</tr>
 					<%
 							}
-						}
-					%>
+						}else{
+							%>
+							<p><%if(leng.equals("SP")){ %>No hay ning&uacute;n proyecto compartido.<%}else{ %>No shared project.<%} %></p>
+					<%} %>
 					</table>
 					</div>
 					<div style="bottom: 0; position: absolute; text-align: right;">
