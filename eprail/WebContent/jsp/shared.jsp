@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones, java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
+    pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones, controller.tfg.eprail.ManagementProject, java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,17 +69,21 @@ $(function(){
 		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>
 			<table class="project" style="width: 100%">
+			<%
+				ManagementProject mp = new ManagementProject();
+				User user = (User) request.getSession().getAttribute("userBean");
+				Sharing permisos = mp.buscarJPAPadre(user.getUid(), Long.parseLong(request.getParameter("id")));//solo sera distinto de null si el proyecto que se queire compartir es compartido para ese user
+			%>
 					<tr>
 						<th><%if(leng.equals("SP")){%>Usuario<%}else{ %>User<%}%></th>
 						<th>Email</th>
 						<th><img src="/eprail/img/eye.png" alt="see"><br><%if(leng.equals("SP")){%>Ver<%}else{ %>See<%}%></th>
-						<th><img src="/eprail/img/gear.png" alt="run"><br><%if(leng.equals("SP")){%>Recalcular<%}else{ %>Recalculate<%}%></th>
-						<th><img src="/eprail/img/download.png" alt="download"><br><%if(leng.equals("SP")){%>Descargar<%}else{ %>Download<%}%></th>
+						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowRecalculate()!=0){ %>gear.png<%}else{ %>gear-d.png<%} %>" alt="run"><br><%if(leng.equals("SP")){%>Recalcular<%}else{ %>Recalculate<%}%></th>
+						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowDownload()!=0){ %>download.png<%}else{ %>download-d.png<%} %>" alt="download"><br><%if(leng.equals("SP")){%>Descargar<%}else{ %>Download<%}%></th>
 						<th><img src="/eprail/img/share.png" alt="share"><br><%if(leng.equals("SP")){%>Compartir<%}else{ %>Share<%}%></th>
-						<th><img src="/eprail/img/delete.png" alt="delete"><br><%if(leng.equals("SP")){%>Borrar<%}else{ %>Delete<%}%></th>
+						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowDelete()!=0){ %>delete.png<%}else{ %>delete-d.png<%} %>" alt="delete"><br><%if(leng.equals("SP")){%>Borrar<%}else{ %>Delete<%}%></th>
 						<th class="delete">&nbsp;&nbsp;</th>
 					</tr>
-
 					<%
 					List<Sharing> list = (List<Sharing>) request.getAttribute("userSharedList");
 					if (list != null) {
@@ -91,10 +95,10 @@ $(function(){
 						<td><%=sh.getUser1().getFirstName() %></td>
 						<td><%=sh.getUser1().getEmail() %></td>
 						<td><input type="checkbox" checked="checked" disabled="disabled"></td>
-						<td><input type="checkbox" value="<%="R"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowRecalculate()!=0){ %>checked="checked"<%} %>></td>
-						<td><input type="checkbox" value="<%="D"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="R"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowRecalculate()!=0){ %>checked="checked"<%} if(permisos!=null && permisos.getAllowRecalculate()==0){ %>disabled="disabled"<%} %> ></td>
+						<td><input type="checkbox" value="<%="D"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} if(permisos!=null && permisos.getAllowDownload()==0){ %>disabled="disabled"<%} %>></td>
 						<td><input type="checkbox" value="<%="S"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowShare()!=0){ %>checked="checked"<%} %>></td>
-						<td><input type="checkbox" value="<%="X"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} %>></td>
+						<td><input type="checkbox" value="<%="X"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} if(permisos!=null && permisos.getAllowDelete()==0){ %>disabled="disabled"<%} %>></td>
 						<td class="delete"><a href="/eprail/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){%>Quitar<%}else{ %>Remove<%}%>"><img src="/eprail/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
 					</tr>
 					<%
