@@ -34,19 +34,19 @@
 				</span><br>
 				<span class="campo">
 					<label class="log-i"><%if(leng.equals("SP")){%>Nombre<%}else{ %>Name<%} %></label>
-						<input type="text" name="name" maxlength="60" value="<jsp:getProperty name="userBean" property="firstName" />" required="required" />
+						<input type="text" name="name" maxlength="60" minlength="3" value="<jsp:getProperty name="userBean" property="firstName" />" required="required" />
 				</span><br>
 				<span class="campo">
 					<label class="log-i"><%if(leng.equals("SP")){%>Apellidos<%}else{ %>Last Name<%} %></label>
-						<input type="text" name="apellidos" maxlength="80" value="<jsp:getProperty name="userBean" property="familyName" />" required="required" />
+						<input type="text" name="apellidos" maxlength="80" minlength="3" value="<jsp:getProperty name="userBean" property="familyName" />" required="required" />
 				</span><br>
 				<span class="campo">
 					<label class="log-i"><%if(leng.equals("SP")){%>Contrase&ntilde;a<%}else{ %>Password<%} %></label>
-						<input id="pass" type="password" name="pass"/>
+						<input id="pass" type="password" name="pass" minlength="6"/>
 				</span> <br>
 				<span id="confirm" class="campo" style="display:none;">
 					<label class="log-i"><%if(leng.equals("SP")){%>Repetir contrase&ntilde;a<%}else{ %>Repeat password<%} %></label>
-					<input id="newpass" class="reg-i" name="newpass" type="password"/>
+					<input id="newpass" class="reg-i" name="newpass" type="password" minlength="6"/>
 				<br></span> 
 				<br> <span class="campo"><input id="edit-s" type="submit"
 					value="<%if(leng.equals("SP")){%>Guardar<%}else{ %>Save<%} %>" /></span>
