@@ -24,6 +24,11 @@ function alertDelete (id, name, sh, idiom) {
 </script>
 <body>
 <%
+	String serv = (String) request.getSession().getAttribute("olga");
+	if(serv == null)
+	{
+		serv = "off";
+	}
 	String leng = (String) request.getSession().getAttribute("lenguage");
 	if(leng == null)
 	{
@@ -36,7 +41,7 @@ function alertDelete (id, name, sh, idiom) {
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
-		<span class="title"><%if(leng.equals("SP")){ %>Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href="/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"><%}else{ %>My projects</span>&nbsp;&nbsp;<a class="subtitle" style="left:13%;" href="/eprail/jsp/upload.jsp" title="Add project"><%} %><img src="/eprail/img/add.png" alt="add" width="30" height="30"></a>
+		<span class="title"><%if(leng.equals("SP")){ %>Mis proyectos</span>&nbsp;&nbsp;<a class="subtitle" style="left:14%;" href=<%if(serv.equals("on")){ %>"/eprail/jsp/upload.jsp" title="A&ntilde;adir proyecto"<%}else{%>"javascript: void(0)"<%}%>><%}else{ %>My projects</span>&nbsp;&nbsp;<a class="subtitle" style="left:13%;" href="<%if(serv.equals("on")){ %>/eprail/jsp/upload.jsp<%}else{%>javascript: void(0)<%}%>" title="Add project"><%} %><img src="<%if(serv.equals("on")){ %>/eprail/img/add.png<%}else{%>/eprail/img/add-d.png<%} %>" alt="add" width="30" height="30"></a>
 		<a id="reload" href="/eprail/controller/login" title="<%if(leng.equals("SP")){ %>Recargar<%}else{%>Reload<%}%>"><img src="/eprail/img/reload.png" alt="reload" width="20" height="20"></a>
 					<div style="height: 220px;">
 					<table class="project" style="width: 100%;">
@@ -103,7 +108,7 @@ function alertDelete (id, name, sh, idiom) {
 						</td>
 						<%if(botones){ %>
 						<td><a href="/eprail/controller/see?id=<%=project.getIdProject()%>" title="<%if(leng.equals("SP")){ %>Ver<%}else{%>See<%}%>"><img src="/eprail/img/eye.png" alt="see"></a></td>
-						<td><a href="/eprail/controller/run?id=<%=project.getIdProject()%>" title="<%if(leng.equals("SP")){ %>Simular<%}else{%>Simulate<%}%>"><img src="/eprail/img/gear.png" alt="run"></a></td>
+						<td><a href="<%if(serv.equals("on")){ %>/eprail/controller/run?id=<%=project.getIdProject()%>" title="<%if(leng.equals("SP")){ %>Simular"<%}else{%>Simulate"<%}}else{%>javascript: void(0)"<%} %>><img src="<%if(serv.equals("on")){%>/eprail/img/gear.png<%}else{%>/eprail/img/gear-d.png<%}%>" alt="run"></a></td>
 						<td><a href="/eprail/controller/download?id=<%=project.getIdProject()%>&sh=0" title="<%if(leng.equals("SP")){ %>Descargar<%}else{%>Download<%}%>"><img src="/eprail/img/download.png" alt="download"></a></td>
 						<td><a href="/eprail/controller/share?op=2&id=<%=project.getIdProject()%>&n=<%=project.getProjectName() %>" title="<%if(leng.equals("SP")){ %>Compartir<%}else{%>Share<%}%>"><img src="/eprail/img/share.png" alt="share"></a></td>
 						<%}else{ %>
@@ -171,7 +176,7 @@ function alertDelete (id, name, sh, idiom) {
 						</td>
 						<%if(botones){ %>
 						<td><a href="/eprail/controller/see?id=<%=project.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){ %>Ver<%}else{%>See<%}%>"><img src="/eprail/img/eye.png" alt="see"></a></td>
-						<td><%if(project.getAllowRecalculate()!=0){ %><a href="/eprail/controller/run?id=<%=project.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){ %>Simular<%}else{%>Simulate<%}%>"><img src="/eprail/img/gear.png" alt="run"></a><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
+						<td><%if(project.getAllowRecalculate()!=0 && serv.equals("on")){ %><a href="/eprail/controller/run?id=<%=project.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){ %>Simular<%}else{%>Simulate<%}%>"><img src="/eprail/img/gear.png" alt="run"></a><%}else{ %><img src="/eprail/img/gear-d.png" alt="run"><%} %></td>
 						<td><%if(project.getAllowDownload()!=0){ %><a href="/eprail/controller/download?id=<%=project.getProject().getIdProject()%>&sh=1" title="<%if(leng.equals("SP")){ %>Descargar<%}else{%>Download<%}%>"><img src="/eprail/img/download.png" alt="download"></a><%}else{ %><img src="/eprail/img/download-d.png" alt="download"><%} %></td>
 						<td><%if(project.getAllowShare()!=0){ %><a href="/eprail/controller/share?op=2&id=<%=project.getProject().getIdProject()%>&n=<%=project.getProject().getProjectName() %>" title="<%if(leng.equals("SP")){ %>Compartir<%}else{%>Share<%}%>"><img src="/eprail/img/share.png" alt="share"></a><%}else{ %><img src="/eprail/img/share-d.png" alt="share"><%} %></td>	
 						<%}else{ %>

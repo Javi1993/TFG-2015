@@ -74,35 +74,40 @@ public class Simulate {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void processCase (MessageRQ message) {
+		logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]");  
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoId(Long.parseLong(message.getParameter()));
 		if(message.getCommand().equals("CASELAUNCHED"))
 		{//se empezo la simulacion del proyecto
-			ManagementProject mp = new ManagementProject();
-			Project project = mp.buscarJPAProyectoId(Long.parseLong(message.getParameter()));
 			project.setStatuscategory(mp.buscarJPAStatus((byte)1));
 			mp.updateJPAProject(project);
 		}
-		logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]");  
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public MessageRS finishCase (MessageRQ message) {
+		logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]"); 
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoId(Long.parseLong(message.getParameter()));
 		if(message.getCommand().equals("CASEFINISHED"))
 		{//se finalizo la simulacion del proyecto
-			ManagementProject mp = new ManagementProject();
-			Project project = mp.buscarJPAProyectoId(Long.parseLong(message.getParameter()));
 			project.setStatuscategory(mp.buscarJPAStatus((byte)2));
 			mp.updateJPAProject(project);
-			logger.info("["+message.getNumSeq()+" - "+message.getCommand()+" - "+message.getParameter()+"]"); 
 			return new MessageRS(message.getNumSeq(), "OK");
 		}else{
+			System.out.println("PEENEE");
+			project.setStatuscategory(mp.buscarJPAStatus((byte)3));
+			mp.updateJPAProject(project);
 			return null;
 		}
 	}
 
 	public String launchcase()
 	{
+		ManagementProject mp = new ManagementProject();
+		Project project = mp.buscarJPAProyectoId(Long.parseLong(getProjectId()));
 		try {
 			URL targetUrl = new URL(targetURL);
 			HttpURLConnection httpConnection = (HttpURLConnection) targetUrl.openConnection();
@@ -111,13 +116,13 @@ public class Simulate {
 			httpConnection.setRequestProperty("Content-Type", "application/json");
 
 			MessageRQ messageRQ = new MessageRQ(Double.toString(Math.random()*999999999+100000000), "LAUNCHCASE", getProjectId());
+			logger.info("["+messageRQ.getNumSeq()+" - "+messageRQ.getCommand()+" - "+messageRQ.getParameter()+"]"); 
 			ObjectMapper objectMapper = new ObjectMapper();
 			String authRQString = objectMapper.writeValueAsString(messageRQ);
 
 			OutputStream outputStream = httpConnection.getOutputStream();
 			outputStream.write(authRQString.getBytes());
-			outputStream.flush();
-			logger.info("["+messageRQ.getNumSeq()+" - "+messageRQ.getCommand()+" - "+messageRQ.getParameter()+"]");  
+			outputStream.flush();	 
 
 			if (httpConnection.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
@@ -137,8 +142,6 @@ public class Simulate {
 			httpConnection.disconnect();
 
 			//actualizamos el estado del proyecto
-			ManagementProject mp = new ManagementProject();
-			Project project = mp.buscarJPAProyectoId(Long.parseLong(getProjectId()));
 			if(messageRS.getNumSeq().equals(messageRQ.getNumSeq()) && messageRS.getParameter().equals("OK"))
 			{
 				project.setStatuscategory(mp.buscarJPAStatus((byte)0));
@@ -149,10 +152,16 @@ public class Simulate {
 				mp.updateJPAProject(project);
 			}
 		} catch (MalformedURLException e) {
+			project.setStatuscategory(mp.buscarJPAStatus((byte)3));
+			mp.updateJPAProject(project);
 			e.printStackTrace();
 		} catch (IOException e) {
+			project.setStatuscategory(mp.buscarJPAStatus((byte)3));
+			mp.updateJPAProject(project);
 			e.printStackTrace();
 		} catch (RuntimeException e) {
+			project.setStatuscategory(mp.buscarJPAStatus((byte)3));
+			mp.updateJPAProject(project);
 			e.printStackTrace();
 		}
 		return null;

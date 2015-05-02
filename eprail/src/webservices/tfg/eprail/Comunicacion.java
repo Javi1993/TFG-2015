@@ -30,7 +30,7 @@ public class Comunicacion {
 		cnt = 0;
 		olga = false;
 		timer = new Timer();
-		timer.schedule(new RemindTask(), 1000, 10000);
+		timer.schedule(new RemindTask(), 1000, 2000);
 	}
 
 	public static String heartBeat ()
