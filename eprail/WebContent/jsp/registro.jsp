@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones"%>
+	pageEncoding="UTF-8" import="funciones.tfg.aplicacion.Funciones"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Eprail: repositorio de casos</title>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
+<title>Aplicaci&oacute;n web</title>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
 </head>
 <body>
 <%
@@ -29,7 +29,7 @@
 		<p>In brief you will receive an email at the address <%=request.getParameter("email") %> with instructions to complete the sign up process.</p>
 		<p>If you have any problems with register, you can write me to 100290698@alumnos.uc3m.es</p>
 		<%} %>
-		<br><br> <span class="campo"><a class="but" href="/eprail/"><%if(leng.equals("SP")){%>Inicio<%}else{%>Start<%}%></a></span>
+		<br><br> <span class="campo"><a class="but" href="/aplicacion/"><%if(leng.equals("SP")){%>Inicio<%}else{%>Start<%}%></a></span>
 	</div>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>olgaEAR</name>
+	<name>simulacionEAR</name>
 	<comment></comment>
 	<projects>
-		<project>olga</project>
+		<project>simulacion</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

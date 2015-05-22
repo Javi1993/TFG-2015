@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones"%>
+	pageEncoding="UTF-8" import="funciones.tfg.aplicacion.Funciones"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Eprail: repositorio de casos</title>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
+<title>Aplicaci&oacute;n web</title>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
 </head>
 <body>
 <%
@@ -43,7 +43,7 @@
 			}
 		%>
 		<br><br>
-		<span class="campo"><a class="but" href="/eprail/"><%if(leng.equals("SP")){ %>Inicio<%}else{%>Start<%} %></a></span>
+		<span class="campo"><a class="but" href="/aplicacion/"><%if(leng.equals("SP")){ %>Inicio<%}else{%>Start<%} %></a></span>
 	</div>
 </body>
 </html>

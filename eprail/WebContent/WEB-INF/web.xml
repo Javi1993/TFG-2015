@@ -11,7 +11,7 @@
     <description></description>
     <display-name>ServletController</display-name>
     <servlet-name>ServletController</servlet-name>
-    <servlet-class>servlet.tfg.eprail.ServletController</servlet-class>
+    <servlet-class>servlet.tfg.aplicacion.ServletController</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -20,7 +20,7 @@
   </servlet-mapping>
   <filter>
     <filter-name>NoLogFilter</filter-name>
-    <filter-class>filter.tfg.eprail.NoLogFilter</filter-class>
+    <filter-class>filter.tfg.aplicacion.NoLogFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>NoLogFilter</filter-name>
@@ -28,7 +28,7 @@
   </filter-mapping>
   <filter>
     <filter-name>CacheFilter</filter-name>
-    <filter-class>filter.tfg.eprail.CacheFilter</filter-class>
+    <filter-class>filter.tfg.aplicacion.CacheFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CacheFilter</filter-name>
@@ -48,7 +48,7 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-  <display-name>eprail</display-name>
+  <display-name>aplicacion</display-name>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>

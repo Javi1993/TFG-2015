@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>eprailEAR</name>
+	<name>aplicacionEAR</name>
 	<comment></comment>
 	<projects>
-		<project>eprail</project>
-		<project>eprailJPA</project>
+		<project>aplicacion</project>
+		<project>aplicacionJPA</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8" import="funciones.tfg.eprail.Funciones"%>
+    pageEncoding="utf-8" import="funciones.tfg.aplicacion.Funciones"%>
 <%
 	String leng = (String) request.getSession().getAttribute("lenguage");
 	if(leng == null)

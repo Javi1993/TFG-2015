@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones, controller.tfg.eprail.ManagementProject, java.util.*,modeldata.tfg.eprailJPA.Sharing,modeldata.tfg.eprailJPA.User"%>
+    pageEncoding="UTF-8" import="funciones.tfg.aplicacion.Funciones, controller.tfg.aplicacion.ManagementProject, java.util.*,modeldata.tfg.aplicacionJPA.Sharing,modeldata.tfg.aplicacionJPA.User"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,12 +13,12 @@
 	}
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Eprail: repositorio de casos</title>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
-<link href="/eprail/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
-<script type="text/javascript" src="/eprail/script/jquery-ui.min.js"></script>
+<title>Aplicaci&oacute;n web</title>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
+<link href="/aplicacion/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
+<script type="text/javascript" src="/aplicacion/script/jquery-ui.min.js"></script>
 <script>
 $(function(){
     var projects = [
@@ -53,20 +53,20 @@ $(function(){
 </head>
 <body>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.aplicacionJPA.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:500px; width:1000px;">
-		<span class="title" style="text-align:center; width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"><%if(leng.equals("SP")){%>Compartir proyecto <%=request.getParameter("n")%><%}else{ %>Share <%=request.getParameter("n")%> project<%} %></span>&nbsp;&nbsp;<a class="subtitle" style="left:270px;" href="/eprail/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title" style="text-align:center; width:200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"><%if(leng.equals("SP")){%>Compartir proyecto <%=request.getParameter("n")%><%}else{ %>Share <%=request.getParameter("n")%> project<%} %></span>&nbsp;&nbsp;<a class="subtitle" style="left:270px;" href="/aplicacion/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/aplicacion/img/back.png" alt="back" width="30"
 			height="30"></a>
 		<p><%if(leng.equals("SP")){%>Introduce el e-mail del usuario registrado con el que quieres compartir el proyecto<%}else{%>Enter the email address of the registered user with whom you want to share the project<%}%></p>
-		<form id="form" action="/eprail/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
-			<input id="tags" type="email" name="email" maxlength="60" size="50" required/>&nbsp;<input type="image" src="/eprail/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
+		<form id="form" action="/aplicacion/controller/share?op=1&id=<%=request.getParameter("id") %>" method="post" name="add-sh">
+			<input id="tags" type="email" name="email" maxlength="60" size="50" required/>&nbsp;<input type="image" src="/aplicacion/img/add.png" width="20" height="20" alt="add" title="<%if(leng.equals("SP")){%>A&ntilde;adir<%}else{%>Add<%}%>">
 		</form>
 		<%if(request.getAttribute("message")==null){ %><sub style="font-size: 10px; color:#C0C0C0"><%if(leng.equals("SP")){%>Si no recuerdas el email puedes buscar por el nombre<%}else{ %>If you do not remember the email, you can search by username<%}%></sub><%}else{ %>
 		<sub style="font-size: 10px; color:#5C85FF"><%=request.getAttribute("message") %></sub><%} %>
 		<br><br><br><br>
-		<form action="/eprail/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
+		<form action="/aplicacion/controller/share?op=2&id=<%=request.getParameter("id") %>" method="post" name="recuperar">
 			<fieldset>
 			<table class="project" style="width: 100%">
 			<%
@@ -77,11 +77,11 @@ $(function(){
 					<tr>
 						<th><%if(leng.equals("SP")){%>Usuario<%}else{ %>User<%}%></th>
 						<th>Email</th>
-						<th><img src="/eprail/img/eye.png" alt="see"><br><%if(leng.equals("SP")){%>Ver<%}else{ %>See<%}%></th>
-						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowRecalculate()!=0){ %>gear.png<%}else{ %>gear-d.png<%} %>" alt="run"><br><%if(leng.equals("SP")){%>Recalcular<%}else{ %>Recalculate<%}%></th>
-						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowDownload()!=0){ %>download.png<%}else{ %>download-d.png<%} %>" alt="download"><br><%if(leng.equals("SP")){%>Descargar<%}else{ %>Download<%}%></th>
-						<th><img src="/eprail/img/share.png" alt="share"><br><%if(leng.equals("SP")){%>Compartir<%}else{ %>Share<%}%></th>
-						<th><img src="/eprail/img/<%if(permisos==null || permisos.getAllowDelete()!=0){ %>delete.png<%}else{ %>delete-d.png<%} %>" alt="delete"><br><%if(leng.equals("SP")){%>Borrar<%}else{ %>Delete<%}%></th>
+						<th><img src="/aplicacion/img/eye.png" alt="see"><br><%if(leng.equals("SP")){%>Ver<%}else{ %>See<%}%></th>
+						<th><img src="/aplicacion/img/<%if(permisos==null || permisos.getAllowRecalculate()!=0){ %>gear.png<%}else{ %>gear-d.png<%} %>" alt="run"><br><%if(leng.equals("SP")){%>Recalcular<%}else{ %>Recalculate<%}%></th>
+						<th><img src="/aplicacion/img/<%if(permisos==null || permisos.getAllowDownload()!=0){ %>download.png<%}else{ %>download-d.png<%} %>" alt="download"><br><%if(leng.equals("SP")){%>Descargar<%}else{ %>Download<%}%></th>
+						<th><img src="/aplicacion/img/share.png" alt="share"><br><%if(leng.equals("SP")){%>Compartir<%}else{ %>Share<%}%></th>
+						<th><img src="/aplicacion/img/<%if(permisos==null || permisos.getAllowDelete()!=0){ %>delete.png<%}else{ %>delete-d.png<%} %>" alt="delete"><br><%if(leng.equals("SP")){%>Borrar<%}else{ %>Delete<%}%></th>
 						<th class="delete">&nbsp;&nbsp;</th>
 					</tr>
 					<%
@@ -99,7 +99,7 @@ $(function(){
 						<td><input type="checkbox" value="<%="D"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDownload()!=0){ %>checked="checked"<%} if(permisos!=null && permisos.getAllowDownload()==0){ %>disabled="disabled"<%} %>></td>
 						<td><input type="checkbox" value="<%="S"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowShare()!=0){ %>checked="checked"<%} %>></td>
 						<td><input type="checkbox" value="<%="X"+sh.getIdSharing() %>" name="perm" <%if(sh.getAllowDelete()!=0){ %>checked="checked"<%} if(permisos!=null && permisos.getAllowDelete()==0){ %>disabled="disabled"<%} %>></td>
-						<td class="delete"><a href="/eprail/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){%>Quitar<%}else{ %>Remove<%}%>"><img src="/eprail/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
+						<td class="delete"><a href="/aplicacion/controller/share?op=1&i=<%=sh.getIdSharing()%>&id=<%=sh.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){%>Quitar<%}else{ %>Remove<%}%>"><img src="/aplicacion/img/delete-u.png" width="15" height="15" alt="Eliminar"></a></td>
 					</tr>
 					<%
 						cnt++;

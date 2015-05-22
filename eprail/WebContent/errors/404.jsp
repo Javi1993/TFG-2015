@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8" import="funciones.tfg.eprail.Funciones"%>
+    pageEncoding="utf-8" import="funciones.tfg.aplicacion.Funciones"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>404 - Not found</title>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
 </head>
 <body>
 <%
@@ -30,7 +30,7 @@
     <p>If the error persists contact the webmaster.</p>
     <p>Sorry for the inconvenience.</p>
     <%}%>
-     <span class="campo"><a class="but" href="/eprail/controller/login" style="margin-right:50%;"><%if(leng.equals("SP")){ %>Volver<%}else{%>Back<%}%></a></span>
+     <span class="campo"><a class="but" href="/aplicacion/controller/login" style="margin-right:50%;"><%if(leng.equals("SP")){ %>Volver<%}else{%>Back<%}%></a></span>
     </div>
 </body>
 </html>

@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones"%>
+	pageEncoding="UTF-8" import="funciones.tfg.aplicacion.Funciones"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Eprail: repositorio de casos</title>
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/form.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+<title>Aplicaci&oacute;n web</title>
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/form.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <%
@@ -20,13 +20,13 @@
 	}
 %>
 	<%-- Cogemos el JavaBean del usuario de la session --%>
-	<jsp:useBean id="userBean" class="modeldata.tfg.eprailJPA.User"
+	<jsp:useBean id="userBean" class="modeldata.tfg.aplicacionJPA.User"
 		scope="session" />
 	<jsp:include page="./top.jsp" flush="true" />
 	<div class="center" style="height:230px; width:400px;">
-		<span class="title"><%if(leng.equals("SP")){%>Modificar datos de registro<%}else{%>Modify my account details<%} %></span>&nbsp;&nbsp;<a class="subtitle" style="left:45%;" href="/eprail/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/eprail/img/back.png" alt="back" width="30"
+		<span class="title"><%if(leng.equals("SP")){%>Modificar datos de registro<%}else{%>Modify my account details<%} %></span>&nbsp;&nbsp;<a class="subtitle" style="left:45%;" href="/aplicacion/controller/login" title="<%if(leng.equals("SP")){%>Volver<%}else{%>Back<%}%>"><img src="/aplicacion/img/back.png" alt="back" width="30"
 			height="30"></a>
-		<form action="/eprail/controller/account" method="post" name="edit" id="edit-f">
+		<form action="/aplicacion/controller/account" method="post" name="edit" id="edit-f">
 			<fieldset>
 				<span class="campo"> 
 					<label class="log-i">E&#45;mail</label>

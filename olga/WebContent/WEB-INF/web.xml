@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  
   <servlet>
     <description></description>
     <display-name>LecturaAsincronaServlet</display-name>
     <servlet-name>LecturaAsincronaServlet</servlet-name>
-    <servlet-class>servlet.tfg.olga.LecturaAsincronaServlet</servlet-class>
+    <servlet-class>servlet.tfg.simulacion.LecturaAsincronaServlet</servlet-class>
     <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -22,14 +21,15 @@
   <servlet>
     <display-name>HeartbeatServlet</display-name>
     <servlet-name>HeartbeatServlet</servlet-name>
-    <servlet-class>servlet.tfg.olga.HeartbeatServlet</servlet-class>
+    <servlet-class>servlet.tfg.simulacion.HeartbeatServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>HeartbeatServlet</servlet-name>
     <url-pattern>/heartbeat</url-pattern>
   </servlet-mapping>
-  <display-name>olga</display-name><welcome-file-list>
+  <display-name>simulacion</display-name>
+  <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>

@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="funciones.tfg.eprail.Funciones"%>
+	pageEncoding="UTF-8" import="funciones.tfg.aplicacion.Funciones"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Eprail: repositorio de casos</title>
-<script type="text/javascript" src="/eprail/script/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/eprail/script/center.js"></script>
-<link href="/eprail/css/style.css" rel="stylesheet" type="text/css">
+<title>Aplicaci&oacute;n web</title>
+<script type="text/javascript" src="/aplicacion/script/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/aplicacion/script/center.js"></script>
+<link href="/aplicacion/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <%
@@ -26,7 +26,7 @@
 		%>
 		<p><%if(leng.equals("SP")){ %>A continuaci&oacute;n rellene los siguientes campos con su
 			nueva contrase&ntilde;a.<%}else{ %>Complete the following fields with your new password.<%} %></p>
-		<form action="/eprail/recover?cd=1" method="post">
+		<form action="/aplicacion/recover?cd=1" method="post">
 			<fieldset>
 				<input type="hidden" name="uid"
 					value="<%=request.getParameter("op")%>"><span
