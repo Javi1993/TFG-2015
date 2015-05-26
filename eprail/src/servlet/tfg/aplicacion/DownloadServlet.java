@@ -69,8 +69,8 @@ public class DownloadServlet extends HttpServlet {
 	}
 
 	protected void descargar(HttpServletRequest request, HttpServletResponse response, Project project) throws ServletException, IOException {
-		response.setContentType("application/ongf");//indicamos el tipo de archivo
-		response.setHeader("Content-disposition","attachment; filename="+project.getProjectName());//dialogo de descarga
+		response.setContentType("application/octet-stream");//indicamos el tipo de archivo
+		response.setHeader("Content-disposition","attachment; filename="+project.getProjectName()+".zip");//dialogo de descarga
 		String path = new String(project.getONGFile());
 		File my_file = new File(path+File.separator+project.getIdProject());
 
