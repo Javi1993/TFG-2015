@@ -143,24 +143,37 @@ function alertDelete (id, name, sh, idiom) {
 								//tabla con documentos compartidos
 								boolean botones = false;
 								String style = "";
+								String status = "";
+								String desc = "";
 								switch(project.getProject().getStatuscategory().getIdProjectStatus())
 								{
 								case 0:
 									style = "border:2px solid #5C85FF; padding: 10px; color:#FFF; background-color:#506CC1;";
 									botones = false;
+									status = "Pending";
+									desc = "The case was uploaded but not yet started the simulation";
 									break;
 								case 1:
 									style = "border:2px solid #5C85FF; padding: 10px; color: #5C85FF; background-color: #D6EBFF;";
 									botones = false;
+									status = "Calculating...";
+									desc = "Simulation has been launched but not yet concluded";
 									break;
 								case 2:
 									style = "border:2px solid #5C85FF; padding: 10px;";
 									botones = true;
+									status = "Simulated";
+									desc = "Simulation was successful";
 									break;
 								default:
-									style = "border:2px solid #FFF; padding: 10px; color: #FFF; background-color: #5C85FF;";
+									status = "Errors";
+									desc = "Error during simulation";
 									botones = false;
-								}			
+								}
+								if(leng.equals("SP")){
+									status = project.getProject().getStatuscategory().getStatusName();
+									desc = project.getProject().getStatuscategory().getStatusDescription();
+								}
 					%>
 					<tr class="row">
 						<td><img src="/aplicacion/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
