@@ -184,8 +184,13 @@ function alertDelete (id, name, sh, idiom) {
 						</span></td>
 						<td style="color: #C0C0C0;">
 						<%
-						 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");%>
-						<%=sdf.format(project.getProject().getDateModified()) %>
+						 SimpleDateFormat sdf = null;
+						 if(leng.equals("SP")){
+							 sdf = new SimpleDateFormat("dd-MMM-yyyy");
+						 }else{
+							 sdf = new SimpleDateFormat("MMM-dd-yyyy", Locale.UK);
+						 }%>
+						<%=sdf.format(project.getProject().getDateModified())%>
 						</td>
 						<%if(botones){ %>
 						<td><a href="/aplicacion/controller/see?id=<%=project.getProject().getIdProject()%>" title="<%if(leng.equals("SP")){ %>Ver<%}else{%>See<%}%>"><img src="/aplicacion/img/eye.png" alt="see"></a></td>
