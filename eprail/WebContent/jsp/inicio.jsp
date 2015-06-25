@@ -179,8 +179,8 @@ function alertDelete (id, name, sh, idiom) {
 						<td><img src="/aplicacion/img/thunder-share.png" alt="shared-project" width="30" height="30"></td>
 						<td style="width: 150px;">&nbsp;&nbsp;&nbsp;<%=project.getProject().getProjectName()%></td>
 						<td style="color: #C0C0C0; width: 200px;">(<%=project.getUser2().getFirstName() %> <%=project.getUser2().getFamilyName() %>)</td>
-						<td><span style="<%=style %>" title="<%=project.getProject().getStatuscategory().getStatusDescription()%>">
-						<%=project.getProject().getStatuscategory().getStatusName()%>
+						<td><span style="<%=style %>" title="<%=desc%>">
+						<%=status%>
 						</span></td>
 						<td style="color: #C0C0C0;">
 						<%
