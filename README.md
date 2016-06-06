@@ -26,7 +26,7 @@ En los siguientes vídeos se muestra un ejemplo del funcionamiento de la aplicac
 [![Demo CountPages alpha](https://j.gifs.com/DklzAY.gif)](https://youtu.be/devupYAdpoM)
 [Ver vídeo completo.](https://youtu.be/devupYAdpoM)
 
-* Gestión de casos de simulación ONGF (click en la imagen para ver completo):
+* Gestión de casos de simulación ONGF:
 
 [![Demo CountPages alpha](https://j.gifs.com/mZgAPA.gif)](https://youtu.be/ISU7G_0BThI)
 [Ver vídeo completo.](https://youtu.be/ISU7G_0BThI)
